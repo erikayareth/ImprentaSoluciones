@@ -25,6 +25,7 @@ public class Principal extends javax.swing.JFrame {
     
     public Principal() {
         initComponents();
+        this.setTitle("Menú");
         this.setLocationRelativeTo(null);
         this.setResizable(rootPaneCheckingEnabled);
         setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
