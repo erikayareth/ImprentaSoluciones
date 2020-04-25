@@ -5,9 +5,19 @@
  */
 package interfaces;
 
+import dao.ProductosDAO;
+import dao.ProveedoresDAO;
 import java.awt.Color;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import pojo.Productos;
+import pojo.Proveedores;
 
 /**
  *
@@ -18,8 +28,12 @@ public class Product extends javax.swing.JPanel {
     /**
      * Creates new form Product
      */
-    public Product() {
+    ProductosDAO ppd;
+    ProveedoresDAO p = new ProveedoresDAO();
+
+    public Product() throws SQLException {
         initComponents();
+        ppd = new ProductosDAO();
         this.setBackground(Color.WHITE);
         Color fondo = new Color(24, 192, 221);
         jPanel3.setBackground(fondo);
@@ -27,8 +41,15 @@ public class Product extends javax.swing.JPanel {
         jPanel6.setBackground(fondo);
         jPanel1.setBackground(Color.white);
         jPanel7.setBackground(Color.white);
+        loadCombo();
+        cargarModelo();
     }
- void cargarDialogo(JDialog dialogo, String nombre){
+
+    void loadCombo() throws SQLException {
+        jComboBox3.setModel(p.loadCombo());
+    }
+
+    void cargarDialogo(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
@@ -36,8 +57,8 @@ public class Product extends javax.swing.JPanel {
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
-    
-    void cargarDialogo2(JDialog dialogo, String nombre){
+
+    void cargarDialogo2(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
@@ -45,7 +66,7 @@ public class Product extends javax.swing.JPanel {
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -143,6 +164,11 @@ public class Product extends javax.swing.JPanel {
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
         jButton7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton7.setText("GUARDAR");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
         jButton8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -686,6 +712,52 @@ public class Product extends javax.swing.JPanel {
         Catalogo.dispose();
     }//GEN-LAST:event_jButton12ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        try {
+            // Agregar producto desde (JDialog)
+
+            if (crearp() != 0) {
+                JOptionPane.showMessageDialog(null, "¡Éxito! Se registró el producto");
+
+                vaciar();
+                cargarModelo();
+            } else {
+                JOptionPane.showMessageDialog(null, "¡Ha ocurrido un problema! Revisa tus datos");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Product.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+    public void vaciar() {
+        jTextField3.setText("");
+        jTextField5.setText("");
+        jTextField2.setText("");
+        jTextField4.setText("");
+        jTextField6.setText("");
+
+    }
+
+    int crearp() throws SQLException {
+        String nombre = jTextField2.getText();
+        String desc = jTextField3.getText();
+        String tipov = (String) jComboBox2.getSelectedItem();
+        double precio = Double.parseDouble(jTextField4.getText());
+        double precioM = Double.parseDouble(jTextField5.getText());
+        int cantM = Integer.parseInt(jTextField6.getText());
+        Proveedores t = (Proveedores) jComboBox3.getSelectedItem();
+        int proveedor = t.getIdProveedor();
+
+        Productos m = new Productos(nombre, desc, tipov, precio, precioM, cantM, proveedor);
+        int id = ppd.insertar(m);
+        return id;
+    }
+
+    public void cargarModelo() {
+        ProductosDAO ninoDAO = new ProductosDAO();
+        DefaultTableModel dt = ninoDAO.cargarModelo2();
+        jTable1.setModel(dt);
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Agregar;

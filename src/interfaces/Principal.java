@@ -6,6 +6,9 @@
 package interfaces;
 
 import java.awt.Color;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -16,15 +19,16 @@ import javax.swing.JPanel;
  */
 public class Principal extends javax.swing.JFrame {
 
-    Product productos = new Product();
+    Product productos;
     XH ventas = new XH();
     Proveedore proveedores = new Proveedore();
     Inventa inventarios = new Inventa();
     Corte corte = new Corte();
     Cotizacion cotizaciones = new Cotizacion();
     
-    public Principal() {
+    public Principal() throws SQLException {
         initComponents();
+        productos = new Product();
          this.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
         this.setTitle("Menú");
         this.setLocationRelativeTo(null);
@@ -194,7 +198,11 @@ public class Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal().setVisible(true);
+                try {
+                    new Principal().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

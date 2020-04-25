@@ -5,10 +5,12 @@
  */
 package interfaces;
 
+import dao.ProductosDAO;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -30,6 +32,13 @@ public class Cotizacion extends javax.swing.JPanel {
         jPanel11.setBackground(Color.white);
         jPanel12.setBackground(Color.white);
         jPanel9.setBackground(Color.white);
+        cargarModelo();
+    }
+    public void cargarModelo() {
+        ProductosDAO ninoDAO = new ProductosDAO();
+        DefaultTableModel dt = ninoDAO.cargarModelo2();
+        jTable2.setModel(dt);
+
     }
 void cargarDialogo(JDialog dialogo, String nombre){
         dialogo.setVisible(true);
@@ -83,8 +92,9 @@ void cargarDialogo(JDialog dialogo, String nombre){
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel23 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jButton24 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -318,8 +328,10 @@ void cargarDialogo(JDialog dialogo, String nombre){
 
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nombre" }));
-        jPanel3.add(jComboBox1);
+        jLabel23.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel23.setText("CÓDIGO DEL PRODUCTO");
+        jPanel3.add(jLabel23);
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -327,6 +339,16 @@ void cargarDialogo(JDialog dialogo, String nombre){
             }
         });
         jPanel3.add(jTextField1);
+
+        jButton24.setBackground(new java.awt.Color(255, 255, 255));
+        jButton24.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton24.setText("AGREGAR PRODUCTO");
+        jButton24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton24ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton24);
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -529,6 +551,10 @@ void cargarDialogo(JDialog dialogo, String nombre){
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton24ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Buscar;
@@ -538,11 +564,11 @@ void cargarDialogo(JDialog dialogo, String nombre){
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton24;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel17;
@@ -551,6 +577,7 @@ void cargarDialogo(JDialog dialogo, String nombre){
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

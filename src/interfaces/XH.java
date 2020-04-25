@@ -5,19 +5,26 @@
  */
 package interfaces;
 
+import com.mxrck.autocompleter.AutoCompleterCallback;
+import com.mxrck.autocompleter.TextAutoCompleter;
+import dao.ProductosDAO;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.table.DefaultTableModel;
+import pojo.Productos;
 
 /**
  *
  * @author Avril
  */
 public class XH extends javax.swing.JPanel {
-
+TextAutoCompleter text;
     /**
      * Creates new form XH
      */
+    Productos p = new Productos();
+    ProductosDAO pp = new ProductosDAO();
     public XH() {
         initComponents();
          this.setBackground(Color.WHITE);
@@ -28,7 +35,43 @@ public class XH extends javax.swing.JPanel {
         jPanel4.setBackground(Color.WHITE);
         jPanel14.setBackground(fondo);
         jPanel13.setBackground(Color.WHITE);
+        cargarModelo();
+        
+//       text = new TextAutoCompleter(jTextField1,new AutoCompleterCallback(){
+//           @Override 
+//           public void callback (Object o ){
+//               Productos person = (Productos)text.findItem(o);
+//               
+//           }
+//           
+//        });
     }
+    public void cargarModelo() {
+        ProductosDAO ninoDAO = new ProductosDAO();
+        DefaultTableModel dt = ninoDAO.cargarModelo2();
+        jTable2.setModel(dt);
+
+    }
+//      void loadAutoCompleter(){
+//        
+//            Productos person = new Productos(pp.consultar()+"");
+//            text.addItem(person);
+//            
+//        
+//    }
+    
+//   public void verProductos(int id){
+//        ProductosDAO pd = new ProductosDAO();
+//           Productos clientes = pd.seleccionar_producto(id);
+//           jTextField6.setText(clientes.getNombre());
+//           jTextField2.setText(clientes.getDescripcion());
+//           jTextField7.setText(clientes.getTipoDeVenta());
+//           jTextField7.setText(clientes.getCantidadMayoreo());
+//           jTextField7.setText(clientes.getPrecio());
+//           jTextField7.setText(clientes.getPrecioMayoreo());
+//             
+//          
+//      }
 void cargarDialogo(JDialog dialogo, String nombre){
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
@@ -155,9 +198,9 @@ void cargarDialogo(JDialog dialogo, String nombre){
         jTextField1 = new javax.swing.JTextField();
         jButton24 = new javax.swing.JButton();
         jTabbedPane3 = new javax.swing.JTabbedPane();
+        jPanel15 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTable6 = new javax.swing.JTable();
-        jPanel15 = new javax.swing.JPanel();
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -939,18 +982,6 @@ void cargarDialogo(JDialog dialogo, String nombre){
 
         jPanel13.add(jPanel14, java.awt.BorderLayout.PAGE_START);
 
-        jTable6.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Nombre", "Descripción", "Precio", "Cantidad"
-            }
-        ));
-        jScrollPane6.setViewportView(jTable6);
-
-        jTabbedPane3.addTab("Ticket1", jScrollPane6);
-
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
@@ -963,6 +994,18 @@ void cargarDialogo(JDialog dialogo, String nombre){
         );
 
         jTabbedPane3.addTab("Ticket2", jPanel15);
+
+        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nombre", "Descripción", "Precio", "Cantidad"
+            }
+        ));
+        jScrollPane6.setViewportView(jTable6);
+
+        jTabbedPane3.addTab("Ticket1", jScrollPane6);
 
         jPanel13.add(jTabbedPane3, java.awt.BorderLayout.CENTER);
 
@@ -1054,6 +1097,7 @@ void cargarDialogo(JDialog dialogo, String nombre){
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButton24ActionPerformed
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed

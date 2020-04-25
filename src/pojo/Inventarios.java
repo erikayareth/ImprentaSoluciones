@@ -10,5 +10,8 @@ package pojo;
  * @author erika
  */
 public class Inventarios {
+    int idInventario;
+    int stock;
+    int minimo;
     
 }

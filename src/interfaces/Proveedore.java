@@ -5,9 +5,17 @@
  */
 package interfaces;
 
+import dao.ProductosDAO;
+import dao.ProveedoresDAO;
 import java.awt.Color;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import pojo.Proveedores;
 
 /**
  *
@@ -18,8 +26,11 @@ public class Proveedore extends javax.swing.JPanel {
     /**
      * Creates new form Proveedore
      */
+    ProveedoresDAO pd;
+
     public Proveedore() {
         initComponents();
+        pd = new ProveedoresDAO();
         this.setBackground(Color.WHITE);
         Color fondo = new Color(24, 192, 221);
         jPanel3.setBackground(fondo);
@@ -27,8 +38,10 @@ public class Proveedore extends javax.swing.JPanel {
         jPanel1.setBackground(Color.WHITE);
         jPanel8.setBackground(Color.WHITE);
         jPanel7.setBackground(Color.WHITE);
+        cargarModelo();
     }
- void cargarDialogo(JDialog dialogo, String nombre){
+
+    void cargarDialogo(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
@@ -36,8 +49,8 @@ public class Proveedore extends javax.swing.JPanel {
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
-    
-     void cargarDialogo2(JDialog dialogo, String nombre){
+
+    void cargarDialogo2(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
@@ -45,6 +58,14 @@ public class Proveedore extends javax.swing.JPanel {
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
+
+    public void cargarModelo() {
+        ProveedoresDAO ninoDAO = new ProveedoresDAO();
+        DefaultTableModel dt = ninoDAO.cargarModelo2();
+        jTable1.setModel(dt);
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,10 +80,10 @@ public class Proveedore extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         buttonGroup1 = new javax.swing.ButtonGroup();
         Modificar = new javax.swing.JDialog();
         jPanel10 = new javax.swing.JPanel();
@@ -140,17 +161,17 @@ public class Proveedore extends javax.swing.JPanel {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jButton9)
+                        .addGap(217, 217, 217)
+                        .addComponent(jButton10))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8))
                         .addGap(31, 31, 31)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField6)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jButton9)
-                        .addGap(217, 217, 217)
-                        .addComponent(jButton10)))
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(12, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -165,16 +186,16 @@ public class Proveedore extends javax.swing.JPanel {
                 .addGap(35, 35, 35)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton9)
                     .addComponent(jButton10))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout AgregarLayout = new javax.swing.GroupLayout(Agregar.getContentPane());
@@ -479,9 +500,37 @@ public class Proveedore extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton9ActionPerformed
+        try {
+            // Agregar un proveedor (JDialogg):
+            if (crearp() != 0) {
 
+                JOptionPane.showMessageDialog(null, "¡Éxito! Se registró un proveedor");
+                vaciar();
+                cargarModelo();
+
+            } else {
+                JOptionPane.showMessageDialog(null, "¡UY! Ha ocurrido un problema revisa tus datos");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Proveedore.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton9ActionPerformed
+    int crearp() throws SQLException {
+        String nombre = jTextField5.getText();
+        String tel = jFormattedTextField1.getText();
+
+        Proveedores m = new Proveedores(nombre, tel);
+        int id = pd.insertar(m);
+        return id;
+    }
+
+    public void vaciar() {
+
+        jTextField5.setText("");
+
+        jFormattedTextField1.setText("");
+
+    }
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         Agregar.dispose();
     }//GEN-LAST:event_jButton10ActionPerformed
@@ -513,6 +562,7 @@ public class Proveedore extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox8;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
@@ -544,7 +594,6 @@ public class Proveedore extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField18;
     private javax.swing.JTextField jTextField19;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JDialog verTodos;
     // End of variables declaration//GEN-END:variables
 }
