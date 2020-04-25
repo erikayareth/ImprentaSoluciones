@@ -50,29 +50,30 @@ public class ProductosDAO {
         int id = 0;
         try{
             con = Conexion.getConnection(); 
-            st = con.prepareStatement("call insertarProducto(?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insertarProducto(?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, producto.getNombre().toUpperCase());
             st.setString(2, producto.getDescripcion().toUpperCase());
             st.setString(3, producto.getTipoDeVenta());
             st.setDouble(4, producto.getPrecio());
             st.setDouble(5, producto.getPrecioMayoreo());
             st.setInt(6, producto.getCantidadMayoreo());
-            st.setInt(7, producto.getProveedor_idProveedor());
-           
-            
+            st.setBoolean(7, producto.isEstado());
+            st.setInt(8, producto.getProveedor_idProveedor());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
                 id = rs.getInt(1);
             }
         }catch(Exception e){
-            System.out.println("Eror al insertar producto ->" + e);
+            System.out.println("Eror al insertar producto" + e);
         }finally{
             Conexion.close(con);
             Conexion.close(st);
         }
         return id;
     }
+     
+     
       public Productos consultar(int id) {
         Connection con = null;
         PreparedStatement st = null;
@@ -86,43 +87,44 @@ public class ProductosDAO {
                 pojo = inflaPOJO(rs);
             }
         } catch (Exception e) {
-            System.out.println("Error al consultar productos " + e);
+            System.out.println("Error al consultar productos" + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return pojo;
     }
-      public Productos seleccionar_producto(int i) {
+      
+      public Productos seleccionar_producto(int id) {
         Connection con = null;
         PreparedStatement st = null;
           Productos productos = new Productos();
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL seleccionar_producto(?)");
-            st.setInt(1, i);
+            st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 productos = inflaPOJO(rs);
             }
             rs.close();
         } catch (Exception e) {
-            System.out.println("Error al consultar producto " + e);
+            System.out.println("Error al consultar producto" + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return productos;
     }
-//     
-     public DefaultTableModel cargarModelo2()  {
+   
+     public DefaultTableModel cargarModelo()  {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID","Nombre","Descripción", "TipoVenta", "Precio","PrecioMayoreo","CantidadMayoreo"};
+        String encabezados[] = {"ID", "Nombre", "Descripción", "TipoVenta", "Precio", "PrecioMayoreo", "CantidadMayoreo"};
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("CALL  select_all_producto()");
+            st = con.prepareStatement("CALL select_all_productos()");
             dt = new DefaultTableModel();
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
@@ -136,18 +138,19 @@ public class ProductosDAO {
                 ob[4] = rs.getDouble("precio");
                 ob[5] = rs.getDouble("precioMayoreo");
                 ob[6] = rs.getDouble("cantMayoreo");
-                
                 dt.addRow(ob);
             }
             rs.close();
         } catch (Exception e) {
-            System.out.println("Error al cargar la tabla Productos " + e);
+            System.out.println("Error al cargar la tabla productos " + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return dt;
     }
+     
+     
 //      public boolean modificar(Productos Nino){
 //        Connection con = null;
 //        PreparedStatement st = null;
@@ -175,24 +178,25 @@ public class ProductosDAO {
 //        }
 //        return true;
 //    }
+     
       private static Productos inflaPOJO(ResultSet rs){
-        
         Productos pojo = new Productos();
         try {
             pojo.setIdProducto(rs.getInt("idProductos"));
             pojo.setNombre(rs.getString("nombre"));
             pojo.setDescripcion(rs.getString("descripcion"));
-            pojo.setTipoDeVenta(rs.getString("tipoDeVenta"));
+            pojo.setTipoDeVenta("tipoDeVenta");
             pojo.setPrecio(rs.getDouble("precio"));
             pojo.setPrecioMayoreo(rs.getDouble("precioMayoreo"));
             pojo.setCantidadMayoreo(rs.getInt("cantMayoreo"));
+            pojo.setEstado(rs.getBoolean("estado"));
             pojo.setProveedor_idProveedor(rs.getInt("Proveedor_idProveedor"));
-           
-            
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo productos " + ex);
         }
         return pojo;
     }
+      
+    
     
 }

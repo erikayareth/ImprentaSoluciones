@@ -61,9 +61,7 @@ public class ProveedoresDAO {
                 Proveedores pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idProveedor");
                 ob[1] = rs.getString("nombre");
-                ob[2] = rs.getString("telefono");
-                
-                
+                ob[2] = rs.getString("telefono");          
                 dt.addRow(ob);
             }
             rs.close();
@@ -75,44 +73,43 @@ public class ProveedoresDAO {
         }
         return dt;
     }
+      
       public int insertar(Proveedores p) throws SQLException {
         Connection con = null;
         PreparedStatement st = null;
         int id = 0;
         try{
             con = Conexion.getConnection(); 
-            st = con.prepareStatement("call insertarProveedor(?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insertarProveedor(?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, p.getNombre().toUpperCase());
             st.setString(2, p.getTelefono().toUpperCase());
-           
-            
-           
-            
+            st.setBoolean(3, p.isEstado());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
                 id = rs.getInt(1);
             }
         }catch(Exception e){
-            System.out.println("Eror al insertar proveedor ->" + e);
+            System.out.println("Eror al insertar proveedor" + e);
         }finally{
             Conexion.close(con);
             Conexion.close(st);
         }
         return id;
     }
- private static Proveedores inflaPOJO(ResultSet rs){
-        
+      
+      private static Proveedores inflaPOJO(ResultSet rs){
         Proveedores pojo = new Proveedores();
         try {
             pojo.setIdProveedor(rs.getInt("idProveedor"));
             pojo.setNombre(rs.getString("nombre"));
             pojo.setTelefono(rs.getString("telefono"));
-                      
-            
+            pojo.setEstado(rs.getBoolean("estado"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo proveedor " + ex);
         }
         return pojo;
     }
+      
+      
 }

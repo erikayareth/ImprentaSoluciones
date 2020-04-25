@@ -686,6 +686,7 @@ public class Product extends javax.swing.JPanel {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         Agregar.dispose();
+        vaciar();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
@@ -715,29 +716,28 @@ public class Product extends javax.swing.JPanel {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         try {
             // Agregar producto desde (JDialog)
-
-            if (crearp() != 0) {
-                JOptionPane.showMessageDialog(null, "¡Éxito! Se registró el producto");
-
+            if (crear() != 0) {
+                JOptionPane.showMessageDialog(Agregar, "¡Éxito! Se registró el producto");
                 vaciar();
                 cargarModelo();
+                Agregar.dispose();
             } else {
-                JOptionPane.showMessageDialog(null, "¡Ha ocurrido un problema! Revisa tus datos");
+                JOptionPane.showMessageDialog(Agregar, "¡Ha ocurrido un problema! Revisa tus datos");
             }
         } catch (SQLException ex) {
             Logger.getLogger(Product.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton7ActionPerformed
+    
     public void vaciar() {
         jTextField3.setText("");
         jTextField5.setText("");
         jTextField2.setText("");
         jTextField4.setText("");
         jTextField6.setText("");
-
     }
 
-    int crearp() throws SQLException {
+    int crear() throws SQLException {
         String nombre = jTextField2.getText();
         String desc = jTextField3.getText();
         String tipov = (String) jComboBox2.getSelectedItem();
@@ -745,16 +745,17 @@ public class Product extends javax.swing.JPanel {
         double precioM = Double.parseDouble(jTextField5.getText());
         int cantM = Integer.parseInt(jTextField6.getText());
         Proveedores t = (Proveedores) jComboBox3.getSelectedItem();
+        boolean estado = true;
         int proveedor = t.getIdProveedor();
-
-        Productos m = new Productos(nombre, desc, tipov, precio, precioM, cantM, proveedor);
+        
+        Productos m = new Productos(nombre, desc, tipov, precio, precioM, cantM, estado, proveedor);
         int id = ppd.insertar(m);
         return id;
     }
 
     public void cargarModelo() {
         ProductosDAO ninoDAO = new ProductosDAO();
-        DefaultTableModel dt = ninoDAO.cargarModelo2();
+        DefaultTableModel dt = ninoDAO.cargarModelo();
         jTable1.setModel(dt);
 
     }

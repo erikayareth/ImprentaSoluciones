@@ -23,9 +23,6 @@ import pojo.Proveedores;
  */
 public class Proveedore extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Proveedore
-     */
     ProveedoresDAO pd;
 
     public Proveedore() {
@@ -63,7 +60,6 @@ public class Proveedore extends javax.swing.JPanel {
         ProveedoresDAO ninoDAO = new ProveedoresDAO();
         DefaultTableModel dt = ninoDAO.cargarModelo2();
         jTable1.setModel(dt);
-
     }
 
     /**
@@ -502,37 +498,23 @@ public class Proveedore extends javax.swing.JPanel {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         try {
             // Agregar un proveedor (JDialogg):
-            if (crearp() != 0) {
-
-                JOptionPane.showMessageDialog(null, "¡Éxito! Se registró un proveedor");
+            if (crear() != 0) {
+                JOptionPane.showMessageDialog(Agregar, "¡Éxito! Se registró un proveedor");
                 vaciar();
                 cargarModelo();
-
+                Agregar.dispose();
             } else {
-                JOptionPane.showMessageDialog(null, "¡UY! Ha ocurrido un problema revisa tus datos");
+                JOptionPane.showMessageDialog(Agregar, "Ha ocurrido un problema, revise sus datos");
             }
         } catch (SQLException ex) {
             Logger.getLogger(Proveedore.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton9ActionPerformed
-    int crearp() throws SQLException {
-        String nombre = jTextField5.getText();
-        String tel = jFormattedTextField1.getText();
 
-        Proveedores m = new Proveedores(nombre, tel);
-        int id = pd.insertar(m);
-        return id;
-    }
-
-    public void vaciar() {
-
-        jTextField5.setText("");
-
-        jFormattedTextField1.setText("");
-
-    }
+    
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         Agregar.dispose();
+        vaciar();
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
@@ -547,6 +529,19 @@ public class Proveedore extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
+    int crear() throws SQLException {
+        String nombre = jTextField5.getText();
+        String tel = jFormattedTextField1.getText();
+        boolean estado = true;
+        Proveedores proveedores = new Proveedores(nombre, tel, estado);
+        int id = pd.insertar(proveedores);
+        return id;
+    }
+
+    public void vaciar() {
+        jTextField5.setText("");
+        jFormattedTextField1.setText("");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Agregar;

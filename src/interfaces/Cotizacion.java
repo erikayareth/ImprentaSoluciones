@@ -34,13 +34,15 @@ public class Cotizacion extends javax.swing.JPanel {
         jPanel9.setBackground(Color.white);
         cargarModelo();
     }
+    
+    
     public void cargarModelo() {
-        ProductosDAO ninoDAO = new ProductosDAO();
-        DefaultTableModel dt = ninoDAO.cargarModelo2();
+        ProductosDAO productosDAO = new ProductosDAO();
+        DefaultTableModel dt = productosDAO.cargarModelo();
         jTable2.setModel(dt);
-
     }
-void cargarDialogo(JDialog dialogo, String nombre){
+    
+    void cargarDialogo(JDialog dialogo, String nombre){
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
@@ -49,7 +51,7 @@ void cargarDialogo(JDialog dialogo, String nombre){
         dialogo.setResizable(false);
     }
     
-     void cargarDialogo2(JDialog dialogo, String nombre){
+    void cargarDialogo2(JDialog dialogo, String nombre){
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());

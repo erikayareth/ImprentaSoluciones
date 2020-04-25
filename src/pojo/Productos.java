@@ -19,12 +19,14 @@ public class Productos {
    private double precio;
    private double precioMayoreo;
    private int cantidadMayoreo;
+   private boolean estado;
    private int Proveedor_idProveedor;
+  
 
     public Productos() {
     }
 
-    public Productos(int idProducto, String nombre, String descripcion, String tipoDeVenta, double precio, double precioMayoreo, int cantidadMayoreo, int Proveedor_idProveedor) {
+    public Productos(int idProducto, String nombre, String descripcion, String tipoDeVenta, double precio, double precioMayoreo, int cantidadMayoreo, boolean estado, int Proveedor_idProveedor) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -32,21 +34,23 @@ public class Productos {
         this.precio = precio;
         this.precioMayoreo = precioMayoreo;
         this.cantidadMayoreo = cantidadMayoreo;
+        this.estado = estado;
         this.Proveedor_idProveedor = Proveedor_idProveedor;
     }
 
-    public Productos(String nombre, String descripcion, String tipoDeVenta, double precio, double precioMayoreo, int cantidadMayoreo, int Proveedor_idProveedor) {
+    public Productos(String nombre, String descripcion, String tipoDeVenta, double precio, double precioMayoreo, int cantidadMayoreo, boolean estado, int Proveedor_idProveedor) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.tipoDeVenta = tipoDeVenta;
         this.precio = precio;
         this.precioMayoreo = precioMayoreo;
         this.cantidadMayoreo = cantidadMayoreo;
+        this.estado = estado;
         this.Proveedor_idProveedor = Proveedor_idProveedor;
     }
+   
 
     public Productos(String string, int i) {
-       
     }
 
   
@@ -108,6 +112,16 @@ public class Productos {
     public void setCantidadMayoreo(int cantidadMayoreo) {
         this.cantidadMayoreo = cantidadMayoreo;
     }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+    
+    
 
     public int getProveedor_idProveedor() {
         return Proveedor_idProveedor;

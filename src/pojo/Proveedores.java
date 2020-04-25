@@ -13,19 +13,22 @@ public class Proveedores {
     private int idProveedor;
     private String nombre;
     private String telefono;
+    private boolean estado;
 
     public Proveedores() {
     }
 
-    public Proveedores(int idProveedor, String nombre, String telefono) {
+    public Proveedores(int idProveedor, String nombre, String telefono, boolean estado) {
         this.idProveedor = idProveedor;
         this.nombre = nombre;
         this.telefono = telefono;
+        this.estado = estado;
     }
 
-    public Proveedores(String nombre, String telefono) {
+    public Proveedores(String nombre, String telefono, boolean estado) {
         this.nombre = nombre;
         this.telefono = telefono;
+        this.estado = estado;
     }
 
     
@@ -56,7 +59,17 @@ public class Proveedores {
     public void setIdProveedor(int idProveedor) {
         this.idProveedor = idProveedor;
     }
-      @Override
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+    
+    
+    @Override
     public String toString() {
         return getNombre();
         

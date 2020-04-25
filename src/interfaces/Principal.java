@@ -44,7 +44,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.removeAll();
         jPanel1.add(panel);
         jPanel1.revalidate();
-        jPanel1.repaint(); //actualización de la pantalla
+        jPanel1.repaint(); //actualizzación de la pantalla
     }
     
     
