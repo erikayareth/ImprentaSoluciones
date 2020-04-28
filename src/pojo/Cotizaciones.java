@@ -15,24 +15,31 @@ public class Cotizaciones {
   private String telefono;
   private double descuento;
   private double total;
+  private double subtotal;
 
     public Cotizaciones() {
     }
 
-    public Cotizaciones(int idCotizacion, String nombreCliente, String telefono, double descuento, double total) {
+    public Cotizaciones(int idCotizacion, String nombreCliente, String telefono, double descuento, double total, double subtotal) {
         this.idCotizacion = idCotizacion;
         this.nombreCliente = nombreCliente;
         this.telefono = telefono;
         this.descuento = descuento;
         this.total = total;
+        this.subtotal = subtotal;
     }
 
-    public Cotizaciones(String nombreCliente, String telefono, double descuento, double total) {
+    public Cotizaciones(String nombreCliente, String telefono, double descuento, double total, double subtotal) {
         this.nombreCliente = nombreCliente;
         this.telefono = telefono;
         this.descuento = descuento;
         this.total = total;
+        this.subtotal = subtotal;
     }
+
+  
+
+    
 
   
     public int getIdCotizacion() {
@@ -73,6 +80,14 @@ public class Cotizaciones {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
     }
   
     

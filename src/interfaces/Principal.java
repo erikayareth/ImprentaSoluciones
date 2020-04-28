@@ -20,14 +20,15 @@ import javax.swing.JPanel;
 public class Principal extends javax.swing.JFrame {
 
     Product productos;
-    XH ventas = new XH();
+    XH ventas ;
     Proveedore proveedores = new Proveedore();
-    Inventa inventarios = new Inventa();
+    Inventa inventario = new Inventa();
     Corte corte = new Corte();
     Cotizacion cotizaciones = new Cotizacion();
     
     public Principal() throws SQLException {
         initComponents();
+        ventas = new XH();
         productos = new Product();
          this.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
         this.setTitle("Menú");
@@ -150,7 +151,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        cargarPanel(inventarios);
+        cargarPanel(inventario);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

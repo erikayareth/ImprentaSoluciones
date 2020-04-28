@@ -5,10 +5,116 @@
  */
 package pojo;
 
+import java.sql.Timestamp;
+
 /**
  *
  * @author erika
  */
 public class Ventas {
+    
+    private int idVenta;
+    private double importe;
+    private double total;
+    private double descuento;
+    private double cambio;
+    private Timestamp fecha;
+    private String folio;
+    private double subtotal;
+    public Ventas() {
+    }
+
+    public Ventas(int idVenta, double importe, double total, double descuento, double cambio, Timestamp fecha, String folio, double subtotal) {
+        this.idVenta = idVenta;
+        this.importe = importe;
+        this.total = total;
+        this.descuento = descuento;
+        this.cambio = cambio;
+        this.fecha = fecha;
+        this.folio = folio;
+        this.subtotal = subtotal;
+    }
+
+    public Ventas(double importe, double total, double descuento, double cambio, String folio, double subtotal) {
+        this.importe = importe;
+        this.total = total;
+        this.descuento = descuento;
+        this.cambio = cambio;
+        this.folio = folio;
+        this.subtotal = subtotal;
+    }
+
+    
+
+   
+    
+
+    public String getFolio() {
+        return folio;
+    }
+
+    public void setFolio(String folio) {
+        this.folio = folio;
+    }
+
+    public int getIdVenta() {
+        return idVenta;
+    }
+
+    public void setIdVenta(int idVenta) {
+        this.idVenta = idVenta;
+    }
+
+    public double getImporte() {
+        return importe;
+    }
+
+    public void setImporte(double importe) {
+        this.importe = importe;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public double getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(double descuento) {
+        this.descuento = descuento;
+    }
+
+    public double getCambio() {
+        return cambio;
+    }
+
+    public void setCambio(double cambio) {
+        this.cambio = cambio;
+    }
+
+    public Timestamp getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Timestamp fecha) {
+        this.fecha = fecha;
+    }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+    
+    
+    
+    
     
 }

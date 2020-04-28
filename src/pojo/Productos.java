@@ -21,12 +21,14 @@ public class Productos {
    private int cantidadMayoreo;
    private boolean estado;
    private int Proveedor_idProveedor;
+   private int stock;
+   private int minimo;
   
 
     public Productos() {
     }
 
-    public Productos(int idProducto, String nombre, String descripcion, String tipoDeVenta, double precio, double precioMayoreo, int cantidadMayoreo, boolean estado, int Proveedor_idProveedor) {
+    public Productos(int idProducto, String nombre, String descripcion, String tipoDeVenta, double precio, double precioMayoreo, int cantidadMayoreo, boolean estado, int Proveedor_idProveedor, int stock, int minimo) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -36,9 +38,11 @@ public class Productos {
         this.cantidadMayoreo = cantidadMayoreo;
         this.estado = estado;
         this.Proveedor_idProveedor = Proveedor_idProveedor;
+        this.stock = stock;
+        this.minimo = minimo;
     }
 
-    public Productos(String nombre, String descripcion, String tipoDeVenta, double precio, double precioMayoreo, int cantidadMayoreo, boolean estado, int Proveedor_idProveedor) {
+    public Productos(String nombre, String descripcion, String tipoDeVenta, double precio, double precioMayoreo, int cantidadMayoreo, boolean estado, int Proveedor_idProveedor, int stock, int minimo) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.tipoDeVenta = tipoDeVenta;
@@ -47,7 +51,12 @@ public class Productos {
         this.cantidadMayoreo = cantidadMayoreo;
         this.estado = estado;
         this.Proveedor_idProveedor = Proveedor_idProveedor;
+        this.stock = stock;
+        this.minimo = minimo;
     }
+
+   
+    
    
 
     public Productos(String string, int i) {
@@ -129,6 +138,22 @@ public class Productos {
 
     public void setProveedor_idProveedor(int Proveedor_idProveedor) {
         this.Proveedor_idProveedor = Proveedor_idProveedor;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public int getMinimo() {
+        return minimo;
+    }
+
+    public void setMinimo(int minimo) {
+        this.minimo = minimo;
     }
    
    

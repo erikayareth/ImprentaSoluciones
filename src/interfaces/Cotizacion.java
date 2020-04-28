@@ -5,12 +5,18 @@
  */
 package interfaces;
 
+import dao.CotizacionesDAO;
 import dao.ProductosDAO;
+import dao.VentasDAO;
 import java.awt.Color;
+import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import pojo.Cotizaciones;
+import pojo.Productos;
+import pojo.Ventas;
 
 /**
  *
@@ -21,6 +27,10 @@ public class Cotizacion extends javax.swing.JPanel {
     /**
      * Creates new form Cotizacion
      */
+    int idp;
+    int cant;
+    double pre;
+    double tpagar;
     public Cotizacion() {
         initComponents();
         this.setBackground(Color.WHITE);
@@ -33,16 +43,16 @@ public class Cotizacion extends javax.swing.JPanel {
         jPanel12.setBackground(Color.white);
         jPanel9.setBackground(Color.white);
         cargarModelo();
+        cargarModeloCotizacion();
     }
-    
-    
+
     public void cargarModelo() {
         ProductosDAO productosDAO = new ProductosDAO();
         DefaultTableModel dt = productosDAO.cargarModelo();
         jTable2.setModel(dt);
     }
-    
-    void cargarDialogo(JDialog dialogo, String nombre){
+
+    void cargarDialogo(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
@@ -50,14 +60,70 @@ public class Cotizacion extends javax.swing.JPanel {
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
-    
-    void cargarDialogo2(JDialog dialogo, String nombre){
+
+    void cargarDialogo2(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
         dialogo.setSize(400, 300);
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
+    }
+
+    public void consultarProducto(int id) {
+
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+        ProductosDAO productosDAO = new ProductosDAO();
+        Productos productos = productosDAO.seleccionar_producto(id);
+        String nombre = productos.getNombre();
+        String descripcion = productos.getDescripcion();
+        String tipo = productos.getTipoDeVenta();
+        double precio = productos.getPrecio();
+        int cantidad = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
+        Object f[] = {id, nombre, descripcion, precio, tipo, cantidad};
+        String encabezados[] = {"ID", "Nombre", "Descripción", "Precio", "TipoVenta", "Cantidad"};
+        dtm.setColumnIdentifiers(encabezados);
+        jTable1.setModel(dtm);
+        dtm.addRow(f);
+        calcular();
+        System.out.println("entro");
+
+    }
+void calcular() {
+        tpagar = 0;
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            cant = Integer.parseInt(jTable1.getValueAt(i, 5).toString());
+            pre = Double.parseDouble(jTable1.getValueAt(i, 3).toString());
+            tpagar = tpagar + (cant * pre);
+        }
+        jLabel9.setText("" + tpagar + "0");
+    }
+int crear() throws SQLException {
+        CotizacionesDAO cd = new CotizacionesDAO();
+        double total = Double.parseDouble(jLabel10.getText());
+        String nombre =jTextField4.getText();
+        double descuento = Double.parseDouble(jTextField3.getText());
+        double subtotal = Double.parseDouble(jLabel9.getText());
+        String telefono = jFormattedTextField1.getText();
+      
+//        double folio = 
+        Cotizaciones c = new Cotizaciones(nombre, telefono, descuento, total,  subtotal);
+        int id = cd.insertar(c);
+        return id;
+    }
+  public void limpiar() {
+        jLabel10.setText("-----");
+        jLabel9.setText("------");
+        jTextField4.setText("");
+        jFormattedTextField1.setText("");
+        jTextField3.setText("");
+        
+       
+    }
+  public void cargarModeloCotizacion() {
+       CotizacionesDAO cotizacionesDAO = new CotizacionesDAO();
+        DefaultTableModel dt = cotizacionesDAO.cargarModelo();
+        jTable3.setModel(dt);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -90,6 +156,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         buttonGroup2 = new javax.swing.ButtonGroup();
+        VerCotizaciones = new javax.swing.JDialog();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jTextField7 = new javax.swing.JTextField();
+        jButton11 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -107,20 +181,20 @@ public class Cotizacion extends javax.swing.JPanel {
         jPanel6 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jButton6 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jTextField4 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jPanel12 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -314,6 +388,94 @@ public class Cotizacion extends javax.swing.JPanel {
             .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel11.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(24, 192, 221));
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/VERCOTIZACIONES.png"))); // NOI18N
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NOMBRE", " " }));
+
+        jButton11.setBackground(new java.awt.Color(255, 255, 255));
+        jButton11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton11.setText("Cancelar");
+        jButton11.setActionCommand("CANCELAR");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "NOMBRE ClLIENTE", "TELÉFONO", "DESCUENTO", "TOTAL", "SUBTOTAL"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jTable3);
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel11))
+                    .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel13Layout.createSequentialGroup()
+                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jTextField7))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(40, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton11)
+                .addGap(100, 100, 100))
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel11)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jButton11)
+                .addGap(31, 31, 31))
+        );
+
+        javax.swing.GroupLayout VerCotizacionesLayout = new javax.swing.GroupLayout(VerCotizaciones.getContentPane());
+        VerCotizaciones.getContentPane().setLayout(VerCotizacionesLayout);
+        VerCotizacionesLayout.setHorizontalGroup(
+            VerCotizacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        VerCotizacionesLayout.setVerticalGroup(
+            VerCotizacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -408,20 +570,35 @@ public class Cotizacion extends javax.swing.JPanel {
             }
         });
 
+        jButton9.setBackground(new java.awt.Color(255, 255, 255));
+        jButton9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton9.setText("VER COTIZACIONES");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(62, 62, 62)
+                .addGap(68, 68, 68)
                 .addComponent(jButton6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton9)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -449,9 +626,9 @@ public class Cotizacion extends javax.swing.JPanel {
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-                    .addComponent(jTextField4))
-                .addGap(0, 153, Short.MAX_VALUE))
+                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                    .addComponent(jFormattedTextField1))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -461,10 +638,14 @@ public class Cotizacion extends javax.swing.JPanel {
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 14, Short.MAX_VALUE))
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jFormattedTextField1)))
+                .addContainerGap())
         );
 
         jPanel10.add(jPanel11, java.awt.BorderLayout.PAGE_END);
@@ -472,38 +653,34 @@ public class Cotizacion extends javax.swing.JPanel {
         jPanel12.setLayout(new javax.swing.BoxLayout(jPanel12, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel2.setText("TOTAL:");
+        jLabel2.setText("SUBTOTAL:");
         jPanel12.add(jLabel2);
-        jPanel12.add(jTextField2);
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
+        jLabel9.setText("--------");
+        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel12.add(jLabel9);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setText("DESCUENTO:");
         jPanel12.add(jLabel3);
 
         jTextField3.setText("0");
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField3KeyReleased(evt);
+            }
+        });
         jPanel12.add(jTextField3);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel4.setText("IVA");
-        jPanel12.add(jLabel4);
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel8.setText("TOTAL:");
+        jPanel12.add(jLabel8);
 
-        jRadioButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jRadioButton3.setText("SI");
-        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton3ActionPerformed(evt);
-            }
-        });
-        jPanel12.add(jRadioButton3);
-
-        jRadioButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jRadioButton2.setText("NO");
-        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
-            }
-        });
-        jPanel12.add(jRadioButton2);
+        jLabel10.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
+        jLabel10.setText("--------");
+        jLabel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel12.add(jLabel10);
 
         jPanel10.add(jPanel12, java.awt.BorderLayout.CENTER);
 
@@ -536,18 +713,24 @@ public class Cotizacion extends javax.swing.JPanel {
         Buscar.dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
-
-    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton3ActionPerformed
-
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         int option = JOptionPane.showConfirmDialog(null, "¿Desea exportar la cotización?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
         if (option == 0) {
             System.out.println("Ok");
+             try {
+            int id = crear();
+            if (id != 0) {
+                JOptionPane.showMessageDialog(this, "Éxito al guardar la cotización");
+
+                limpiar();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Error");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un cliente");
+        }
         } else {
             System.out.println("Ok");
         }
@@ -555,14 +738,38 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
         // TODO add your handling code here:
+  int id = Integer.parseInt(jTextField1.getText().toString());
+        consultarProducto(id);
     }//GEN-LAST:event_jButton24ActionPerformed
+
+    private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
+        // TODO add your handling code here:
+       
+        double descuento = Double.parseDouble(jTextField3.getText());
+        double tot = Double.parseDouble(jLabel9.getText());
+        double sub = tot - descuento;
+        jLabel10.setText("" + sub);
+        
+    }//GEN-LAST:event_jTextField3KeyReleased
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+         cargarDialogo(VerCotizaciones, "Ver Cotizaciones");
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+          VerCotizaciones.dispose();
+    }//GEN-LAST:event_jButton11ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Buscar;
     private javax.swing.JDialog ProductoComun;
+    private javax.swing.JDialog VerCotizaciones;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton2;
@@ -571,8 +778,13 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -581,14 +793,16 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -597,20 +811,19 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }

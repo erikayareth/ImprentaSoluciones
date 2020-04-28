@@ -23,6 +23,53 @@ import pojo.Proveedores;
 public class ProductosDAO {
     
     
+     
+     
+      public boolean modificarStock( int Stock,int idp){
+        Connection con = null;
+        PreparedStatement st = null;
+        
+        try{
+            con = Conexion.getConnection();
+            st = con.prepareStatement("update productos set stock=? where idProductos=?");
+            
+            st.setInt(2,idp);           
+            st.setInt(1,Stock);
+            int x = st.executeUpdate();
+            if (x==0) {
+                return false;
+            }
+        }catch(Exception e){
+            System.out.println("Error al actualizar Stock" + e);
+        }finally{
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return true;
+    }
+     
+     
+     public Productos listarID(int id){
+        Productos p=new Productos();
+         Connection con = null;
+        PreparedStatement st = null;
+       
+        try {
+            con = Conexion.getConnection();
+           st = con.prepareStatement("select * from productos where IdProductos=?");
+            st.setInt(1, id);
+             ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                p.setIdProducto(rs.getInt(1));
+                p.setNombre(rs.getString(2));
+                p.setPrecio(rs.getDouble(3));
+                p.setStock(rs.getInt(4));
+               
+            }
+        } catch (Exception e) {
+        }
+        return p;
+    }
 //    
 //     public boolean eliminar(int id) {
 //        Connection con = null;
@@ -50,7 +97,7 @@ public class ProductosDAO {
         int id = 0;
         try{
             con = Conexion.getConnection(); 
-            st = con.prepareStatement("call insertarProducto(?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insertarProducto(?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, producto.getNombre().toUpperCase());
             st.setString(2, producto.getDescripcion().toUpperCase());
             st.setString(3, producto.getTipoDeVenta());
@@ -59,6 +106,8 @@ public class ProductosDAO {
             st.setInt(6, producto.getCantidadMayoreo());
             st.setBoolean(7, producto.isEstado());
             st.setInt(8, producto.getProveedor_idProveedor());
+            st.setInt(9, producto.getStock());
+            st.setInt(10, producto.getMinimo());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -121,7 +170,7 @@ public class ProductosDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID", "Nombre", "Descripción", "TipoVenta", "Precio", "PrecioMayoreo", "CantidadMayoreo"};
+        String encabezados[] = {"ID", "Nombre", "Descripción", "TipoVenta", "Precio", "PrecioMayoreo", "CantidadMayoreo","Stock","Minimo"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_productos()");
@@ -129,7 +178,7 @@ public class ProductosDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[7];
+                Object ob[] = new Object[9];
                 Productos pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idProductos");
                 ob[1] = rs.getString("nombre");
@@ -138,11 +187,43 @@ public class ProductosDAO {
                 ob[4] = rs.getDouble("precio");
                 ob[5] = rs.getDouble("precioMayoreo");
                 ob[6] = rs.getDouble("cantMayoreo");
+                ob[7] = rs.getDouble("stock");
+                ob[8] = rs.getDouble("minimo");
                 dt.addRow(ob);
             }
             rs.close();
         } catch (Exception e) {
             System.out.println("Error al cargar la tabla productos " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
+     public DefaultTableModel cargarModelo2 ()  {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultTableModel dt = null;
+        String encabezados[] = {"ID", "Nombre", "Descripción",  "Precio", "Cantidad"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL select_all_productos()");
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[4];
+                Productos pojo = inflaPOJO(rs);
+                ob[0] = rs.getInt("idProductos");
+                ob[1] = rs.getString("nombre");
+                ob[2] = rs.getString("descripcion");
+                ob[3] = rs.getDouble("precio");
+                
+                dt.addRow(ob);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla productos2 " + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
@@ -191,8 +272,10 @@ public class ProductosDAO {
             pojo.setCantidadMayoreo(rs.getInt("cantMayoreo"));
             pojo.setEstado(rs.getBoolean("estado"));
             pojo.setProveedor_idProveedor(rs.getInt("Proveedor_idProveedor"));
+            pojo.setStock(rs.getInt("stock"));
+            pojo.setMinimo(rs.getInt("minimo"));
         } catch (SQLException ex) {
-            System.out.println("Error al inflar pojo productos " + ex);
+            System.out.println("Error al inflar pojo productos .." + ex);
         }
         return pojo;
     }

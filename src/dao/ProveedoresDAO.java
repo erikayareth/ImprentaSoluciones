@@ -37,7 +37,7 @@ public class ProveedoresDAO {
             }
             rs.close();
         } catch (Exception e) {
-            System.out.println("Error al cargar el modelo Proveedor" + e);
+            System.out.println("Error al cargar el combo Proveedor" + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
