@@ -208,6 +208,16 @@ public class XH extends javax.swing.JPanel {
         jTextField14.setText("");
         jTextField3.setText("");
         jTextField2.setText("");
+        jTextField1.setText("");
+         try {
+            DefaultTableModel modelo = (DefaultTableModel) jTable6.getModel(); 
+            int filas = jTable6.getRowCount();
+            for(int i = 0; filas>i; i++){
+                modelo.removeRow(0);
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -1273,6 +1283,7 @@ public class XH extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         cargarDialogo(Buscar, "Buscar productos");
+        cargarModelo();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
