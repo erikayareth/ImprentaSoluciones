@@ -82,7 +82,7 @@ public class Proveedore extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        jTextField6 = new javax.swing.JTextField();
         buttonGroup1 = new javax.swing.ButtonGroup();
         Modificar = new javax.swing.JDialog();
         jPanel10 = new javax.swing.JPanel();
@@ -152,10 +152,14 @@ public class Proveedore extends javax.swing.JPanel {
             }
         });
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        jFormattedTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField6ActionPerformed(evt);
+            }
+        });
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jFormattedTextField1KeyTyped(evt);
+                jTextField6KeyTyped(evt);
             }
         });
 
@@ -165,22 +169,23 @@ public class Proveedore extends javax.swing.JPanel {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jButton9)
                         .addGap(217, 217, 217)
                         .addComponent(jButton10))
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8))
-                        .addGap(31, 31, 31)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(12, Short.MAX_VALUE))
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel7))
+                        .addGap(35, 35, 35)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField6)
+                            .addComponent(jTextField5))
+                        .addGap(39, 39, 39)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(63, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addGap(51, 51, 51))
         );
@@ -196,8 +201,8 @@ public class Proveedore extends javax.swing.JPanel {
                 .addGap(37, 37, 37)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton9)
                     .addComponent(jButton10))
@@ -511,7 +516,7 @@ public class Proveedore extends javax.swing.JPanel {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
 String a = jTextField5.getText();
         int uno = a.length();
-        String b = jFormattedTextField1.getText();
+        String b = jTextField6.getText();
         int dos = b.length();
        
          
@@ -556,7 +561,11 @@ String a = jTextField5.getText();
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
-    private void jFormattedTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFormattedTextField1KeyTyped
+    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField6ActionPerformed
+
+    private void jTextField6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyTyped
         // TODO add your handling code here:
           char validar = evt.getKeyChar();
         if (Character.isLetter(validar)) {
@@ -565,11 +574,11 @@ String a = jTextField5.getText();
             JOptionPane.showMessageDialog(Agregar, "Ingresar solo números");
 
         }
-    }//GEN-LAST:event_jFormattedTextField1KeyTyped
+    }//GEN-LAST:event_jTextField6KeyTyped
 
     int crear() throws SQLException {
         String nombre = jTextField5.getText();
-        String tel = jFormattedTextField1.getText();
+        String tel = jTextField6.getText();
         boolean estado = true;
         Proveedores proveedores = new Proveedores(nombre, tel, estado);
         int id = pd.insertar(proveedores);
@@ -578,7 +587,7 @@ String a = jTextField5.getText();
 
     public void vaciar() {
         jTextField5.setText("");
-        jFormattedTextField1.setText("");
+        jTextField6.setText("");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -595,7 +604,6 @@ String a = jTextField5.getText();
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox8;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
@@ -627,6 +635,7 @@ String a = jTextField5.getText();
     private javax.swing.JTextField jTextField18;
     private javax.swing.JTextField jTextField19;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
     private javax.swing.JDialog verTodos;
     // End of variables declaration//GEN-END:variables
 }
