@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
 import javax.swing.table.DefaultTableModel;
 import pojo.Productos;
 import pojo.Proveedores;
@@ -21,7 +22,7 @@ import pojo.Proveedores;
 public class ProveedoresDAO {
     
     
-     public DefaultComboBoxModel loadCombo() throws SQLException {
+     public DefaultComboBoxModel loadCombo( ) throws SQLException {
         Connection con = null;
         PreparedStatement st = null;
         DefaultComboBoxModel dt = null;
@@ -30,7 +31,7 @@ public class ProveedoresDAO {
             st = con.prepareStatement("call select_all_proveedor()");
             dt = new DefaultComboBoxModel();
             ResultSet rs = st.executeQuery();
-            dt.addElement("Proveedores");
+            dt.addElement("Selecciona un proveedor");
             while (rs.next()) {
                 Proveedores pojo = inflaPOJO(rs);
                 dt.addElement(pojo);
@@ -49,7 +50,7 @@ public class ProveedoresDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID","Nombre","Telefono"};
+        String encabezados[] = {"ID","Nombre","Teléfono"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL  select_all_proveedor()");

@@ -170,7 +170,7 @@ public class ProductosDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID", "Nombre", "Descripción", "TipoVenta", "Precio", "PrecioMayoreo", "CantidadMayoreo","Stock","Minimo"};
+        String encabezados[] = {"ID", "Nombre", "Descripción", "Tipo de venta", "Precio", "Precio mayoreo", "Cantidad mayoreo","Stock","Minimo"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_productos()");
@@ -204,7 +204,7 @@ public class ProductosDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID", "Nombre", "Descripción",  "Precio", "Cantidad"};
+        String encabezados[] = {"ID", "Nombre", "Descripción",  "Precio","Tipo Venta", "Cantidad"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_productos()");
@@ -212,12 +212,14 @@ public class ProductosDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[4];
+                Object ob[] = new Object[6];
                 Productos pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idProductos");
                 ob[1] = rs.getString("nombre");
                 ob[2] = rs.getString("descripcion");
                 ob[3] = rs.getDouble("precio");
+                ob[4] = rs.getString("tipoDeVenta");
+                ob[5] = rs.getDouble("stock");
                 
                 dt.addRow(ob);
             }

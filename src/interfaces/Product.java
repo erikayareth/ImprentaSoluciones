@@ -30,6 +30,7 @@ public class Product extends javax.swing.JPanel {
      */
     ProductosDAO ppd;
     ProveedoresDAO p = new ProveedoresDAO();
+    XH xh = new XH();
 
     public Product() throws SQLException {
         initComponents();
@@ -43,19 +44,21 @@ public class Product extends javax.swing.JPanel {
         jPanel7.setBackground(Color.white);
         loadCombo();
         cargarModelo();
+        jRadioButton1.setSelected(true);
     }
-
+    
     void loadCombo() throws SQLException {
         jComboBox3.setModel(p.loadCombo());
     }
 
-    void cargarDialogo(JDialog dialogo, String nombre) {
+    void cargarDialogo(JDialog dialogo, String nombre) throws SQLException {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
         dialogo.setSize(390, 665);
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
+       
     }
 
     void cargarDialogo2(JDialog dialogo, String nombre) {
@@ -90,7 +93,6 @@ public class Product extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -101,6 +103,7 @@ public class Product extends javax.swing.JPanel {
         jTextField12 = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
         jTextField14 = new javax.swing.JTextField();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         Modificar = new javax.swing.JDialog();
         jPanel8 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
@@ -131,6 +134,7 @@ public class Product extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -192,7 +196,7 @@ public class Product extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Tipo de Venta:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Por unidad", "Por paquete" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona el tipo de venta", "Por unidad", "Por paquete" }));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Precio:");
@@ -200,6 +204,11 @@ public class Product extends javax.swing.JPanel {
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField5ActionPerformed(evt);
+            }
+        });
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField5KeyTyped(evt);
             }
         });
 
@@ -214,11 +223,26 @@ public class Product extends javax.swing.JPanel {
                 jTextField6ActionPerformed(evt);
             }
         });
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField6KeyTyped(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Proveedor:");
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un proveedor", " " }));
+        jComboBox3.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox3ItemStateChanged(evt);
+            }
+        });
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel20.setText("Stock");
@@ -228,13 +252,30 @@ public class Product extends javax.swing.JPanel {
                 jTextField12ActionPerformed(evt);
             }
         });
+        jTextField12.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField12KeyTyped(evt);
+            }
+        });
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel21.setText("Minimo");
+        jLabel21.setText("Mínimo");
 
         jTextField14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField14ActionPerformed(evt);
+            }
+        });
+        jTextField14.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField14KeyTyped(evt);
+            }
+        });
+
+        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        jFormattedTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jFormattedTextField1KeyTyped(evt);
             }
         });
 
@@ -254,14 +295,6 @@ public class Product extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextField3))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField4))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(18, 18, 18)
                         .addComponent(jTextField5))
@@ -276,7 +309,15 @@ public class Product extends javax.swing.JPanel {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jFormattedTextField1))))
                 .addContainerGap(101, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
@@ -318,7 +359,7 @@ public class Product extends javax.swing.JPanel {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -642,11 +683,13 @@ public class Product extends javax.swing.JPanel {
         });
         jPanel4.add(jButton1);
 
+        buttonGroup1.add(jRadioButton1);
         jRadioButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jRadioButton1.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton1.setText("VER ACTIVOS");
         jPanel4.add(jRadioButton1);
 
+        buttonGroup1.add(jRadioButton2);
         jRadioButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jRadioButton2.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton2.setText("VER INACTIVOS");
@@ -680,7 +723,7 @@ public class Product extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Nombre", "Descripción", "TipoVenta", "Precio", "PrecioMayoreo", "CantidadMayoreo"
+                "ID", "Nombre", "Descripción", "Tipo de Venta", "Precio", "Precio mayoreo", "Cantidad mayoreo"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -707,10 +750,15 @@ public class Product extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         cargarDialogo2(Modificar, "Modificar producto");
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        cargarDialogo(Agregar, "Agregar producto");
+        try {
+            cargarDialogo(Agregar, "Agregar producto");
+        } catch (SQLException ex) {
+            Logger.getLogger(Product.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -755,11 +803,31 @@ public class Product extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+       String a = jTextField2.getText();
+        int uno = a.length();
+        String b = jTextField3.getText();
+        int dos = b.length();
+        String c = jTextField14.getText();
+        int tres = c.length();
+        String d = jTextField12.getText();
+        int cuatro = d.length();
+        String e = jTextField6.getText();
+        int cinco = e.length();
+        String f = jTextField5.getText();
+        int seis = f.length();
+         
+
+        if (uno == 0 || dos == 0 || tres == 0 || cuatro == 0|| cinco ==0 || seis == 0||jComboBox2.getSelectedIndex()==0||jComboBox3.getSelectedIndex()==0) {
+            JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
+//           limpiar();
+
+        } else {
         try {
             // Agregar producto desde (JDialog)
             if (crear() != 0) {
                 JOptionPane.showMessageDialog(Agregar, "¡Éxito! Se registró el producto");
                 vaciar();
+                xh.cargarModelo();
                 cargarModelo();
                 Agregar.dispose();
             } else {
@@ -767,6 +835,7 @@ public class Product extends javax.swing.JPanel {
             }
         } catch (SQLException ex) {
             Logger.getLogger(Product.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -777,12 +846,76 @@ public class Product extends javax.swing.JPanel {
     private void jTextField14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField14ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField14ActionPerformed
+
+    private void jFormattedTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFormattedTextField1KeyTyped
+        // TODO add your handling code here:
+           char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(Agregar, "Ingresar solo números");
+
+        }
+    }//GEN-LAST:event_jFormattedTextField1KeyTyped
+
+    private void jTextField5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyTyped
+        // TODO add your handling code here:
+         char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(Agregar, "Ingresar solo números");
+
+        }
+    }//GEN-LAST:event_jTextField5KeyTyped
+
+    private void jTextField6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyTyped
+        // TODO add your handling code here:
+         char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(Agregar, "Ingresar solo números");
+
+        }
+    }//GEN-LAST:event_jTextField6KeyTyped
+
+    private void jTextField12KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField12KeyTyped
+        // TODO add your handling code here:
+         char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(Agregar, "Ingresar solo números");
+
+        }
+    }//GEN-LAST:event_jTextField12KeyTyped
+
+    private void jTextField14KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyTyped
+        // TODO add your handling code here:
+         char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(Agregar, "Ingresar solo números");
+
+        }
+    }//GEN-LAST:event_jTextField14KeyTyped
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+       
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
+        // TODO add your handling code here:
+         
+    }//GEN-LAST:event_jComboBox3ItemStateChanged
     
     public void vaciar() {
         jTextField3.setText("");
         jTextField5.setText("");
         jTextField2.setText("");
-        jTextField4.setText("");
+        jFormattedTextField1.setText("");
         jTextField6.setText("");
         jTextField14.setText("");
         jTextField12.setText("");
@@ -792,7 +925,7 @@ public class Product extends javax.swing.JPanel {
         String nombre = jTextField2.getText();
         String desc = jTextField3.getText();
         String tipov = (String) jComboBox2.getSelectedItem();
-        double precio = Double.parseDouble(jTextField4.getText());
+        double precio = Double.parseDouble(jFormattedTextField1.getText());
         double precioM = Double.parseDouble(jTextField5.getText());
         int cantM = Integer.parseInt(jTextField6.getText());
         Proveedores t = (Proveedores) jComboBox3.getSelectedItem();
@@ -819,6 +952,7 @@ public class Product extends javax.swing.JPanel {
     private javax.swing.JDialog Catalogo;
     private javax.swing.JDialog Modificar;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton12;
@@ -833,6 +967,7 @@ public class Product extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JComboBox<String> jComboBox8;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -879,7 +1014,6 @@ public class Product extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField14;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;

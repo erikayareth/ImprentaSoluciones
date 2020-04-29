@@ -32,6 +32,13 @@ drop procedure insertarCotizacion;
 call insertarCotizacion("Avril","2292530407",100,2000,200);
 select*from Cotizacion;
 
+-- Insertar Entradas y salidas
+create procedure insertarES(in cantidadp double ,  in comentariop varchar(255),in entradap boolean )
+insert into EntradaSalida(cantidad,comentario,entrada) values(cantidadp,comentariop,entradap);
+drop procedure insertarES;
+call insertarES(200,"para el de la basura",true);
+select*from EntradaSalida;
+
 -- Mostrar proveedor
 Delimiter // 
 create procedure select_all_proveedor()
@@ -72,3 +79,21 @@ DELIMITER ;
 drop procedure select_all_ventas;
 
 call select_all_ventas();
+-- Mostrar salidas
+DELIMITER //
+CREATE PROCEDURE select_all_salidas()
+BEGIN 
+	SELECT * FROM EntradaSalida where entrada = 0;
+END//
+DELIMITER ;
+drop procedure select_all_salidas;
+call select_all_salidas;
+-- Mostrar entradas
+DELIMITER //
+CREATE PROCEDURE select_all_entradas()
+BEGIN 
+	SELECT * FROM EntradaSalida where entrada = 1;
+END//
+DELIMITER ;
+drop procedure select_all_entradas;
+call select_all_entradas;

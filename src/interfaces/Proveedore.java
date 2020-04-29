@@ -24,10 +24,12 @@ import pojo.Proveedores;
 public class Proveedore extends javax.swing.JPanel {
 
     ProveedoresDAO pd;
-
+    
+    ProveedoresDAO proveedores = new ProveedoresDAO();
     public Proveedore() {
         initComponents();
         pd = new ProveedoresDAO();
+        
         this.setBackground(Color.WHITE);
         Color fondo = new Color(24, 192, 221);
         jPanel3.setBackground(fondo);
@@ -36,8 +38,9 @@ public class Proveedore extends javax.swing.JPanel {
         jPanel8.setBackground(Color.WHITE);
         jPanel7.setBackground(Color.WHITE);
         cargarModelo();
+        jRadioButton1.setSelected(true);
     }
-
+    
     void cargarDialogo(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
@@ -146,6 +149,13 @@ public class Proveedore extends javax.swing.JPanel {
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton10ActionPerformed(evt);
+            }
+        });
+
+        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        jFormattedTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jFormattedTextField1KeyTyped(evt);
             }
         });
 
@@ -412,11 +422,13 @@ public class Proveedore extends javax.swing.JPanel {
         });
         jPanel3.add(jButton1);
 
+        buttonGroup1.add(jRadioButton1);
         jRadioButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jRadioButton1.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton1.setText("VER ACTIVOS");
         jPanel3.add(jRadioButton1);
 
+        buttonGroup1.add(jRadioButton2);
         jRadioButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jRadioButton2.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton2.setText("VER INACTIVOS");
@@ -484,11 +496,12 @@ public class Proveedore extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        cargarDialogo2(Modificar, "Modificar Proveedores");
+        cargarDialogo2(Modificar, "Modificar proveedores");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        cargarDialogo2(Agregar, "Agregar Proveedores");
+        cargarDialogo2(Agregar, "Agregar proveedores");
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -496,18 +509,32 @@ public class Proveedore extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+String a = jTextField5.getText();
+        int uno = a.length();
+        String b = jFormattedTextField1.getText();
+        int dos = b.length();
+       
+         
+
+        if (uno == 0 || dos == 0 ) {
+            JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
+//           limpiar();
+
+        } else {
         try {
             // Agregar un proveedor (JDialogg):
             if (crear() != 0) {
                 JOptionPane.showMessageDialog(Agregar, "¡Éxito! Se registró un proveedor");
                 vaciar();
                 cargarModelo();
+                
                 Agregar.dispose();
             } else {
                 JOptionPane.showMessageDialog(Agregar, "Ha ocurrido un problema, revise sus datos");
             }
         } catch (SQLException ex) {
             Logger.getLogger(Proveedore.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 
@@ -528,6 +555,17 @@ public class Proveedore extends javax.swing.JPanel {
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void jFormattedTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFormattedTextField1KeyTyped
+        // TODO add your handling code here:
+          char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(Agregar, "Ingresar solo números");
+
+        }
+    }//GEN-LAST:event_jFormattedTextField1KeyTyped
 
     int crear() throws SQLException {
         String nombre = jTextField5.getText();

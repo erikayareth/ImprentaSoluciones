@@ -28,7 +28,6 @@ public class Cotizaciones {
         this.total = total;
         this.subtotal = subtotal;
     }
-
     public Cotizaciones(String nombreCliente, String telefono, double descuento, double total, double subtotal) {
         this.nombreCliente = nombreCliente;
         this.telefono = telefono;
@@ -36,12 +35,6 @@ public class Cotizaciones {
         this.total = total;
         this.subtotal = subtotal;
     }
-
-  
-
-    
-
-  
     public int getIdCotizacion() {
         return idCotizacion;
     }

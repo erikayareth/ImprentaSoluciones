@@ -10,6 +10,8 @@ import dao.ProductosDAO;
 import dao.VentasDAO;
 import java.awt.Color;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -31,6 +33,7 @@ public class Cotizacion extends javax.swing.JPanel {
     int cant;
     double pre;
     double tpagar;
+
     public Cotizacion() {
         initComponents();
         this.setBackground(Color.WHITE);
@@ -89,7 +92,27 @@ public class Cotizacion extends javax.swing.JPanel {
         System.out.println("entro");
 
     }
-void calcular() {
+
+    void crearcomun() {
+        DefaultTableModel dtm = new DefaultTableModel();
+        String id = " ";
+        String descripcion = "  ";
+        String tipoVenta = "  ";
+        String nombre = jTextField12.getText();
+        int cantidad = Integer.parseInt(jTextField13.getText());
+        double precio = Double.parseDouble(jTextField14.getText());
+
+        Object f[] = {id, nombre, descripcion, precio, tipoVenta, cantidad};
+
+        String encabezados[] = {"ID", "Nombre", "Descripcion", "precio", "Tipo Venta", "Cantidad"};
+        dtm.setColumnIdentifiers(encabezados);
+        jTable1.setModel(dtm);
+        dtm.addRow(f);
+        calcular();
+        System.out.println("entro");
+    }
+
+    void calcular() {
         tpagar = 0;
         for (int i = 0; i < jTable1.getRowCount(); i++) {
             cant = Integer.parseInt(jTable1.getValueAt(i, 5).toString());
@@ -98,33 +121,46 @@ void calcular() {
         }
         jLabel9.setText("" + tpagar + "0");
     }
-int crear() throws SQLException {
+
+    int crear() throws SQLException {
         CotizacionesDAO cd = new CotizacionesDAO();
         double total = Double.parseDouble(jLabel10.getText());
-        String nombre =jTextField4.getText();
+        String nombre = jTextField4.getText();
         double descuento = Double.parseDouble(jTextField3.getText());
         double subtotal = Double.parseDouble(jLabel9.getText());
         String telefono = jFormattedTextField1.getText();
-      
+
 //        double folio = 
-        Cotizaciones c = new Cotizaciones(nombre, telefono, descuento, total,  subtotal);
+        Cotizaciones c = new Cotizaciones(nombre, telefono, descuento, total, subtotal);
         int id = cd.insertar(c);
         return id;
     }
-  public void limpiar() {
+
+    public void limpiar() {
         jLabel10.setText("-----");
         jLabel9.setText("------");
         jTextField4.setText("");
+        jTextField1.setText("");
         jFormattedTextField1.setText("");
         jTextField3.setText("");
-        
-       
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel(); 
+            int filas = jTable1.getRowCount();
+            for(int i = 0; filas>i; i++){
+                modelo.removeRow(0);
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla");
+        }
+
     }
-  public void cargarModeloCotizacion() {
-       CotizacionesDAO cotizacionesDAO = new CotizacionesDAO();
+
+    public void cargarModeloCotizacion() {
+        CotizacionesDAO cotizacionesDAO = new CotizacionesDAO();
         DefaultTableModel dt = cotizacionesDAO.cargarModelo();
         jTable3.setModel(dt);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -214,6 +250,11 @@ int crear() throws SQLException {
         jButton17.setBackground(new java.awt.Color(255, 255, 255));
         jButton17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton17.setText("GUARDAR");
+        jButton17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton17ActionPerformed(evt);
+            }
+        });
 
         jButton18.setBackground(new java.awt.Color(255, 255, 255));
         jButton18.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -307,7 +348,7 @@ int crear() throws SQLException {
         jLabel7.setForeground(new java.awt.Color(24, 192, 221));
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BUSCARPRODUCTO2.png"))); // NOI18N
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NOMBRE", " " }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NOMBRE" }));
 
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
         jButton7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -315,7 +356,7 @@ int crear() throws SQLException {
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
         jButton8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton8.setText("Cancelar");
+        jButton8.setText("CANCELAR");
         jButton8.setActionCommand("CANCELAR");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -415,7 +456,7 @@ int crear() throws SQLException {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "NOMBRE ClLIENTE", "TELÉFONO", "DESCUENTO", "TOTAL", "SUBTOTAL"
+                "ID", "Nombre cliente", "Teléfono", "Descuento", "Total", "SUBTOTAL"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -612,6 +653,12 @@ int crear() throws SQLException {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setText("NOMBRE DE CLIENTE:");
 
+        jFormattedTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jFormattedTextField1KeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
@@ -670,6 +717,9 @@ int crear() throws SQLException {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField3KeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
+            }
         });
         jPanel12.add(jTextField3);
 
@@ -698,7 +748,7 @@ int crear() throws SQLException {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        cargarDialogo2(ProductoComun, "Producto común");
+        cargarDialogo2(ProductoComun, "Producto Común");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -714,53 +764,116 @@ int crear() throws SQLException {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+       
+        String a = jTextField4.getText();
+        int uno = a.length();
+        String b = jTextField1.getText();
+        int dos = b.length();
+        String c = jFormattedTextField1.getText();
+        int tres = c.length();
+        String d = jLabel9.getText();
+        int cuatro = d.length();
+        String e = jLabel10.getText();
+        int cinco = e.length();
+
+        if (uno == 0 || dos == 0 || tres == 0 || cuatro == 0|| cinco==0) {
+            JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
+//           limpiar();
+
+        } else {
+            
+        
         int option = JOptionPane.showConfirmDialog(null, "¿Desea exportar la cotización?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-
         if (option == 0) {
-            System.out.println("Ok");
-             try {
-            int id = crear();
-            if (id != 0) {
-                JOptionPane.showMessageDialog(this, "Éxito al guardar la cotización");
-
-                limpiar();
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Error");
+            try {
+                System.out.println("Ok");
+                
+                int id = crear();
+                if (id != 0) {
+                    JOptionPane.showMessageDialog(this, "Éxito al guardar la cotización");
+                    limpiar();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error");
+                }
+            } catch (SQLException ex) {
+               JOptionPane.showMessageDialog(this,"Error "+ ex);
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Debes seleccionar un cliente");
-        }
+            
+           
         } else {
             System.out.println("Ok");
         }
+        }
+        
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
         // TODO add your handling code here:
-  int id = Integer.parseInt(jTextField1.getText().toString());
-        consultarProducto(id);
+        String a = jTextField1.getText();
+        int uno = a.length();
+        if (uno == 0) {
+            JOptionPane.showMessageDialog(null, "¡UY! Debes colocar el código del producto");
+        } else {
+
+            int id = Integer.parseInt(jTextField1.getText().toString());
+            ProductosDAO productosDAO = new ProductosDAO();
+            Productos productos = productosDAO.seleccionar_producto(id);
+            int numero = productos.getIdProducto();
+            if (id == productos.getIdProducto() && id >= 1) {
+                consultarProducto(id);
+            } else {
+                JOptionPane.showMessageDialog(this, "No existe el id del producto");
+            }
+
+        }
     }//GEN-LAST:event_jButton24ActionPerformed
 
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         // TODO add your handling code here:
-       
+
         double descuento = Double.parseDouble(jTextField3.getText());
         double tot = Double.parseDouble(jLabel9.getText());
         double sub = tot - descuento;
         jLabel10.setText("" + sub);
-        
+
     }//GEN-LAST:event_jTextField3KeyReleased
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
-         cargarDialogo(VerCotizaciones, "Ver Cotizaciones");
+        cargarDialogo(VerCotizaciones, "Ver cotizaciones");
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
-          VerCotizaciones.dispose();
+        VerCotizaciones.dispose();
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+        // TODO add your handling code here:
+        crearcomun();
+    }//GEN-LAST:event_jButton17ActionPerformed
+
+    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+        // TODO add your handling code here:
+          char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(this, "Ingresar solo números");
+
+        }
+    }//GEN-LAST:event_jTextField3KeyTyped
+
+    private void jFormattedTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFormattedTextField1KeyTyped
+        // TODO add your handling code here:
+          char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(this, "Ingresar solo números");
+
+        }
+    }//GEN-LAST:event_jFormattedTextField1KeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -7,6 +7,7 @@ package interfaces;
 
 //import com.mxrck.autocompleter.AutoCompleterCallback;
 //import com.mxrck.autocompleter.TextAutoCompleter;
+import dao.EntradaSalidaDAO;
 import dao.ProductosDAO;
 import dao.VentasDAO;
 import java.awt.Color;
@@ -17,7 +18,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import pojo.EntradaSalida;
 import pojo.Productos;
+import pojo.Proveedores;
 import pojo.Ventas;
 
 /**
@@ -29,6 +32,7 @@ public class XH extends javax.swing.JPanel {
 
     Productos p = new Productos();
     ProductosDAO pp = new ProductosDAO();
+    EntradaSalidaDAO esd = new EntradaSalidaDAO();
     DefaultTableModel modelo = new DefaultTableModel();
     int idp;
     int cant;
@@ -48,6 +52,8 @@ public class XH extends javax.swing.JPanel {
         jPanel13.setBackground(Color.WHITE);
         cargarModelo();
         cargarModeloVenata();
+        cargarModeloEntrada();
+        cargarModeloSalida();
 
 //       text = new TextAutoCompleter(jTextField1,new AutoCompleterCallback(){
 //           @Override 
@@ -61,10 +67,23 @@ public class XH extends javax.swing.JPanel {
 
     public void cargarModelo() {
         ProductosDAO productosDAO = new ProductosDAO();
-        DefaultTableModel dt = productosDAO.cargarModelo();
+        DefaultTableModel dt = productosDAO.cargarModelo2();
         jTable2.setModel(dt);
     }
-public void cargarModeloVenata() {
+
+    public void cargarModeloEntrada() {
+        EntradaSalidaDAO esd = new EntradaSalidaDAO();
+        DefaultTableModel dt = esd.cargarModelo();
+        jTable3.setModel(dt);
+    }
+
+    public void cargarModeloSalida() {
+        EntradaSalidaDAO esd = new EntradaSalidaDAO();
+        DefaultTableModel dt = esd.cargarModelo2();
+        jTable4.setModel(dt);
+    }
+
+    public void cargarModeloVenata() {
         VentasDAO ventasDAO = new VentasDAO();
         DefaultTableModel dt = ventasDAO.cargarModelo();
         jTable5.setModel(dt);
@@ -76,6 +95,7 @@ public void cargarModeloVenata() {
 //            
 //        
 //    }
+
     void cargarDialogo(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
@@ -148,6 +168,7 @@ public void cargarModeloVenata() {
     }
 
     int crear() throws SQLException {
+
         VentasDAO vd = new VentasDAO();
         double total = Double.parseDouble(jLabel26.getText());
         double importe = Double.parseDouble(jTextField14.getText());
@@ -161,11 +182,29 @@ public void cargarModeloVenata() {
         return id;
     }
 
+    void crearcomun() {
+        DefaultTableModel dtm = (DefaultTableModel) jTable6.getModel();
+        String id = " ";
+        String descripcion = "  ";
+        String tipoVenta = "  ";
+        String nombre = jTextField9.getText();
+        int cantidad = Integer.parseInt(jTextField10.getText());
+        double precio = Double.parseDouble(jTextField11.getText());
+
+        Object f[] = {id, nombre, descripcion, precio, tipoVenta, cantidad};
+
+        String encabezados[] = {"ID", "Nombre", "Descripcion", "precio", "Tipo Venta", "Cantidad"};
+        dtm.setColumnIdentifiers(encabezados);
+        jTable6.setModel(dtm);
+        dtm.addRow(f);
+        calcular();
+        System.out.println("entro");
+    }
+
     public void limpiar() {
         jLabel26.setText("");
         jLabel24.setText("");
         jLabel20.setText("");
-      
         jTextField14.setText("");
         jTextField3.setText("");
         jTextField2.setText("");
@@ -275,8 +314,6 @@ public void cargarModeloVenata() {
         jLabel23 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jButton24 = new javax.swing.JButton();
-        jTabbedPane3 = new javax.swing.JTabbedPane();
-        jPanel15 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTable6 = new javax.swing.JTable();
 
@@ -292,6 +329,11 @@ public void cargarModeloVenata() {
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
         jButton7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton7.setText("AGREGAR");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
         jButton8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -371,14 +413,17 @@ public void cargarModeloVenata() {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Cantidad:");
 
-        jTextField6.setText("Entrada de dinero");
-
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("Comentario:");
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
         jButton9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton9.setText("GUARDAR");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
         jButton10.setBackground(new java.awt.Color(255, 255, 255));
         jButton10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -469,8 +514,6 @@ public void cargarModeloVenata() {
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel10.setText("Cantidad:");
 
-        jTextField8.setText("Salida de dinero");
-
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel11.setText("Comentario:");
 
@@ -478,6 +521,11 @@ public void cargarModeloVenata() {
         jButton12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton12.setText("GUARDAR");
         jButton12.setToolTipText("");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
 
         jButton13.setBackground(new java.awt.Color(255, 255, 255));
         jButton13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -575,6 +623,11 @@ public void cargarModeloVenata() {
         jButton15.setBackground(new java.awt.Color(255, 255, 255));
         jButton15.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton15.setText("GUARDAR");
+        jButton15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton15ActionPerformed(evt);
+            }
+        });
 
         jButton16.setBackground(new java.awt.Color(255, 255, 255));
         jButton16.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -692,6 +745,11 @@ public void cargarModeloVenata() {
         jButton19.setBackground(new java.awt.Color(255, 255, 255));
         jButton19.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton19.setText("COBRAR E IMPRIMIR");
+        jButton19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton19ActionPerformed(evt);
+            }
+        });
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel19.setText("Cambio");
@@ -700,6 +758,9 @@ public void cargarModeloVenata() {
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField3KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
             }
         });
 
@@ -712,6 +773,14 @@ public void cargarModeloVenata() {
         jTextField14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField14ActionPerformed(evt);
+            }
+        });
+        jTextField14.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField14KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField14KeyTyped(evt);
             }
         });
 
@@ -966,7 +1035,7 @@ public void cargarModeloVenata() {
         jLabel29.setForeground(new java.awt.Color(24, 192, 221));
         jLabel29.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/VERvENTAS.png"))); // NOI18N
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nombre" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID" }));
 
         jButton28.setBackground(new java.awt.Color(255, 255, 255));
         jButton28.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -1170,32 +1239,17 @@ public void cargarModeloVenata() {
 
         jPanel13.add(jPanel14, java.awt.BorderLayout.PAGE_START);
 
-        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
-        jPanel15.setLayout(jPanel15Layout);
-        jPanel15Layout.setHorizontalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1675, Short.MAX_VALUE)
-        );
-        jPanel15Layout.setVerticalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 286, Short.MAX_VALUE)
-        );
-
-        jTabbedPane3.addTab("Ticket2", jPanel15);
-
         jTable6.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nombre", "Descripción", "Precio", "Cantidad"
+                "ID", "Nombre", "Descripción", "Precio", "Tipo De Venta", "Cantidad"
             }
         ));
         jScrollPane6.setViewportView(jTable6);
 
-        jTabbedPane3.addTab("Ticket1", jScrollPane6);
-
-        jPanel13.add(jTabbedPane3, java.awt.BorderLayout.CENTER);
+        jPanel13.add(jScrollPane6, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel13, java.awt.BorderLayout.CENTER);
 
@@ -1213,16 +1267,12 @@ public void cargarModeloVenata() {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        cargarDialogo2(ProductoComun, "Producto Común");
+        cargarDialogo2(ProductoComun, "Producto común");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        cargarDialogo(Buscar, "Buscar Productos");
+        cargarDialogo(Buscar, "Buscar productos");
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -1231,30 +1281,36 @@ public void cargarModeloVenata() {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         Buscar.dispose();
+        jTextField4.setText("");
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         Entrada.dispose();
+        vaciar();
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        cargarDialogo3(EntradasPasadas, Entrada, "Entradas Pasadas");
+        cargarDialogo3(EntradasPasadas, Entrada, "Entradas pasadas");
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         Salida.dispose();
+        vaciar2();
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
-        cargarDialogo3(SalidasPasadas, Salida, "Salidas Pasadas");
+        cargarDialogo3(SalidasPasadas, Salida, "Salidas pasadas");
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         ProductoComun.dispose();
+         vaciar4();
     }//GEN-LAST:event_jButton16ActionPerformed
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
         Cobrar.dispose();
+        vaciar3();
+        
     }//GEN-LAST:event_jButton18ActionPerformed
 
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
@@ -1272,70 +1328,289 @@ public void cargarModeloVenata() {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
-        int id = Integer.parseInt(jTextField1.getText().toString());
-        consultarProducto(id);
+
+        String a = jTextField1.getText();
+        int uno = a.length();
+        if (uno == 0) {
+            JOptionPane.showMessageDialog(null, "¡UY! Debes colocar el código del producto");
+        } else {
+
+            int id = Integer.parseInt(jTextField1.getText().toString());
+            ProductosDAO productosDAO = new ProductosDAO();
+            Productos productos = productosDAO.seleccionar_producto(id);
+            int numero = productos.getIdProducto();
+            if (id == productos.getIdProducto() && id >= 1) {
+                consultarProducto(id);
+            } else {
+                JOptionPane.showMessageDialog(this, "No existe el id del producto");
+            }
+
+        }
     }//GEN-LAST:event_jButton24ActionPerformed
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
         // TODO add your handling code here:
+        cargarModeloSalida();
     }//GEN-LAST:event_jButton22ActionPerformed
-
-    private void jTextField14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField14ActionPerformed
-//         TODO add your handling code here:
-        double monto = Double.parseDouble(jTextField14.getText());
-        double descuento = Double.parseDouble(jTextField3.getText());
-        double tot = Double.parseDouble(jLabel24.getText());
-        double sub = tot - descuento;
-        double cambio = monto - sub;
-        jLabel20.setText("" + cambio);
-        jLabel26.setText("" + sub);
-    }//GEN-LAST:event_jTextField14ActionPerformed
-
-    private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
-        // TODO add your handling code here:
-        double monto = Double.parseDouble(jTextField14.getText());
-        double descuento = Double.parseDouble(jTextField3.getText());
-        double tot = Double.parseDouble(jLabel24.getText());
-        double sub = tot - descuento;
-        double cambio = monto - sub;
-        jLabel20.setText("" + cambio);
-        jLabel26.setText("" + sub);
-    }//GEN-LAST:event_jTextField3KeyReleased
 
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
 //         TODO add your handling code here:
-        try {
-            int id = crear();
-            if (id != 0) {
-                JOptionPane.showMessageDialog(this, "Éxito al realizar la venta");
+        String a = jTextField2.getText();
+        int uno = a.length();
+        String b = jTextField1.getText();
+        int dos = b.length();
+        String c = jTextField14.getText();
+        int tres = c.length();
+        String d = jTextField3.getText();
+        int cuatro = d.length();
 
-                limpiar();
+        if (uno == 0 || dos == 0 || tres == 0 || cuatro == 0) {
+            JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
+//           limpiar();
 
-            } else {
-                JOptionPane.showMessageDialog(this, "Error");
+        } else {
+            try {
+                int id = crear();
+                if (id != 0) {
+                    JOptionPane.showMessageDialog(this, "Éxito al realizar la venta");
+                    cargarModeloVenata();
+                    limpiar();
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Debes seleccionar un cliente");
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Debes seleccionar un cliente");
         }
     }//GEN-LAST:event_jButton17ActionPerformed
-
+    
+   
     private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
         // TODO add your handling code here:
-         cargarDialogo2(Cobrar, "Cobrar");
+        cargarDialogo2(Cobrar, "Cobrar");
     }//GEN-LAST:event_jButton25ActionPerformed
 
     private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
         // TODO add your handling code here:
-        
-         cargarDialogo(VerVentas, "Ver ventas");
+
+        cargarDialogo(VerVentas, "Ver ventas");
     }//GEN-LAST:event_jButton26ActionPerformed
 
     private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton28ActionPerformed
         // TODO add your handling code here:
-          VerVentas.dispose();
+      
+        VerVentas.dispose();
+        jTextField12.setText("");
+        
     }//GEN-LAST:event_jButton28ActionPerformed
 
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
+        // TODO add your handling code here:
+        String a = jTextField2.getText();
+        int uno = a.length();
+        String b = jTextField1.getText();
+        int dos = b.length();
+        String c = jTextField14.getText();
+        int tres = c.length();
+        String d = jTextField3.getText();
+        int cuatro = d.length();
+
+        if (uno == 0 || dos == 0 || tres == 0 || cuatro == 0) {
+            JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
+//           limpiar();
+
+        } else {
+            try {
+                int id = crear();
+                if (id != 0) {
+                    JOptionPane.showMessageDialog(this, "Éxito al realizar la venta el ticket se imprimirá");
+
+                    limpiar();
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Debes seleccionar un cliente");
+            }
+        }
+
+    }//GEN-LAST:event_jButton19ActionPerformed
+
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        // TODO add your handling code here:
+        crearcomun();
+        ProductoComun.dispose();
+        vaciar4();
+    }//GEN-LAST:event_jButton15ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        agregarBuscarProducto();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        String a = jTextField6.getText();
+        int uno = a.length();
+
+        String b = jTextField5.getText();
+        int dos = b.length();
+        if (uno == 0 || dos == 0) {
+            JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
+        } else {
+            try {
+                // Agregar producto desde (JDialog)
+                if (crearEntrada() != 0) {
+                    JOptionPane.showMessageDialog(Entrada, "¡Éxito! Se registró la entrada de dinero");
+                    vaciar();
+                    cargarModeloEntrada();
+                    Entrada.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(Entrada, "¡Ha ocurrido un problema! Revisa tus datos");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Product.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        // TODO add your handling code here:
+        String a = jTextField8.getText();
+        int uno = a.length();
+
+        String b = jTextField7.getText();
+        int dos = b.length();
+        if (uno == 0 || dos == 0) {
+            JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
+        } else {
+        try {
+            // Agregar producto desde (JDialog)
+            if (crearSalida() != 0) {
+                JOptionPane.showMessageDialog(Salida, "¡Éxito! Se registró la salida de dinero");
+                vaciar2();
+                cargarModeloSalida();
+                Salida.dispose();
+            
+            } else {
+                JOptionPane.showMessageDialog(Salida, "¡Ha ocurrido un problema! Revisa tus datos");
+            }
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Product.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
+        // TODO add your handling code here:
+        double monto = Double.parseDouble(jTextField14.getText()); // 200
+        double descuento = Double.parseDouble(jTextField3.getText()); // 100
+        double tot = Double.parseDouble(jLabel24.getText()); // 120
+        double sub = tot - descuento; // 120 - 100 = 20
+        double cambio = monto - sub; // 200 - 20 = 80
+        jLabel20.setText(" " + cambio);
+        jLabel26.setText(" " + sub);
+    }//GEN-LAST:event_jTextField3KeyReleased
+
+    private void jTextField14KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyReleased
+        // TODO add your handling code here:
+        double monto = Double.parseDouble(jTextField14.getText());
+        double descuento = Double.parseDouble(jTextField3.getText());
+        double tot = Double.parseDouble(jLabel24.getText());
+        double sub = tot - descuento;
+        double cambio = monto - sub;
+        jLabel20.setText("" + cambio);
+        jLabel26.setText("" + sub);
+    }//GEN-LAST:event_jTextField14KeyReleased
+
+    private void jTextField14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField14ActionPerformed
+        //         TODO add your handling code here:
+        //
+    }//GEN-LAST:event_jTextField14ActionPerformed
+
+    private void jTextField14KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyTyped
+        // TODO add your handling code here:
+          char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(Cobrar, "Ingresar solo números");
+
+        }
+    }//GEN-LAST:event_jTextField14KeyTyped
+
+    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+        // TODO add your handling code here:
+          char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(Cobrar, "Ingresar solo números");
+
+        }
+    }//GEN-LAST:event_jTextField3KeyTyped
+    public void vaciar() {
+        jTextField5.setText("");
+        jTextField6.setText("");
+    }
+
+    public void vaciar2() {
+        jTextField8.setText("");
+        jTextField7.setText("");
+    }
+    public void vaciar3() {
+        jTextField14.setText("");
+        jTextField3.setText("");
+        jLabel20.setText("");
+    }
+    public void vaciar4() {
+        jTextField10.setText("");
+        jTextField9.setText("");
+        jTextField11.setText("");
+    }
+   
+
+    int crearEntrada() throws SQLException {
+        String comentario = jTextField6.getText();
+        double cantidad = Double.parseDouble(jTextField5.getText());
+        boolean entrada = true;
+
+        EntradaSalida m = new EntradaSalida(cantidad, entrada, comentario);
+        int id = esd.insertar(m);
+        return id;
+    }
+
+    int crearSalida() throws SQLException {
+        String comentario = jTextField8.getText();
+        double cantidad = Double.parseDouble(jTextField7.getText());
+        boolean entrada = false;
+
+        EntradaSalida m = new EntradaSalida(cantidad, entrada, comentario);
+        int id = esd.insertar(m);
+        return id;
+    }
+
+    public void agregarBuscarProducto() {
+        DefaultTableModel tabla2 = (DefaultTableModel) jTable6.getModel();
+        int row = jTable2.getSelectedRow();
+        String id = jTable2.getValueAt(row, 0).toString();
+        String nombre = jTable2.getValueAt(row, 1).toString();
+        String descripcion = jTable2.getValueAt(row, 2).toString();
+        double precio = Double.parseDouble(jTable2.getValueAt(row, 3).toString());
+        String tipov = jTable2.getValueAt(row, 4).toString();
+        double cantidad = Double.parseDouble(jTable2.getValueAt(row, 5).toString());
+        cant = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
+        Object object[] = {id, nombre, descripcion, precio, tipov, cant};
+        tabla2.addRow(object);
+        calcular();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Buscar;
     private javax.swing.JDialog Cobrar;
@@ -1406,7 +1681,6 @@ public void cargarModeloVenata() {
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
@@ -1422,7 +1696,6 @@ public void cargarModeloVenata() {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
