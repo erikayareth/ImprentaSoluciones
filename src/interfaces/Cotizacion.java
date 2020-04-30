@@ -821,6 +821,7 @@ public class Cotizacion extends javax.swing.JPanel {
             int numero = productos.getIdProducto();
             if (id == productos.getIdProducto() && id >= 1) {
                 consultarProducto(id);
+                jTextField1.setText("");
             } else {
                 JOptionPane.showMessageDialog(this, "No existe el id del producto");
             }
