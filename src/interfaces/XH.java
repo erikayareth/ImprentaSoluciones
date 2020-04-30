@@ -100,7 +100,7 @@ public class XH extends javax.swing.JPanel {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
-        dialogo.setSize(496, 599);
+        dialogo.setSize(496, 580);
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
@@ -145,6 +145,7 @@ public class XH extends javax.swing.JPanel {
         System.out.println("entro");
 
     }
+     
 
     void actualizarStock() {
         for (int i = 0; i < modelo.getRowCount(); i++) {
@@ -1176,6 +1177,16 @@ public class XH extends javax.swing.JPanel {
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton2.setText("MAYOREO");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton2MousePressed(evt);
+            }
+        });
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel5.add(jButton2);
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
@@ -1352,6 +1363,7 @@ public class XH extends javax.swing.JPanel {
             int numero = productos.getIdProducto();
             if (id == productos.getIdProducto() && id >= 1) {
                 consultarProducto(id);
+                jTextField1.setText("");
             } else {
                 JOptionPane.showMessageDialog(this, "No existe el id del producto");
             }
@@ -1368,14 +1380,13 @@ public class XH extends javax.swing.JPanel {
 //         TODO add your handling code here:
         String a = jTextField2.getText();
         int uno = a.length();
-        String b = jTextField1.getText();
-        int dos = b.length();
+        
         String c = jTextField14.getText();
         int tres = c.length();
         String d = jTextField3.getText();
         int cuatro = d.length();
 
-        if (uno == 0 || dos == 0 || tres == 0 || cuatro == 0) {
+        if (uno == 0 || tres == 0 || cuatro == 0) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
 //           limpiar();
 
@@ -1424,14 +1435,13 @@ public class XH extends javax.swing.JPanel {
         // TODO add your handling code here:
         String a = jTextField2.getText();
         int uno = a.length();
-        String b = jTextField1.getText();
-        int dos = b.length();
+       
         String c = jTextField14.getText();
         int tres = c.length();
         String d = jTextField3.getText();
         int cuatro = d.length();
 
-        if (uno == 0 || dos == 0 || tres == 0 || cuatro == 0) {
+        if (uno == 0 || tres == 0 || cuatro == 0) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
 //           limpiar();
 
@@ -1463,6 +1473,7 @@ public class XH extends javax.swing.JPanel {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
         agregarBuscarProducto();
+        Buscar.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -1567,6 +1578,17 @@ public class XH extends javax.swing.JPanel {
 
         }
     }//GEN-LAST:event_jTextField3KeyTyped
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+         
+     
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MousePressed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "El mayoreo fue activado");
+    }//GEN-LAST:event_jButton2MousePressed
     public void vaciar() {
         jTextField5.setText("");
         jTextField6.setText("");
