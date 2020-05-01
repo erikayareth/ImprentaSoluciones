@@ -38,9 +38,14 @@ public class Proveedore extends javax.swing.JPanel {
         jPanel8.setBackground(Color.WHITE);
         jPanel7.setBackground(Color.WHITE);
         cargarModelo();
+        configureTable();
+        jScrollPane1.getViewport().setBackground(Color.white);
         jRadioButton1.setSelected(true);
     }
-    
+     void configureTable(){
+        jTable1.setDefaultRenderer(Object.class, new MyJTableCellRenderer());
+        jTable1.setRowHeight(20);
+   }
     void cargarDialogo(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);

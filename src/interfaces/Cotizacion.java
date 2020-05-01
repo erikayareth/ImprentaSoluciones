@@ -46,7 +46,9 @@ public class Cotizacion extends javax.swing.JPanel {
         jPanel12.setBackground(Color.white);
         jPanel9.setBackground(Color.white);
         cargarModelo();
+        jScrollPane1.getViewport().setBackground(Color.white);
         cargarModeloCotizacion();
+        configureTable();
     }
 
     public void cargarModelo() {
@@ -54,7 +56,10 @@ public class Cotizacion extends javax.swing.JPanel {
         DefaultTableModel dt = productosDAO.cargarModelo();
         jTable2.setModel(dt);
     }
-
+ void configureTable(){
+        jTable1.setDefaultRenderer(Object.class, new MyJTableCellRenderer());
+        jTable1.setRowHeight(20);
+   }
     void cargarDialogo(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);

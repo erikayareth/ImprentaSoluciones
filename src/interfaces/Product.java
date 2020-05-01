@@ -44,8 +44,14 @@ public class Product extends javax.swing.JPanel {
         jPanel7.setBackground(Color.white);
         loadCombo();
         cargarModelo();
+        configureTable();
+        jScrollPane1.getViewport().setBackground(Color.white);
         jRadioButton1.setSelected(true);
     }
+     void configureTable(){
+        jTable1.setDefaultRenderer(Object.class, new MyJTableCellRenderer());
+        jTable1.setRowHeight(20);
+   }
     
     void loadCombo() throws SQLException {
         jComboBox3.setModel(p.loadCombo());

@@ -38,11 +38,13 @@ public class XH extends javax.swing.JPanel {
     int cant;
     double pre;
     double tpagar;
+    
 
     public XH() {
         initComponents();
         this.setBackground(Color.WHITE);
         Color fondo = new Color(24, 192, 221);
+        
         jPanel2.setBackground(Color.WHITE);
         jPanel16.setBackground(Color.WHITE);
         jPanel5.setBackground(fondo);
@@ -54,6 +56,8 @@ public class XH extends javax.swing.JPanel {
         cargarModeloVenata();
         cargarModeloEntrada();
         cargarModeloSalida();
+        configureTable();
+        jScrollPane6.getViewport().setBackground(Color.white);
 
 //       text = new TextAutoCompleter(jTextField1,new AutoCompleterCallback(){
 //           @Override 
@@ -65,6 +69,10 @@ public class XH extends javax.swing.JPanel {
 //        });
     }
 
+    void configureTable(){
+        jTable6.setDefaultRenderer(Object.class, new MyJTableCellRenderer());
+        jTable6.setRowHeight(20);
+   }
     public void cargarModelo() {
         ProductosDAO productosDAO = new ProductosDAO();
         DefaultTableModel dt = productosDAO.cargarModelo2();
