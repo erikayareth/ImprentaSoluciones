@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -30,8 +31,10 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         ventas = new XH();
         productos = new Product();
-         this.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
+//         this.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setTitle("Menú");
+        
         this.setLocationRelativeTo(null);
         this.setResizable(rootPaneCheckingEnabled);
         setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
