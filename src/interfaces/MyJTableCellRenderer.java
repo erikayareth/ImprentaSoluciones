@@ -22,7 +22,7 @@ public class MyJTableCellRenderer extends DefaultTableCellRenderer{
         
         Component cell  = super.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);
         Color fondo = new Color(213, 234, 255);
-        /*cell.setBackground(fondo);, */
+        cell.setBackground(fondo);
         return super.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);
     }
     

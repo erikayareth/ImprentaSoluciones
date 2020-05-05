@@ -726,7 +726,7 @@ public class Product extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Nombre", "Descripción", "Tipo de Venta", "Precio", "Precio mayoreo", "Cantidad mayoreo"
+                "ID", "Nombre", "Descripción", "Tipo de Venta", "Precio", "Precio mayoreo", "Cantidad mayoreo", "Stock", "Mínimo"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -753,12 +753,13 @@ public class Product extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         cargarDialogo2(Modificar, "Modificar producto");
-        
+         Modificar.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             cargarDialogo(Agregar, "Agregar producto");
+             Agregar.setDefaultCloseOperation(0);
             loadCombo();
         } catch (SQLException ex) {
             Logger.getLogger(Product.class.getName()).log(Level.SEVERE, null, ex);

@@ -6,6 +6,7 @@
 package dao;
 
 
+import interfaces.XH;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import javax.swing.DefaultComboBoxModel;
 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import pojo.Productos;
 import pojo.Proveedores;
 
@@ -170,7 +172,7 @@ public class ProductosDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID", "Nombre", "Descripción", "Tipo de venta", "Precio", "Precio mayoreo", "Cantidad mayoreo","Stock","Minimo"};
+        String encabezados[] = {"ID", "Nombre", "Descripción", "Tipo de venta", "Precio", "Precio mayoreo", "Cantidad mayoreo","Stock","Mínimo"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_productos()");
@@ -190,6 +192,8 @@ public class ProductosDAO {
                 ob[7] = rs.getDouble("stock");
                 ob[8] = rs.getDouble("minimo");
                 dt.addRow(ob);
+                
+               
             }
             rs.close();
         } catch (Exception e) {

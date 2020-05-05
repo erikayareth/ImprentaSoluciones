@@ -53,7 +53,7 @@ public class Cotizacion extends javax.swing.JPanel {
 
     public void cargarModelo() {
         ProductosDAO productosDAO = new ProductosDAO();
-        DefaultTableModel dt = productosDAO.cargarModelo();
+        DefaultTableModel dt = productosDAO.cargarModelo2();
         jTable2.setModel(dt);
     }
  void configureTable(){
@@ -64,7 +64,7 @@ public class Cotizacion extends javax.swing.JPanel {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
-        dialogo.setSize(496, 599);
+        dialogo.setSize(496, 590);
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
@@ -77,7 +77,20 @@ public class Cotizacion extends javax.swing.JPanel {
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
-
+    public void agregarBuscarProducto() {
+        DefaultTableModel tabla2 = (DefaultTableModel) jTable1.getModel();
+        int row = jTable2.getSelectedRow();
+        String id = jTable2.getValueAt(row, 0).toString();
+        String nombre = jTable2.getValueAt(row, 1).toString();
+        String descripcion = jTable2.getValueAt(row, 2).toString();
+        double precio = Double.parseDouble(jTable2.getValueAt(row, 3).toString());
+        String tipov = jTable2.getValueAt(row, 4).toString();
+        double cantidad = Double.parseDouble(jTable2.getValueAt(row, 5).toString());
+        cant = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
+        Object object[] = {id, nombre, descripcion, precio, tipov, cant};
+        tabla2.addRow(object);
+        calcular();
+    }
     public void consultarProducto(int id) {
 
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
@@ -140,7 +153,11 @@ public class Cotizacion extends javax.swing.JPanel {
         int id = cd.insertar(c);
         return id;
     }
-
+    public void vaciar4(){
+        jTextField12.setText("");
+        jTextField13.setText("");
+        jTextField14.setText("");
+    }
     public void limpiar() {
         jLabel10.setText("-----");
         jLabel9.setText("------");
@@ -358,11 +375,15 @@ public class Cotizacion extends javax.swing.JPanel {
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
         jButton7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton7.setText("AGREGAR");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
         jButton8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton8.setText("CANCELAR");
-        jButton8.setActionCommand("CANCELAR");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
@@ -439,13 +460,13 @@ public class Cotizacion extends javax.swing.JPanel {
         jLabel11.setBackground(new java.awt.Color(255, 255, 255));
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/VERCOTIZACIONES.png"))); // NOI18N
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/VERCOTIZACIONES2.png"))); // NOI18N
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NOMBRE", " " }));
 
         jButton11.setBackground(new java.awt.Color(255, 255, 255));
         jButton11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton11.setText("Cancelar");
+        jButton11.setText("CANCELAR");
         jButton11.setActionCommand("CANCELAR");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -479,21 +500,21 @@ public class Cotizacion extends javax.swing.JPanel {
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(115, 115, 115)
                         .addComponent(jLabel11))
-                    .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel13Layout.createSequentialGroup()
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jTextField7))
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(40, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton11)
-                .addGap(100, 100, 100))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton11)
+                            .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel13Layout.createSequentialGroup()
+                                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -506,9 +527,9 @@ public class Cotizacion extends javax.swing.JPanel {
                     .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton11)
-                .addGap(31, 31, 31))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout VerCotizacionesLayout = new javax.swing.GroupLayout(VerCotizaciones.getContentPane());
@@ -596,7 +617,7 @@ public class Cotizacion extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Nombre", "Descripción", "Precio", "Cantidad"
+                "ID", "Nombre", "Descripción", "Precio", "Tipo de venta", "Cantidad"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -750,10 +771,12 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         cargarDialogo(Buscar, "Buscar producto");
+         Buscar.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         cargarDialogo2(ProductoComun, "Producto Común");
+          ProductoComun.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -847,6 +870,7 @@ public class Cotizacion extends javax.swing.JPanel {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
         cargarDialogo(VerCotizaciones, "Ver cotizaciones");
+          VerCotizaciones.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
@@ -856,7 +880,9 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         // TODO add your handling code here:
-        crearcomun();
+      crearcomun();
+        ProductoComun.dispose();
+        vaciar4();
     }//GEN-LAST:event_jButton17ActionPerformed
 
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
@@ -880,6 +906,12 @@ public class Cotizacion extends javax.swing.JPanel {
 
         }
     }//GEN-LAST:event_jFormattedTextField1KeyTyped
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+         agregarBuscarProducto();
+        Buscar.dispose();
+    }//GEN-LAST:event_jButton7ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
