@@ -151,7 +151,6 @@ public class XH extends javax.swing.JPanel {
     }
 
     public void consultarProducto(int id) {
-
         DefaultTableModel dtm = (DefaultTableModel) jTable6.getModel();
         ProductosDAO productosDAO = new ProductosDAO();
         Productos productos = productosDAO.seleccionar_producto(id);
@@ -160,7 +159,6 @@ public class XH extends javax.swing.JPanel {
         String tipo = productos.getTipoDeVenta();
         double precio = productos.getPrecio();
         int cantidad = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
-
         Object f[] = {id, nombre, descripcion, precio, tipo, cantidad};
 
         String encabezados[] = {"ID", "Nombre", "Descripción", "Precio", "TipoVenta", "Cantidad"};
@@ -194,7 +192,6 @@ public class XH extends javax.swing.JPanel {
     }
 
     int crear() throws SQLException {
-
         VentasDAO vd = new VentasDAO();
         double total = Double.parseDouble(jLabel26.getText());
         double importe = Double.parseDouble(jTextField14.getText());
@@ -451,6 +448,12 @@ public class XH extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Cantidad:");
 
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField5KeyTyped(evt);
+            }
+        });
+
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("Comentario:");
 
@@ -551,6 +554,12 @@ public class XH extends javax.swing.JPanel {
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel10.setText("Cantidad:");
+
+        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField7KeyTyped(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel11.setText("Comentario:");
@@ -655,6 +664,12 @@ public class XH extends javax.swing.JPanel {
 
         jTextField9.setText("Producto Común");
 
+        jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField10KeyTyped(evt);
+            }
+        });
+
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel14.setText("Cantidad");
 
@@ -681,6 +696,12 @@ public class XH extends javax.swing.JPanel {
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel16.setText("Precio");
+
+        jTextField11.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField11KeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -805,7 +826,6 @@ public class XH extends javax.swing.JPanel {
         jLabel27.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel27.setText("Descuento");
 
-        jLabel20.setForeground(new java.awt.Color(0, 0, 0));
         jLabel20.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jTextField14.addActionListener(new java.awt.event.ActionListener() {
@@ -841,7 +861,7 @@ public class XH extends javax.swing.JPanel {
                             .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
                             .addComponent(jTextField14))))
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -873,19 +893,19 @@ public class XH extends javax.swing.JPanel {
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGap(124, 124, 124)
+                        .addGap(137, 137, 137)
                         .addComponent(jLabel17))
                     .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton18)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel10Layout.createSequentialGroup()
+                                .addComponent(jButton19)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton18)))))
                 .addContainerGap(54, Short.MAX_VALUE))
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1286,6 +1306,11 @@ public class XH extends javax.swing.JPanel {
                 jButton24ActionPerformed(evt);
             }
         });
+        jButton24.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jButton24KeyTyped(evt);
+            }
+        });
         jPanel14.add(jButton24);
 
         jPanel13.add(jPanel14, java.awt.BorderLayout.PAGE_START);
@@ -1386,13 +1411,11 @@ public class XH extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
-
         String a = jTextField1.getText();
         int uno = a.length();
         if (uno == 0) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes colocar el código del producto");
         } else {
-
             int id = Integer.parseInt(jTextField1.getText().toString());
             ProductosDAO productosDAO = new ProductosDAO();
             Productos productos = productosDAO.seleccionar_producto(id);
@@ -1403,7 +1426,6 @@ public class XH extends javax.swing.JPanel {
             } else {
                 JOptionPane.showMessageDialog(this, "No existe el id del producto");
             }
-
         }
     }//GEN-LAST:event_jButton24ActionPerformed
 
@@ -1416,7 +1438,6 @@ public class XH extends javax.swing.JPanel {
 //         TODO add your handling code here:
         String a = jTextField2.getText();
         int uno = a.length();
-
         String c = jTextField14.getText();
         int tres = c.length();
         String d = jTextField3.getText();
@@ -1446,8 +1467,7 @@ public class XH extends javax.swing.JPanel {
 
 
     private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
-        // TODO add your handling code here:
-        cargarDialogo2(Cobrar, "Cobrar");
+         cargarDialogo2(Cobrar, "Cobrar");
          Cobrar.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton25ActionPerformed
 
@@ -1513,7 +1533,6 @@ public class XH extends javax.swing.JPanel {
         if (uno == 0 || tres == 0 || cuatro == 0) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
 //           limpiar();
-
         } else {
         crearcomun();
         ProductoComun.dispose();
@@ -1562,7 +1581,6 @@ public class XH extends javax.swing.JPanel {
         // TODO add your handling code here:
         String a = jTextField8.getText();
         int uno = a.length();
-
         String b = jTextField7.getText();
         int dos = b.length();
         if (uno == 0 || dos == 0) {
@@ -1593,7 +1611,7 @@ public class XH extends javax.swing.JPanel {
         double descuento = Double.parseDouble(jTextField3.getText()); // 100
         double tot = Double.parseDouble(jLabel24.getText()); // 120
         double sub = tot - descuento; // 120 - 100 = 20
-        double cambio = monto - sub; // 200 - 20 = 80
+        double cambio = monto - descuento; // 200 - 20 = 80
         jLabel20.setText(" " + cambio);
         jLabel26.setText(" " + sub);
     }//GEN-LAST:event_jTextField3KeyReleased
@@ -1615,13 +1633,11 @@ public class XH extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField14ActionPerformed
 
     private void jTextField14KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyTyped
-        // TODO add your handling code here:
         char validar = evt.getKeyChar();
         if (Character.isLetter(validar)) {
             getToolkit().beep();
             evt.consume();
             JOptionPane.showMessageDialog(Cobrar, "Ingresar solo números");
-
         }
     }//GEN-LAST:event_jTextField14KeyTyped
 
@@ -1632,20 +1648,56 @@ public class XH extends javax.swing.JPanel {
             getToolkit().beep();
             evt.consume();
             JOptionPane.showMessageDialog(Cobrar, "Ingresar solo números");
-
         }
     }//GEN-LAST:event_jTextField3KeyTyped
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-
-
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MousePressed
-        // TODO add your handling code here:
         JOptionPane.showMessageDialog(null, "El mayoreo fue activado");
     }//GEN-LAST:event_jButton2MousePressed
+
+    private void jButton24KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton24KeyTyped
+    }//GEN-LAST:event_jButton24KeyTyped
+
+    private void jTextField10KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyTyped
+        char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(ProductoComun, "Ingresar solo números");
+        }
+    }//GEN-LAST:event_jTextField10KeyTyped
+
+    private void jTextField11KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyTyped
+        char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(ProductoComun, "Ingresar solo números");
+        }
+    }//GEN-LAST:event_jTextField11KeyTyped
+
+    private void jTextField7KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyTyped
+        char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(Salida, "Ingresar solo números");
+        }
+    }//GEN-LAST:event_jTextField7KeyTyped
+
+    private void jTextField5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyTyped
+        char validar = evt.getKeyChar();
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(Entrada, "Ingresar solo números");
+        }
+    }//GEN-LAST:event_jTextField5KeyTyped
+    
     public void vaciar() {
         jTextField5.setText("");
         jTextField6.setText("");
@@ -1664,7 +1716,7 @@ public class XH extends javax.swing.JPanel {
 
     public void vaciar4() {
         jTextField10.setText("");
-        jTextField9.setText("");
+        jTextField9.setText("Producto Común");
         jTextField11.setText("");
     }
 
@@ -1702,6 +1754,7 @@ public class XH extends javax.swing.JPanel {
         tabla2.addRow(object);
         calcular();
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Buscar;
     private javax.swing.JDialog Cobrar;

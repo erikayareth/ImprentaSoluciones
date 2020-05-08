@@ -54,6 +54,7 @@ BEGIN
 	SELECT idProductos, nombre, descripcion, precio FROM productos WHERE idProductos = id;
 END //
 delimiter ;
+DROP PROCEDURE seleccionar_producto;
 
 -- Mostrar Productos
 DELIMITER //

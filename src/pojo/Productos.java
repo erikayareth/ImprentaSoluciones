@@ -61,11 +61,7 @@ public class Productos {
 
     public Productos(String string, int i) {
     }
-
-  
-
-   
-   
+    
     public int getIdProducto() {
         return idProducto;
     }

@@ -101,7 +101,6 @@ public class Cotizacion extends javax.swing.JPanel {
         calcular();
     }
     public void consultarProducto(int id) {
-
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         ProductosDAO productosDAO = new ProductosDAO();
         Productos productos = productosDAO.seleccionar_producto(id);
@@ -111,13 +110,12 @@ public class Cotizacion extends javax.swing.JPanel {
         double precio = productos.getPrecio();
         int cantidad = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
         Object f[] = {id, nombre, descripcion, precio, tipo, cantidad};
-        String encabezados[] = {"ID", "Nombre", "Descripción", "Precio", "TipoVenta", "Cantidad"};
+        String encabezados[] = {"ID", "Nombre", "Descripción", "Precio", "Tipo de venta", "Cantidad"};
         dtm.setColumnIdentifiers(encabezados);
         jTable1.setModel(dtm);
         dtm.addRow(f);
         calcular();
         System.out.println("entro");
-
     }
 
     void crearcomun() {
@@ -156,17 +154,18 @@ public class Cotizacion extends javax.swing.JPanel {
         double descuento = Double.parseDouble(jTextField3.getText());
         double subtotal = Double.parseDouble(jLabel9.getText());
         String telefono = jFormattedTextField1.getText();
-
-//        double folio = 
+//      double folio = 
         Cotizaciones c = new Cotizaciones(nombre, telefono, descuento, total, subtotal);
         int id = cd.insertar(c);
         return id;
     }
+    
     public void vaciar4(){
         jTextField12.setText("");
         jTextField13.setText("");
         jTextField14.setText("");
     }
+    
     public void limpiar() {
         jLabel10.setText("-----");
         jLabel9.setText("------");
@@ -183,7 +182,6 @@ public class Cotizacion extends javax.swing.JPanel {
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "Error al limpiar la tabla");
         }
-
     }
 
     public void cargarModeloCotizacion() {
@@ -800,10 +798,8 @@ public class Cotizacion extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-       
         String a = jTextField4.getText();
         int uno = a.length();
-        
         String c = jFormattedTextField1.getText();
         int tres = c.length();
         String d = jLabel9.getText();
@@ -817,12 +813,10 @@ public class Cotizacion extends javax.swing.JPanel {
 
         } else {
             
-        
         int option = JOptionPane.showConfirmDialog(null, "¿Desea exportar la cotización?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (option == 0) {
             try {
                 System.out.println("Ok");
-                
                 int id = crear();
                 if (id != 0) {
                     JOptionPane.showMessageDialog(this, "Éxito al guardar la cotización");
@@ -833,10 +827,19 @@ public class Cotizacion extends javax.swing.JPanel {
             } catch (SQLException ex) {
                JOptionPane.showMessageDialog(this,"Error "+ ex);
             }
-            
-           
         } else {
-            System.out.println("Ok");
+            try {
+                System.out.println("Ok");
+                int id = crear();
+                if (id != 0) {
+                    JOptionPane.showMessageDialog(this, "Éxito al guardar la cotización");
+                    limpiar();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error");
+                }
+            } catch (SQLException ex) {
+               JOptionPane.showMessageDialog(this,"Error "+ ex);
+            }
         }
         }
         
@@ -866,18 +869,16 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         // TODO add your handling code here:
-
         double descuento = Double.parseDouble(jTextField3.getText());
         double tot = Double.parseDouble(jLabel9.getText());
         double sub = tot - descuento;
         jLabel10.setText("" + sub);
-
     }//GEN-LAST:event_jTextField3KeyReleased
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
         cargarDialogo(VerCotizaciones, "Ver cotizaciones");
-          VerCotizaciones.setDefaultCloseOperation(0);
+        VerCotizaciones.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed

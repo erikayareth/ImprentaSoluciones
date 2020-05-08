@@ -24,10 +24,7 @@ import pojo.Proveedores;
  */
 public class ProductosDAO {
     
-    
-     
-     
-      public boolean modificarStock( int Stock,int idp){
+        public boolean modificarStock( int Stock,int idp){
         Connection con = null;
         PreparedStatement st = null;
         
@@ -172,7 +169,7 @@ public class ProductosDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID", "Nombre", "Descripción", "Tipo de venta", "Precio", "Precio mayoreo", "Cantidad mayoreo","Stock","Mínimo"};
+        String encabezados[] = {"ID", "Nombre", "Descripción", "Tipo de venta", "Precio", "Precio mayoreo", "Cantidad de mayoreo", "Stock", "Mínimo"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_productos()");
@@ -272,7 +269,7 @@ public class ProductosDAO {
             pojo.setIdProducto(rs.getInt("idProductos"));
             pojo.setNombre(rs.getString("nombre"));
             pojo.setDescripcion(rs.getString("descripcion"));
-            pojo.setTipoDeVenta("tipoDeVenta");
+            pojo.setTipoDeVenta(rs.getString("tipoDeVenta"));
             pojo.setPrecio(rs.getDouble("precio"));
             pojo.setPrecioMayoreo(rs.getDouble("precioMayoreo"));
             pojo.setCantidadMayoreo(rs.getInt("cantMayoreo"));
