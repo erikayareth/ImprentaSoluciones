@@ -208,7 +208,7 @@ public class ProductosDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID", "Nombre", "Descripción",  "Precio","Tipo Venta", "Cantidad"};
+        String encabezados[] = {"ID", "Nombre", "Descripción",  "Precio","Tipo de venta", "Cantidad"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_productos()");

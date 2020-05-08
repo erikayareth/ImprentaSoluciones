@@ -8,6 +8,7 @@ package interfaces;
 import dao.ProductosDAO;
 import dao.ProveedoresDAO;
 import java.awt.Color;
+import java.awt.Font;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 import pojo.Productos;
 import pojo.Proveedores;
@@ -31,7 +33,7 @@ public class Product extends javax.swing.JPanel {
     ProductosDAO ppd;
     ProveedoresDAO p = new ProveedoresDAO();
     XH xh = new XH();
-
+     JTableHeader th;
     public Product() throws SQLException {
         initComponents();
         ppd = new ProductosDAO();
@@ -47,6 +49,13 @@ public class Product extends javax.swing.JPanel {
         configureTable();
         jScrollPane1.getViewport().setBackground(Color.white);
         jRadioButton1.setSelected(true);
+         th = jTable1.getTableHeader();
+        Font fuente = new Font("TimesNewRoman", Font.PLAIN, 15);
+        th.setFont(fuente);
+        // cambia el fondo del encabezado de la tabla
+        jTable1.getTableHeader().setBackground(fondo);
+        // cambia el color de la letra del encabezado de la tabla
+        jTable1.getTableHeader().setForeground(Color.BLACK);
     }
      void configureTable(){
         jTable1.setDefaultRenderer(Object.class, new MyJTableCellRenderer());

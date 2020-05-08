@@ -9,6 +9,7 @@ import dao.CotizacionesDAO;
 import dao.ProductosDAO;
 import dao.VentasDAO;
 import java.awt.Color;
+import java.awt.Font;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import pojo.Cotizaciones;
 import pojo.Productos;
 import pojo.Ventas;
@@ -33,7 +35,7 @@ public class Cotizacion extends javax.swing.JPanel {
     int cant;
     double pre;
     double tpagar;
-
+    JTableHeader th;
     public Cotizacion() {
         initComponents();
         this.setBackground(Color.WHITE);
@@ -49,6 +51,13 @@ public class Cotizacion extends javax.swing.JPanel {
         jScrollPane1.getViewport().setBackground(Color.white);
         cargarModeloCotizacion();
         configureTable();
+         th = jTable1.getTableHeader();
+        Font fuente = new Font("TimesNewRoman", Font.PLAIN, 15);
+        th.setFont(fuente);
+        // cambia el fondo del encabezado de la tabla
+        jTable1.getTableHeader().setBackground(fondo);
+        // cambia el color de la letra del encabezado de la tabla
+        jTable1.getTableHeader().setForeground(Color.BLACK);
     }
 
     public void cargarModelo() {
@@ -462,12 +471,11 @@ public class Cotizacion extends javax.swing.JPanel {
         jLabel11.setForeground(new java.awt.Color(24, 192, 221));
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/VERCOTIZACIONES2.png"))); // NOI18N
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NOMBRE", " " }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NOMBRE" }));
 
         jButton11.setBackground(new java.awt.Color(255, 255, 255));
         jButton11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton11.setText("CANCELAR");
-        jButton11.setActionCommand("CANCELAR");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton11ActionPerformed(evt);
@@ -795,8 +803,7 @@ public class Cotizacion extends javax.swing.JPanel {
        
         String a = jTextField4.getText();
         int uno = a.length();
-        String b = jTextField1.getText();
-        int dos = b.length();
+        
         String c = jFormattedTextField1.getText();
         int tres = c.length();
         String d = jLabel9.getText();
@@ -804,7 +811,7 @@ public class Cotizacion extends javax.swing.JPanel {
         String e = jLabel10.getText();
         int cinco = e.length();
 
-        if (uno == 0 || dos == 0 || tres == 0 || cuatro == 0|| cinco==0) {
+        if (uno == 0  || tres == 0 || cuatro == 0|| cinco==0) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
 //           limpiar();
 
@@ -880,9 +887,23 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         // TODO add your handling code here:
+        String a = jTextField12.getText();
+        int uno = a.length();
+
+        String c = jTextField14.getText();
+        int tres = c.length();
+        String d = jTextField13.getText();
+        int cuatro = d.length();
+
+        if (uno == 0 || tres == 0 || cuatro == 0) {
+            JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
+//           limpiar();
+
+        } else {
       crearcomun();
         ProductoComun.dispose();
         vaciar4();
+        }
     }//GEN-LAST:event_jButton17ActionPerformed
 
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
@@ -909,8 +930,15 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
+     try{
+      int id = Integer.parseInt(jTable2.getValueAt(jTable2.getSelectedRow(), 0).toString());
          agregarBuscarProducto();
         Buscar.dispose();
+     
+      }catch(Exception e){
+          JOptionPane.showMessageDialog(this, "¡UPS! Debes seleccionar un producto de la Tabla");
+      }
+        
     }//GEN-LAST:event_jButton7ActionPerformed
 
 

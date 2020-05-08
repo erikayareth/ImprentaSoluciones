@@ -65,8 +65,7 @@ public class XH extends javax.swing.JPanel {
         jTable6.getTableHeader().setBackground(fondo);
         // cambia el color de la letra del encabezado de la tabla
         jTable6.getTableHeader().setForeground(Color.BLACK);
-        JTableHeader the = jTable6.getTableHeader();
-        the.setBackground(fondo);
+       
         cargarModelo();
         cargarModeloVenata();
         cargarModeloEntrada();
@@ -1504,15 +1503,34 @@ public class XH extends javax.swing.JPanel {
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         // TODO add your handling code here:
+        String a = jTextField9.getText();
+        int uno = a.length();
+        String c = jTextField10.getText();
+        int tres = c.length();
+        String d = jTextField11.getText();
+        int cuatro = d.length();
+
+        if (uno == 0 || tres == 0 || cuatro == 0) {
+            JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
+//           limpiar();
+
+        } else {
         crearcomun();
         ProductoComun.dispose();
         vaciar4();
+        }
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
+       
+       try{
+      int id = Integer.parseInt(jTable2.getValueAt(jTable2.getSelectedRow(), 0).toString());
         agregarBuscarProducto();
         Buscar.dispose();
+      }catch(Exception e){
+          JOptionPane.showMessageDialog(this, "¡UPS! Debes seleccionar un producto de la Tabla");
+      }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
