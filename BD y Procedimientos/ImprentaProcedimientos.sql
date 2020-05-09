@@ -51,7 +51,7 @@ delimiter ;
 DELIMITER //
 CREATE PROCEDURE seleccionar_producto(IN id INT) 
 BEGIN
-	SELECT idProductos, nombre, descripcion, precio FROM productos WHERE idProductos = id;
+	SELECT*FROM productos WHERE idProductos = id;
 END //
 delimiter ;
 DROP PROCEDURE seleccionar_producto;
@@ -63,6 +63,7 @@ BEGIN
 	SELECT * FROM productos;
 END//
 DELIMITER ;
+
 -- Mostrar cotizaciones
 DELIMITER //
 CREATE PROCEDURE select_all_cotizacion()
@@ -70,6 +71,7 @@ BEGIN
 	SELECT * FROM cotizacion;
 END//
 DELIMITER ;
+
 -- Mostrar ventas
 DELIMITER //
 CREATE PROCEDURE select_all_ventas()
@@ -78,8 +80,8 @@ BEGIN
 END//
 DELIMITER ;
 drop procedure select_all_ventas;
-
 call select_all_ventas();
+
 -- Mostrar salidas
 DELIMITER //
 CREATE PROCEDURE select_all_salidas()
@@ -89,6 +91,7 @@ END//
 DELIMITER ;
 drop procedure select_all_salidas;
 call select_all_salidas;
+
 -- Mostrar entradas
 DELIMITER //
 CREATE PROCEDURE select_all_entradas()
@@ -98,3 +101,14 @@ END//
 DELIMITER ;
 drop procedure select_all_entradas;
 call select_all_entradas;
+
+-- Modificar Producto
+DELIMITER //
+CREATE PROCEDURE modificarProducto(IN idProductosp INT, IN nombrep Varchar(250), IN descripcionp Text, IN tipoDeVentap Enum('por paquete','por unidad'), IN preciop Double, 
+IN precioMayoreop Double, IN cantMayoreop Int, IN estadop Boolean, IN Proveedor_idProveedorp Int, IN stockp int, IN minimop Int)
+BEGIN
+UPDATE Productos SET nombre=nombrep, descripcion=descripcionp, tipoDeVenta=tipoDeVentap, precio=preciop, precioMayoreo=precioMayoreop, 
+cantMayoreo=cantMayoreop, estado=estadop, Proveedor_idProveedor=Proveedor_idProveedorp, stock=stockp, minimo=minimop
+WHERE idProductos=idProductosp;
+END //
+delimiter ;
