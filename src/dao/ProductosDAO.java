@@ -238,7 +238,7 @@ public class ProductosDAO {
         Productos productos = pojo;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("CALL modificarClientes(?,?,?,?)");
+            st = con.prepareStatement("CALL modificarProducto(?,?,?,?,?,?,?,?,?,?,?)");
             st.setInt(1, productos.getIdProducto());
             st.setString(2, productos.getNombre());
             st.setString(3, productos.getDescripcion());
@@ -248,14 +248,14 @@ public class ProductosDAO {
             st.setDouble(7, productos.getCantidadMayoreo());
             st.setBoolean(8, productos.isEstado());
             st.setInt(9, productos.getProveedor_idProveedor());
-            st.setInt(9, productos.getStock());
-            st.setInt(9, productos.getMinimo());
+            st.setInt(10, productos.getStock());
+            st.setInt(11, productos.getMinimo());
             int x = st.executeUpdate();
             if (x == 0) {
                 return false;
             }
         } catch (Exception e) {
-            System.out.println("Error al actualizar cliente" + e);
+            System.out.println("Error al actualizar producto" + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);

@@ -101,6 +101,43 @@ public class Proveedore extends javax.swing.JPanel {
         }
     }
     
+    public void verProveedor(int id){
+        ProveedoresDAO proveedoresDAO = new ProveedoresDAO();
+        Proveedores proveedores = proveedoresDAO.seleccionar_proveedor(id);
+        jTextField17.setText(proveedores.getNombre());
+        jTextField18.setText(proveedores.getTelefono());
+        if (proveedores.isEstado()==false){
+            jComboBox2.setSelectedIndex(1);
+        }
+      }
+    
+    public void modificarProveedor(){
+        int id = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());        
+        String nombre = jTextField17.getText();
+        String tel = jTextField18.getText();
+        boolean estado;
+        if (nombre.isEmpty() == true || tel.length()<10) {
+            JOptionPane.showMessageDialog(null, "Complete todos los campos");
+        } else{
+            if (jComboBox2.getSelectedIndex() == 0) {
+                estado = true;
+            } else {
+                estado = false;
+            }
+            Proveedores proveedores = new Proveedores(id, nombre, tel, estado);
+            ProveedoresDAO proveedoresDAO = new ProveedoresDAO();
+            if (proveedoresDAO.modificar(proveedores)==true) {
+                JOptionPane.showMessageDialog(null, "¡Éxito! Se actualizó el proveedor");
+                Modificar.dispose();
+                limpiarModificar();
+                cargarModelo(); 
+            } else {
+                JOptionPane.showMessageDialog(null, "¡Error! No se actualizó el proveedor");
+            } 
+        }   
+      }
+
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -274,6 +311,11 @@ public class Proveedore extends javax.swing.JPanel {
         jButton21.setBackground(new java.awt.Color(255, 255, 255));
         jButton21.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton21.setText("GUARDAR");
+        jButton21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton21ActionPerformed(evt);
+            }
+        });
 
         jButton22.setBackground(new java.awt.Color(255, 255, 255));
         jButton22.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -551,7 +593,7 @@ public class Proveedore extends javax.swing.JPanel {
         Modificar.setDefaultCloseOperation(0);
         try{
         int id = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-          //verCliente(id);
+        verProveedor(id);
         }catch(Exception e){
             JOptionPane.showMessageDialog(Modificar, "Error, debe seleccione un proveedor");
             Modificar.dispose();
@@ -568,12 +610,10 @@ public class Proveedore extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-String a = jTextField5.getText();
+        String a = jTextField5.getText();
         int uno = a.length();
         String b = jTextField6.getText();
         int dos = b.length();
-       
-         
 
         if (uno == 0 || dos == 0 ) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
@@ -641,6 +681,10 @@ String a = jTextField5.getText();
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
         filter();
     }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+        modificarProveedor();
+    }//GEN-LAST:event_jButton21ActionPerformed
 
     int crear() throws SQLException {
         String nombre = jTextField5.getText();

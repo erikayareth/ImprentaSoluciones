@@ -99,6 +99,52 @@ public class ProveedoresDAO {
         return id;
     }
       
+    public Proveedores seleccionar_proveedor(int id) {
+        Connection con = null;
+        PreparedStatement st = null;
+        Proveedores proveedores = new Proveedores();
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL seleccionar_proveedor(?)");
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                proveedores = inflaPOJO(rs);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al consultar proveedor" + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return proveedores;
+    }
+      
+    public boolean modificar(Proveedores pojo) {
+        Connection con = null;
+        PreparedStatement st = null;
+        Proveedores proveedores = pojo;
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL modificarProveedor(?,?,?,?)");
+            st.setInt(1, proveedores.getIdProveedor());
+            st.setString(2, proveedores.getNombre());
+            st.setString(3, proveedores.getTelefono());
+            st.setBoolean(4, proveedores.isEstado());
+            int x = st.executeUpdate();
+            if (x == 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al actualizar proveedor" + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return true;
+    }
+      
       private static Proveedores inflaPOJO(ResultSet rs){
         Proveedores pojo = new Proveedores();
         try {
