@@ -15,8 +15,10 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import pojo.Productos;
 import pojo.Proveedores;
@@ -31,6 +33,7 @@ public class Product extends javax.swing.JPanel {
     ProveedoresDAO p = new ProveedoresDAO();
     XH xh = new XH();
     JTableHeader th;
+    TableRowSorter<TableModel> sorter;
     
     public Product() throws SQLException {
         initComponents();
@@ -73,7 +76,6 @@ public class Product extends javax.swing.JPanel {
         dialogo.setSize(390, 665);
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
-       
     }
 
     void cargarDialogo2(JDialog dialogo, String nombre) {
@@ -94,6 +96,72 @@ public class Product extends javax.swing.JPanel {
         jTextField15.setText("");
         jTextField16.setText("");
     }
+    
+    public void filter(){
+        try{
+            sorter.setRowFilter(RowFilter.regexFilter(jTextField1.getText(), jComboBox1.getSelectedIndex()));
+        } catch (Exception e) {
+            System.out.println("texto vacio" +e);
+        }
+    }
+    
+    public void verProducto(int id){
+        ProductosDAO productosDAO = new ProductosDAO();
+        Productos productos = productosDAO.seleccionar_producto(id);
+        jTextField7.setText(productos.getNombre());
+        jTextField8.setText(productos.getDescripcion());
+        if (productos.isEstado()==false){
+            jComboBox4.setSelectedIndex(1);
+        }
+        jTextField9.setText(""+productos.getPrecio());
+        jTextField10.setText(""+productos.getPrecioMayoreo());
+        jTextField11.setText(""+productos.getCantidadMayoreo());
+        jTextField15.setText(""+productos.getStock());
+        jTextField16.setText(""+productos.getMinimo());
+        int proveedor = productos.getProveedor_idProveedor();
+        for (int i = 0; i < jComboBox5.getItemCount(); i++) {
+            if(i==proveedor){
+                jComboBox5.setSelectedIndex(i);
+            }
+        }
+    }
+    
+    public void modificarProducto(){
+        int id = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
+        String nombre = jTextField7.getText();
+        String desc = jTextField8.getText();
+        String tipov = (String) jComboBox4.getSelectedItem();
+        Proveedores t = (Proveedores) jComboBox5.getSelectedItem();
+        int proveedor = t.getIdProveedor();
+        boolean estado;
+        if (nombre.isEmpty() == true || desc.isEmpty() == true || tipov.isEmpty() == true) {
+            JOptionPane.showMessageDialog(null, "Complete todos los campos");
+        } else if (jTextField9.getText() == ""&&jTextField10.getText()==""&&jTextField9.getText()=="") {
+            if (jComboBox4.getSelectedIndex() == 0) {
+                estado = true;
+            } else {
+                estado = false;
+            }
+            double precio = Double.parseDouble(jTextField9.getText());
+            double precioM = Double.parseDouble(jTextField10.getText());
+            int cantM = Integer.parseInt(jTextField11.getText());
+            int stock = Integer.parseInt(jTextField15.getText());
+            int minimo = Integer.parseInt(jTextField16.getText());
+            Productos productos = new Productos(id, nombre, desc, tipov, precio, precioM, cantM, estado, proveedor, minimo, stock);
+            ProductosDAO productosDAO = new ProductosDAO();
+            if (productosDAO.modificar(productos)==true) {
+                JOptionPane.showMessageDialog(null, "Éxito al actualizar producto");
+                Modificar.dispose();
+                limpiarModificar();
+                cargarModelo(); 
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al actualizar producto");
+            } 
+        } else{
+            JOptionPane.showMessageDialog(null, "Complete todos los campos");
+        }   
+      }
+
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -311,11 +379,6 @@ public class Product extends javax.swing.JPanel {
                 .addGap(22, 22, 22)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton8)
-                        .addGap(29, 29, 29))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -355,7 +418,12 @@ public class Product extends javax.swing.JPanel {
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(60, Short.MAX_VALUE))))
+                        .addContainerGap(60, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton8)
+                        .addGap(81, 81, 81))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -426,6 +494,11 @@ public class Product extends javax.swing.JPanel {
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
         jButton9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton9.setText("GUARDAR");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
         jButton10.setBackground(new java.awt.Color(255, 255, 255));
         jButton10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -444,6 +517,8 @@ public class Product extends javax.swing.JPanel {
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel13.setText("Tipo de venta:");
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Por unidad", "Por paquete" }));
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel14.setText("Precio:");
@@ -487,6 +562,8 @@ public class Product extends javax.swing.JPanel {
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel18.setText("Estado:");
+
+        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
 
         jTextField15.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -783,6 +860,11 @@ public class Product extends javax.swing.JPanel {
                 jTextField1ActionPerformed(evt);
             }
         });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
         jPanel6.add(jTextField1);
 
         jPanel5.add(jPanel6, java.awt.BorderLayout.PAGE_START);
@@ -822,7 +904,7 @@ public class Product extends javax.swing.JPanel {
         Modificar.setDefaultCloseOperation(0);
         try{
         int id = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-          //verCliente(id);
+            verProducto(id);
         }catch(Exception e){
             JOptionPane.showMessageDialog(Modificar, "Error, debe seleccionar un producto");
             Modificar.dispose();
@@ -832,7 +914,7 @@ public class Product extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             cargarDialogo(Agregar, "Agregar producto");
-             Agregar.setDefaultCloseOperation(0);
+            Agregar.setDefaultCloseOperation(0);
             loadCombo();
         } catch (SQLException ex) {
             Logger.getLogger(Product.class.getName()).log(Level.SEVERE, null, ex);
@@ -882,7 +964,7 @@ public class Product extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-       String a = jTextField2.getText();
+        String a = jTextField2.getText();
         int uno = a.length();
         String b = jTextField3.getText();
         int dos = b.length();
@@ -894,12 +976,9 @@ public class Product extends javax.swing.JPanel {
         int cinco = e.length();
         String f = jTextField5.getText();
         int seis = f.length();
-         
-
         if (uno == 0 || dos == 0 || tres == 0 || cuatro == 0|| cinco ==0 || seis == 0||jComboBox2.getSelectedIndex()==0||jComboBox3.getSelectedIndex()==0) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
 //           limpiar();
-
         } else {
         try {
             // Agregar producto desde (JDialog)
@@ -1041,6 +1120,14 @@ public class Product extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(Modificar, "Ingresar solo números");
         }
     }//GEN-LAST:event_jTextField16KeyTyped
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        filter();
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        modificarProducto();
+    }//GEN-LAST:event_jButton9ActionPerformed
     
     public void vaciar() {
         jTextField3.setText("");
@@ -1074,6 +1161,9 @@ public class Product extends javax.swing.JPanel {
         ProductosDAO productoDAO = new ProductosDAO();
         DefaultTableModel dt = productoDAO.cargarModelo();
         jTable1.setModel(dt);
+        jTable1.setAutoCreateRowSorter(true);
+        sorter = new TableRowSorter<>(dt);
+        jTable1.setRowSorter(sorter);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

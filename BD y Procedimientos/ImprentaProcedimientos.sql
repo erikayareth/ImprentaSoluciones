@@ -12,7 +12,7 @@ create procedure insertarProducto(in nombrep Varchar(250), in descripcionp Text,
 in precioMayoreop double, in cantMayoreop int, in estadop boolean, in Proveedor_idProveedorp int,in stockp int, in minimop int)
 insert into Productos(nombre, descripcion, tipoDeVenta, precio, precioMayoreo, cantMayoreo, estado, Proveedor_idProveedor,stock,minimo) 
 values(nombrep, descripcionp, tipoDeVentap, preciop, precioMayoreop, cantMayoreop, estadop, Proveedor_idProveedorp,stockp,minimop);
-call insertarProducto("papel","papel couche tamaño 12","por paquete",true, 20,10,100,1,30,10);
+call insertarProducto("papel","papel couche tamaño 12","por paquete", 200, 100, 50, true, 1, 15, 10);
 select*from Productos;
 DROP PROCEDURE insertarProducto;
 
@@ -39,7 +39,7 @@ drop procedure insertarES;
 call insertarES(200,"para el de la basura",true);
 select*from EntradaSalida;
 
--- Mostrar proveedor
+-- Mostrar proveedores
 Delimiter // 
 create procedure select_all_proveedor()
 begin 
@@ -51,7 +51,7 @@ delimiter ;
 DELIMITER //
 CREATE PROCEDURE seleccionar_producto(IN id INT) 
 BEGIN
-	SELECT idProductos, nombre, descripcion, precio FROM productos WHERE idProductos = id;
+	SELECT*FROM productos WHERE idProductos = id;
 END //
 delimiter ;
 DROP PROCEDURE seleccionar_producto;
@@ -63,6 +63,7 @@ BEGIN
 	SELECT * FROM productos;
 END//
 DELIMITER ;
+
 -- Mostrar cotizaciones
 DELIMITER //
 CREATE PROCEDURE select_all_cotizacion()
@@ -70,6 +71,7 @@ BEGIN
 	SELECT * FROM cotizacion;
 END//
 DELIMITER ;
+
 -- Mostrar ventas
 DELIMITER //
 CREATE PROCEDURE select_all_ventas()
@@ -78,8 +80,8 @@ BEGIN
 END//
 DELIMITER ;
 drop procedure select_all_ventas;
-
 call select_all_ventas();
+
 -- Mostrar salidas
 DELIMITER //
 CREATE PROCEDURE select_all_salidas()
@@ -89,6 +91,7 @@ END//
 DELIMITER ;
 drop procedure select_all_salidas;
 call select_all_salidas;
+
 -- Mostrar entradas
 DELIMITER //
 CREATE PROCEDURE select_all_entradas()
@@ -98,3 +101,33 @@ END//
 DELIMITER ;
 drop procedure select_all_entradas;
 call select_all_entradas;
+
+-- Modificar Producto
+DELIMITER //
+CREATE PROCEDURE modificarProducto(IN idProductosp INT, IN nombrep Varchar(250), IN descripcionp Text, IN tipoDeVentap Enum('por paquete','por unidad'), IN preciop Double, 
+IN precioMayoreop Double, IN cantMayoreop Int, IN estadop Boolean, IN Proveedor_idProveedorp Int, IN stockp int, IN minimop Int)
+BEGIN
+UPDATE Productos SET nombre=nombrep, descripcion=descripcionp, tipoDeVenta=tipoDeVentap, precio=preciop, precioMayoreo=precioMayoreop, 
+cantMayoreo=cantMayoreop, estado=estadop, Proveedor_idProveedor=Proveedor_idProveedorp, stock=stockp, minimo=minimop
+WHERE idProductos=idProductosp;
+END //
+DELIMITER ;
+call modificarProducto(3, "Impresora", "papel couche tamaño 12", "por paquete", 20, 10, 5, true, 1, 30, 10);
+
+-- Modificar Proveedor
+DELIMITER //
+CREATE PROCEDURE modificarProveedor(IN idProveedorp INT, IN nombrep VARCHAR(100), IN telefonop VARCHAR(10), IN estadop BOOLEAN)
+BEGIN
+UPDATE Proveedor SET nombre=nombrep, telefono=telefonop, estado=estadop
+WHERE idProveedor=idProveedorp;
+END//
+DELIMITER ;
+CALL modificarProveedor(2, "Proveedor fav", "1234567898", true);
+
+-- Seleccionar un Proveedor 
+DELIMITER //
+CREATE PROCEDURE seleccionar_proveedor(IN id INT)
+BEGIN
+	SELECT*FROM Proveedor WHERE idProveedor = id;
+END //
+DELIMITER ;

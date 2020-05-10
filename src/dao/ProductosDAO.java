@@ -5,7 +5,6 @@
  */
 package dao;
 
-
 import interfaces.XH;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,47 +22,46 @@ import pojo.Proveedores;
  * @author Meraki .-. ._.
  */
 public class ProductosDAO {
-    
-        public boolean modificarStock( int Stock,int idp){
+
+    public boolean modificarStock(int Stock, int idp) {
         Connection con = null;
         PreparedStatement st = null;
-        
-        try{
+
+        try {
             con = Conexion.getConnection();
             st = con.prepareStatement("update productos set stock=? where idProductos=?");
-            
-            st.setInt(2,idp);           
-            st.setInt(1,Stock);
+
+            st.setInt(2, idp);
+            st.setInt(1, Stock);
             int x = st.executeUpdate();
-            if (x==0) {
+            if (x == 0) {
                 return false;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Error al actualizar Stock" + e);
-        }finally{
+        } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return true;
     }
-     
-     
-     public Productos listarID(int id){
-        Productos p=new Productos();
-         Connection con = null;
+
+    public Productos listarID(int id) {
+        Productos p = new Productos();
+        Connection con = null;
         PreparedStatement st = null;
-       
+
         try {
             con = Conexion.getConnection();
-           st = con.prepareStatement("select * from productos where IdProductos=?");
+            st = con.prepareStatement("select * from productos where IdProductos=?");
             st.setInt(1, id);
-             ResultSet rs = st.executeQuery();
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 p.setIdProducto(rs.getInt(1));
                 p.setNombre(rs.getString(2));
                 p.setPrecio(rs.getDouble(3));
                 p.setStock(rs.getInt(4));
-               
+
             }
         } catch (Exception e) {
         }
@@ -90,12 +88,13 @@ public class ProductosDAO {
 //        }
 //        return true;
 //    }
-     public int insertar(Productos producto) throws SQLException {
+
+    public int insertar(Productos producto) throws SQLException {
         Connection con = null;
         PreparedStatement st = null;
         int id = 0;
-        try{
-            con = Conexion.getConnection(); 
+        try {
+            con = Conexion.getConnection();
             st = con.prepareStatement("call insertarProducto(?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, producto.getNombre().toUpperCase());
             st.setString(2, producto.getDescripcion().toUpperCase());
@@ -112,17 +111,16 @@ public class ProductosDAO {
             if (rs.next()) {
                 id = rs.getInt(1);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Eror al insertar producto" + e);
-        }finally{
+        } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return id;
     }
-     
-     
-      public Productos consultar(int id) {
+
+    public Productos consultar(int id) {
         Connection con = null;
         PreparedStatement st = null;
         Productos pojo = new Productos();
@@ -142,11 +140,11 @@ public class ProductosDAO {
         }
         return pojo;
     }
-      
-      public Productos seleccionar_producto(int id) {
+
+    public Productos seleccionar_producto(int id) {
         Connection con = null;
         PreparedStatement st = null;
-          Productos productos = new Productos();
+        Productos productos = new Productos();
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL seleccionar_producto(?)");
@@ -164,8 +162,8 @@ public class ProductosDAO {
         }
         return productos;
     }
-   
-     public DefaultTableModel cargarModelo()  {
+
+    public DefaultTableModel cargarModelo() {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
@@ -189,8 +187,7 @@ public class ProductosDAO {
                 ob[7] = rs.getDouble("stock");
                 ob[8] = rs.getDouble("minimo");
                 dt.addRow(ob);
-                
-               
+
             }
             rs.close();
         } catch (Exception e) {
@@ -201,11 +198,12 @@ public class ProductosDAO {
         }
         return dt;
     }
-     public DefaultTableModel cargarModelo2 ()  {
+
+    public DefaultTableModel cargarModelo2() {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID", "Nombre", "Descripción",  "Precio","Tipo de venta", "Cantidad"};
+        String encabezados[] = {"ID", "Nombre", "Descripción", "Precio", "Tipo de venta", "Cantidad"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_productos()");
@@ -221,7 +219,7 @@ public class ProductosDAO {
                 ob[3] = rs.getDouble("precio");
                 ob[4] = rs.getString("tipoDeVenta");
                 ob[5] = rs.getDouble("stock");
-                
+
                 dt.addRow(ob);
             }
             rs.close();
@@ -233,37 +231,39 @@ public class ProductosDAO {
         }
         return dt;
     }
-     
-     
-//      public boolean modificar(Productos Nino){
-//        Connection con = null;
-//        PreparedStatement st = null;
-//        
-//        try{
-//            con = Conexion.getConnection();
-//            st = con.prepareStatement("CALL modificarProducto(?,?,?,?,?,?,?,?)");
-//            st.setInt(1, Nino.getIdnino());
-//            st.setString(2, Nino.getNombre().toUpperCase());
-//            st.setString(3, Nino.getApellido().toUpperCase());
-//            st.setString(4, Nino.getSexo());
-//            st.setDate(5, Nino.getFecha_nac());
-//            st.setString(6, Nino.getEnfermedad().toUpperCase());
-//            st.setInt(7, Nino.getTutor_idtutor());
-//            st.setInt(8, Nino.getMaestra_idmaestra());
-//            int x = st.executeUpdate();
-//            if (x==0) {
-//                return false;
-//            }
-//        }catch(Exception e){
-//            System.out.println("Error al actualizar Nino" + e);
-//        }finally{
-//            Conexion.close(con);
-//            Conexion.close(st);
-//        }
-//        return true;
-//    }
-     
-      private static Productos inflaPOJO(ResultSet rs){
+
+    public boolean modificar(Productos pojo) {
+        Connection con = null;
+        PreparedStatement st = null;
+        Productos productos = pojo;
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL modificarProducto(?,?,?,?,?,?,?,?,?,?,?)");
+            st.setInt(1, productos.getIdProducto());
+            st.setString(2, productos.getNombre());
+            st.setString(3, productos.getDescripcion());
+            st.setString(4, productos.getTipoDeVenta());
+            st.setDouble(5, productos.getPrecio());
+            st.setDouble(6, productos.getPrecioMayoreo());
+            st.setDouble(7, productos.getCantidadMayoreo());
+            st.setBoolean(8, productos.isEstado());
+            st.setInt(9, productos.getProveedor_idProveedor());
+            st.setInt(10, productos.getStock());
+            st.setInt(11, productos.getMinimo());
+            int x = st.executeUpdate();
+            if (x == 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al actualizar producto" + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return true;
+    }
+
+    private static Productos inflaPOJO(ResultSet rs) {
         Productos pojo = new Productos();
         try {
             pojo.setIdProducto(rs.getInt("idProductos"));
@@ -282,7 +282,5 @@ public class ProductosDAO {
         }
         return pojo;
     }
-      
-    
-    
+
 }
