@@ -126,8 +126,6 @@ public class Productos {
         return estado;
     }
     
-    
-
     public int getProveedor_idProveedor() {
         return Proveedor_idProveedor;
     }
@@ -152,6 +150,9 @@ public class Productos {
         this.minimo = minimo;
     }
    
-   
+    @Override
+    public String toString() {
+        return getNombre();
+    }
     
 }

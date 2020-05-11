@@ -61,7 +61,7 @@ public class ProveedoresDAO {
                 Object ob[] = new Object[3];
                 Proveedores pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idProveedor");
-                ob[1] = rs.getString("nombre");
+                ob[1] = rs.getString("nombre").toUpperCase();
                 ob[2] = rs.getString("telefono");          
                 dt.addRow(ob);
             }
@@ -90,7 +90,7 @@ public class ProveedoresDAO {
                 Object ob[] = new Object[3];
                 Proveedores pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idProveedor");
-                ob[1] = rs.getString("nombre");
+                ob[1] = rs.getString("nombre").toUpperCase();
                 ob[2] = rs.getString("telefono");          
                 dt.addRow(ob);
             }

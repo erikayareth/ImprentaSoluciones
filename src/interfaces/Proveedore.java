@@ -104,18 +104,20 @@ public class Proveedore extends javax.swing.JPanel {
     
     public void filter(){
         try{
-            sorter.setRowFilter(RowFilter.regexFilter(jTextField1.getText(), jComboBox1.getSelectedIndex()));
+            sorter.setRowFilter(RowFilter.regexFilter(jTextField1.getText().toUpperCase(), jComboBox1.getSelectedIndex()));
         } catch (Exception e) {
             System.out.println("texto vacio" +e);
         }
     }
-    
+  
     public void verProveedor(int id){
         ProveedoresDAO proveedoresDAO = new ProveedoresDAO();
         Proveedores proveedores = proveedoresDAO.seleccionar_proveedor(id);
         jTextField17.setText(proveedores.getNombre());
         jTextField18.setText(proveedores.getTelefono());
-        if (proveedores.isEstado()==false){
+        if (proveedores.isEstado()==true){
+            jComboBox2.setSelectedIndex(0);
+        } else {
             jComboBox2.setSelectedIndex(1);
         }
       }

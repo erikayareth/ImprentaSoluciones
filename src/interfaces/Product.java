@@ -32,6 +32,8 @@ public class Product extends javax.swing.JPanel {
     ProductosDAO ppd;
     ProveedoresDAO p = new ProveedoresDAO();
     XH xh = new XH();
+    Inventa inventa = new Inventa();
+    Cotizacion cotizacion = new Cotizacion();
     JTableHeader th;
     TableRowSorter<TableModel> sorter;
     
@@ -99,7 +101,7 @@ public class Product extends javax.swing.JPanel {
     
     public void filter(){
         try{
-            sorter.setRowFilter(RowFilter.regexFilter(jTextField1.getText(), jComboBox1.getSelectedIndex()));
+            sorter.setRowFilter(RowFilter.regexFilter(jTextField1.getText().toUpperCase(), jComboBox1.getSelectedIndex()));
         } catch (Exception e) {
             System.out.println("texto vacio" +e);
         }
@@ -110,7 +112,9 @@ public class Product extends javax.swing.JPanel {
         Productos productos = productosDAO.seleccionar_producto(id);
         jTextField7.setText(productos.getNombre());
         jTextField8.setText(productos.getDescripcion());
-        if (productos.isEstado()==false){
+        if (productos.isEstado()==true){
+            jComboBox6.setSelectedIndex(0);
+        } else{ 
             jComboBox6.setSelectedIndex(1);
         }
         jTextField9.setText(""+productos.getPrecio());
@@ -155,8 +159,11 @@ public class Product extends javax.swing.JPanel {
             if (productosDAO.modificar(productos)==true) {
                 JOptionPane.showMessageDialog(null, "Éxito al actualizar producto");
                 Modificar.dispose();
-                limpiarModificar();
                 cargarModelo();
+                xh.cargarModelo();
+                cotizacion.cargarModelo();
+                inventa.cargarModelo();
+                limpiarModificar();
                 if(jRadioButton2.isSelected()){
                     cargarModelo2();
                 }
@@ -1010,6 +1017,8 @@ public class Product extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(Agregar, "¡Éxito! Se registró el producto");
                 vaciar();
                 xh.cargarModelo();
+                cotizacion.cargarModelo();
+                inventa.cargarModelo();
                 cargarModelo();
                 Agregar.dispose();
             } else {

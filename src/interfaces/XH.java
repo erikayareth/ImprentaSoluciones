@@ -7,6 +7,8 @@ package interfaces;
 
 //import com.mxrck.autocompleter.AutoCompleterCallback;
 //import com.mxrck.autocompleter.TextAutoCompleter;
+import com.mxrck.autocompleter.AutoCompleterCallback;
+import com.mxrck.autocompleter.TextAutoCompleter;
 import dao.EntradaSalidaDAO;
 import dao.ProductosDAO;
 import dao.VentasDAO;
@@ -49,7 +51,10 @@ public class XH extends javax.swing.JPanel {
     JTableHeader th;
     TableRowSorter<TableModel> sorter;
     TableRowSorter<TableModel> sorter2;
-
+    TableRowSorter<TableModel> sorter3; 
+    TableRowSorter<TableModel> sorter4; 
+    TextAutoCompleter textAutoCompleter;
+    
     public XH() {
         initComponents();
         this.setBackground(Color.WHITE);
@@ -78,7 +83,6 @@ public class XH extends javax.swing.JPanel {
         configureTable();
       
         jScrollPane6.getViewport().setBackground(Color.white);
-
 //       text = new TextAutoCompleter(jTextField1,new AutoCompleterCallback(){
 //           @Override 
 //           public void callback (Object o ){
@@ -89,7 +93,6 @@ public class XH extends javax.swing.JPanel {
 //        });
     }
     
-
     void configureTable() {
         jTable6.setDefaultRenderer(Object.class, new MyJTableCellRenderer());
         jTable6.setRowHeight(20);
@@ -108,12 +111,18 @@ public class XH extends javax.swing.JPanel {
         EntradaSalidaDAO esd = new EntradaSalidaDAO();
         DefaultTableModel dt = esd.cargarModelo();
         jTable3.setModel(dt);
+        jTable3.setAutoCreateRowSorter(true);
+        sorter3 = new TableRowSorter<>(dt);
+        jTable3.setRowSorter(sorter3);
     }
 
     public void cargarModeloSalida() {
         EntradaSalidaDAO esd = new EntradaSalidaDAO();
         DefaultTableModel dt = esd.cargarModelo2();
         jTable4.setModel(dt);
+        jTable4.setAutoCreateRowSorter(true);
+        sorter4 = new TableRowSorter<>(dt);
+        jTable4.setRowSorter(sorter4);
     }
 
     public void cargarModeloVenata() {
@@ -124,6 +133,7 @@ public class XH extends javax.swing.JPanel {
         sorter2 = new TableRowSorter<>(dt);
         jTable5.setRowSorter(sorter2);
     }
+    
 //      void loadAutoCompleter(){
 //        
 //            Productos person = new Productos(pp.consultar()+"");
@@ -262,7 +272,23 @@ public class XH extends javax.swing.JPanel {
     
     public void filter2(){
         try{
-            sorter2.setRowFilter(RowFilter.regexFilter(jTextField12.getText(), jComboBox3.getSelectedIndex()));
+            sorter2.setRowFilter(RowFilter.regexFilter(jTextField12.getText().toUpperCase(), jComboBox3.getSelectedIndex()));
+        } catch (Exception e) {
+            System.out.println("texto vacio" +e);
+        }
+    }
+    
+    public void filter3(){
+        try{
+            sorter3.setRowFilter(RowFilter.regexFilter(jTextField4.getText().toUpperCase(), jComboBox1.getSelectedIndex()));
+        } catch (Exception e) {
+            System.out.println("texto vacio" +e);
+        }
+    }
+    
+    public void filter4(){
+        try{
+            sorter4.setRowFilter(RowFilter.regexFilter(jTextField15.getText().toUpperCase(), jComboBox4.getSelectedIndex()));
         } catch (Exception e) {
             System.out.println("texto vacio" +e);
         }
@@ -994,7 +1020,18 @@ public class XH extends javax.swing.JPanel {
         ));
         jScrollPane3.setViewportView(jTable3);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cantidad", " " }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cantidad", "Descripción", "Fecha" }));
+
+        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField4ActionPerformed(evt);
+            }
+        });
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField4KeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -1082,6 +1119,24 @@ public class XH extends javax.swing.JPanel {
         ));
         jScrollPane4.setViewportView(jTable4);
 
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cantidad", "Descripción", "Fecha" }));
+        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox4ActionPerformed(evt);
+            }
+        });
+
+        jTextField15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField15ActionPerformed(evt);
+            }
+        });
+        jTextField15.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField15KeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
@@ -1099,11 +1154,11 @@ public class XH extends javax.swing.JPanel {
                         .addComponent(jLabel22)
                         .addGap(53, 53, 53))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel12Layout.createSequentialGroup()
-                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField15))
+                                .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26))))
         );
@@ -1643,7 +1698,6 @@ public class XH extends javax.swing.JPanel {
                     vaciar2();
                     cargarModeloSalida();
                     Salida.dispose();
-
                 } else {
                     JOptionPane.showMessageDialog(Salida, "¡Ha ocurrido un problema! Revisa tus datos");
                 }
@@ -1751,6 +1805,24 @@ public class XH extends javax.swing.JPanel {
     private void jTextField12KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField12KeyReleased
         filter2();
     }//GEN-LAST:event_jTextField12KeyReleased
+
+    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox4ActionPerformed
+
+    private void jTextField15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField15ActionPerformed
+    }//GEN-LAST:event_jTextField15ActionPerformed
+
+    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_jTextField4ActionPerformed
+
+    private void jTextField15KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField15KeyReleased
+        filter4();
+    }//GEN-LAST:event_jTextField15KeyReleased
+
+    private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
+        filter3();
+    }//GEN-LAST:event_jTextField4KeyReleased
     
     public void vaciar() {
         jTextField5.setText("");

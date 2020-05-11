@@ -126,7 +126,7 @@ public class ProductosDAO {
         Productos pojo = new Productos();
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("CALL select_all_producto()");
+            st = con.prepareStatement("CALL select_all_productos()");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -141,6 +141,27 @@ public class ProductosDAO {
         return pojo;
     }
 
+    public Productos seleccionar_productos() {
+        Connection con = null;
+        PreparedStatement st = null;
+        Productos pojo = new Productos();
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL select_all_productos()");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[9];
+                pojo = inflaPOJO(rs);
+            }
+        } catch (Exception e) {
+            System.out.println("Error al seleccionar productos" + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return pojo;
+    }
+    
     public Productos seleccionar_producto(int id) {
         Connection con = null;
         PreparedStatement st = null;
@@ -162,7 +183,7 @@ public class ProductosDAO {
         }
         return productos;
     }
-
+     
     public DefaultTableModel cargarModelo() {
         Connection con = null;
         PreparedStatement st = null;
@@ -178,8 +199,8 @@ public class ProductosDAO {
                 Object ob[] = new Object[9];
                 Productos pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idProductos");
-                ob[1] = rs.getString("nombre");
-                ob[2] = rs.getString("descripcion");
+                ob[1] = rs.getString("nombre").toUpperCase();
+                ob[2] = rs.getString("descripcion").toUpperCase();
                 ob[3] = rs.getString("tipoDeVenta");
                 ob[4] = rs.getDouble("precio");
                 ob[5] = rs.getDouble("precioMayoreo");
@@ -213,8 +234,8 @@ public class ProductosDAO {
                 Object ob[] = new Object[9];
                 Productos pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idProductos");
-                ob[1] = rs.getString("nombre");
-                ob[2] = rs.getString("descripcion");
+                ob[1] = rs.getString("nombre").toUpperCase();
+                ob[2] = rs.getString("descripcion").toUpperCase();
                 ob[3] = rs.getString("tipoDeVenta");
                 ob[4] = rs.getDouble("precio");
                 ob[5] = rs.getDouble("precioMayoreo");
@@ -248,8 +269,8 @@ public class ProductosDAO {
                 Object ob[] = new Object[6];
                 Productos pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idProductos");
-                ob[1] = rs.getString("nombre");
-                ob[2] = rs.getString("descripcion");
+                ob[1] = rs.getString("nombre").toUpperCase();
+                ob[2] = rs.getString("descripcion").toUpperCase();
                 ob[3] = rs.getDouble("precio");
                 ob[4] = rs.getString("tipoDeVenta");
                 ob[5] = rs.getDouble("stock");
@@ -265,6 +286,38 @@ public class ProductosDAO {
         return dt;
     }
 
+    public DefaultTableModel cargarModeloProductosBajos() {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultTableModel dt = null;
+        String encabezados[] = {"ID", "Nombre", "Descripcion", "Precio", "Stock", "Mínimo"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL select_all_productos3()");
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[6];
+                Productos pojo = inflaPOJO(rs);
+                ob[0] = rs.getInt("idProductos");
+                ob[1] = rs.getString("nombre").toUpperCase();
+                ob[2] = rs.getString("descripcion").toUpperCase();
+                ob[3] = rs.getDouble("precio");
+                ob[4] = rs.getInt("stock");
+                ob[5] = rs.getInt("minimo");
+                dt.addRow(ob);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla productos2 " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
+    
     public boolean modificar(Productos pojo) {
         Connection con = null;
         PreparedStatement st = null;

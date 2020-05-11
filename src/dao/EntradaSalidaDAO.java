@@ -59,7 +59,7 @@ public class EntradaSalidaDAO {
                 Object ob[] = new Object[3];
                 EntradaSalida pojo = inflaPOJO(rs);
                 ob[0] = rs.getDouble("cantidad");
-                ob[1] = rs.getString("comentario");
+                ob[1] = rs.getString("comentario").toUpperCase();
                 ob[2] = rs.getTimestamp("fecha");
                 
                 dt.addRow(ob);
@@ -73,6 +73,7 @@ public class EntradaSalidaDAO {
         }
         return dt;
     }
+      
       public DefaultTableModel cargarModelo2()  {
         Connection con = null;
         PreparedStatement st = null;
@@ -88,7 +89,7 @@ public class EntradaSalidaDAO {
                 Object ob[] = new Object[3];
                 EntradaSalida pojo = inflaPOJO(rs);
                 ob[0] = rs.getDouble("cantidad");
-                ob[1] = rs.getString("comentario");
+                ob[1] = rs.getString("comentario").toUpperCase();
                 ob[2] = rs.getTimestamp("fecha");
                 
                 dt.addRow(ob);

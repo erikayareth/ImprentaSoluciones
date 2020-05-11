@@ -5,10 +5,14 @@
  */
 package interfaces;
 
+import dao.ProductosDAO;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -16,12 +20,11 @@ import javax.swing.JOptionPane;
  */
 public class Inventa extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Inventa
-     */
+    TableRowSorter<TableModel> sorter; 
+     
     public Inventa() {
         initComponents();
-         this.setBackground(Color.WHITE);
+        this.setBackground(Color.WHITE);
         Color fondo = new Color(24, 192, 221);
         jPanel3.setBackground(fondo);
         jPanel1.setBackground(Color.WHITE);
@@ -29,8 +32,19 @@ public class Inventa extends javax.swing.JPanel {
         jPanel6.setBackground(Color.WHITE);
         jPanel7.setBackground(Color.WHITE);
         jPanel8.setBackground(Color.WHITE);
+        cargarModelo();
     }
- void cargarDialogo(JDialog dialogo, String nombre){
+ 
+    public void cargarModelo() {
+        ProductosDAO productosDAO = new ProductosDAO();
+        DefaultTableModel dt = productosDAO.cargarModeloProductosBajos();
+        jTable2.setModel(dt);
+        jTable2.setAutoCreateRowSorter(true);
+        sorter = new TableRowSorter<>(dt);
+        jTable2.setRowSorter(sorter);
+    }
+    
+    void cargarDialogo(JDialog dialogo, String nombre){
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());

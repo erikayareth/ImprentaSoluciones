@@ -12,7 +12,7 @@ create procedure insertarProducto(in nombrep Varchar(250), in descripcionp Text,
 in precioMayoreop double, in cantMayoreop int, in estadop boolean, in Proveedor_idProveedorp int,in stockp int, in minimop int)
 insert into Productos(nombre, descripcion, tipoDeVenta, precio, precioMayoreo, cantMayoreo, estado, Proveedor_idProveedor,stock,minimo) 
 values(nombrep, descripcionp, tipoDeVentap, preciop, precioMayoreop, cantMayoreop, estadop, Proveedor_idProveedorp,stockp,minimop);
-call insertarProducto("papel","papel couche tamaño 12","por paquete", 200, 100, 50, true, 1, 15, 10);
+call insertarProducto("papel","papel couche tamaño 12","por paquete", 200, 100, 50, true, 1, 10, 10);
 select*from Productos;
 DROP PROCEDURE insertarProducto;
 
@@ -21,7 +21,7 @@ select*from productos;
 -- insertar proveedor 
 create procedure insertarProveedor(in nombrep Varchar(100), in telefonop varchar(10), in estadop boolean)
 insert into Proveedor(nombre,telefono,estado) values(nombrep,telefonop,estadop);
-call insertarProveedor("papel","2292530108", true);
+call insertarProveedor("PAPEL","2292530108", true);
 select*from Proveedor;
 DROP PROCEDURE insertarProveedor;
 
@@ -80,6 +80,15 @@ BEGIN
 END//
 DELIMITER ;
 DROP PROCEDURE select_all_productos2;
+
+-- Mostrar Productos Bajos en Inventarios
+DELIMITER //
+CREATE PROCEDURE select_all_productos3()
+BEGIN 
+	SELECT*from Productos WHERE stock<=minimo and estado=1;
+END//
+DELIMITER ;
+DROP PROCEDURE select_all_productos3;
 
 -- Mostrar cotizaciones
 DELIMITER //
@@ -148,3 +157,4 @@ BEGIN
 	SELECT*FROM Proveedor WHERE idProveedor = id;
 END //
 DELIMITER ;
+
