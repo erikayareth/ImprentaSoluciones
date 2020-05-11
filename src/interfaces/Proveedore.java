@@ -87,6 +87,15 @@ public class Proveedore extends javax.swing.JPanel {
         sorter = new TableRowSorter<>(dt);
         jTable1.setRowSorter(sorter);
     }
+    
+    public void cargarModelo2() {
+        ProveedoresDAO ninoDAO = new ProveedoresDAO();
+        DefaultTableModel dt = ninoDAO.cargarModeloInactivos();
+        jTable1.setModel(dt);
+        jTable1.setAutoCreateRowSorter(true);
+        sorter = new TableRowSorter<>(dt);
+        jTable1.setRowSorter(sorter);
+    }
 
     public void limpiarModificar(){
         jTextField17.setText("");
@@ -131,6 +140,9 @@ public class Proveedore extends javax.swing.JPanel {
                 Modificar.dispose();
                 limpiarModificar();
                 cargarModelo(); 
+                if(jRadioButton2.isSelected()){
+                    cargarModelo2();
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "¡Error! No se actualizó el proveedor");
             } 
@@ -514,6 +526,11 @@ public class Proveedore extends javax.swing.JPanel {
         jRadioButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jRadioButton1.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton1.setText("VER ACTIVOS");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
         jPanel3.add(jRadioButton1);
 
         buttonGroup1.add(jRadioButton2);
@@ -595,7 +612,7 @@ public class Proveedore extends javax.swing.JPanel {
         int id = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
         verProveedor(id);
         }catch(Exception e){
-            JOptionPane.showMessageDialog(Modificar, "Error, debe seleccione un proveedor");
+            JOptionPane.showMessageDialog(Modificar, "Error, debe seleccionar un proveedor");
             Modificar.dispose();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -653,7 +670,7 @@ public class Proveedore extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton23ActionPerformed
 
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        // TODO add your handling code here:
+        cargarModelo2();
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
@@ -685,6 +702,10 @@ public class Proveedore extends javax.swing.JPanel {
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
         modificarProveedor();
     }//GEN-LAST:event_jButton21ActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        cargarModelo();
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     int crear() throws SQLException {
         String nombre = jTextField5.getText();

@@ -187,7 +187,41 @@ public class ProductosDAO {
                 ob[7] = rs.getDouble("stock");
                 ob[8] = rs.getDouble("minimo");
                 dt.addRow(ob);
-
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla productos " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
+    
+    public DefaultTableModel cargarModeloInactivos() {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultTableModel dt = null;
+        String encabezados[] = {"ID", "Nombre", "Descripción", "Tipo de venta", "Precio", "Precio mayoreo", "Cantidad de mayoreo", "Stock", "Mínimo"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL select_all_productos2()");
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[9];
+                Productos pojo = inflaPOJO(rs);
+                ob[0] = rs.getInt("idProductos");
+                ob[1] = rs.getString("nombre");
+                ob[2] = rs.getString("descripcion");
+                ob[3] = rs.getString("tipoDeVenta");
+                ob[4] = rs.getDouble("precio");
+                ob[5] = rs.getDouble("precioMayoreo");
+                ob[6] = rs.getDouble("cantMayoreo");
+                ob[7] = rs.getDouble("stock");
+                ob[8] = rs.getDouble("minimo");
+                dt.addRow(ob);
             }
             rs.close();
         } catch (Exception e) {
@@ -219,7 +253,6 @@ public class ProductosDAO {
                 ob[3] = rs.getDouble("precio");
                 ob[4] = rs.getString("tipoDeVenta");
                 ob[5] = rs.getDouble("stock");
-
                 dt.addRow(ob);
             }
             rs.close();

@@ -60,9 +60,18 @@ DROP PROCEDURE seleccionar_producto;
 DELIMITER //
 CREATE PROCEDURE select_all_productos()
 BEGIN 
-	SELECT * FROM productos;
+	SELECT * FROM productos WHERE estado = 1;
 END//
 DELIMITER ;
+
+-- Mostrar Productos Inactivos
+DELIMITER //
+CREATE PROCEDURE select_all_productos2()
+BEGIN 
+	SELECT * FROM productos WHERE estado = 0;
+END//
+DELIMITER ;
+DROP PROCEDURE select_all_productos2;
 
 -- Mostrar cotizaciones
 DELIMITER //
@@ -122,7 +131,7 @@ UPDATE Proveedor SET nombre=nombrep, telefono=telefonop, estado=estadop
 WHERE idProveedor=idProveedorp;
 END//
 DELIMITER ;
-CALL modificarProveedor(2, "Proveedor fav", "1234567898", true);
+CALL modificarProveedor(2, "Proveedor", "1234567898", true);
 
 -- Seleccionar un Proveedor 
 DELIMITER //

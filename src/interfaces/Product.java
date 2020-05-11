@@ -50,7 +50,7 @@ public class Product extends javax.swing.JPanel {
         configureTable();
         jScrollPane1.getViewport().setBackground(Color.white);
         jRadioButton1.setSelected(true);
-         th = jTable1.getTableHeader();
+        th = jTable1.getTableHeader();
         Font fuente = new Font("TimesNewRoman", Font.PLAIN, 15);
         th.setFont(fuente);
         // cambia el fondo del encabezado de la tabla
@@ -111,7 +111,7 @@ public class Product extends javax.swing.JPanel {
         jTextField7.setText(productos.getNombre());
         jTextField8.setText(productos.getDescripcion());
         if (productos.isEstado()==false){
-            jComboBox4.setSelectedIndex(1);
+            jComboBox6.setSelectedIndex(1);
         }
         jTextField9.setText(""+productos.getPrecio());
         jTextField10.setText(""+productos.getPrecioMayoreo());
@@ -134,14 +134,17 @@ public class Product extends javax.swing.JPanel {
         Proveedores t = (Proveedores) jComboBox5.getSelectedItem();
         int proveedor = t.getIdProveedor();
         boolean estado;
-        if (nombre.isEmpty() == true || desc.isEmpty() == true || tipov.isEmpty() == true) {
+        if (jComboBox6.getSelectedIndex() == 0) {
+            estado = true;
+        } else {
+            estado = false;
+        }
+        if (nombre.isEmpty() == true || desc.isEmpty() == true || tipov.isEmpty() == true || 
+                jTextField9.getText().length()==0 || jTextField10.getText().length()==0 || 
+                jTextField11.getText().length()==0 || jTextField15.getText().length()==0 ||
+                jTextField16.getText().length()==0) {
             JOptionPane.showMessageDialog(null, "Complete todos los campos");
-        } else if (jTextField9.getText() == ""&&jTextField10.getText()==""&&jTextField9.getText()=="") {
-            if (jComboBox4.getSelectedIndex() == 0) {
-                estado = true;
-            } else {
-                estado = false;
-            }
+        } else {
             double precio = Double.parseDouble(jTextField9.getText());
             double precioM = Double.parseDouble(jTextField10.getText());
             int cantM = Integer.parseInt(jTextField11.getText());
@@ -153,13 +156,14 @@ public class Product extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "Éxito al actualizar producto");
                 Modificar.dispose();
                 limpiarModificar();
-                cargarModelo(); 
+                cargarModelo();
+                if(jRadioButton2.isSelected()){
+                    cargarModelo2();
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Error al actualizar producto");
             } 
-        } else{
-            JOptionPane.showMessageDialog(null, "Complete todos los campos");
-        }   
+        }
       }
 
     
@@ -253,6 +257,11 @@ public class Product extends javax.swing.JPanel {
 
         jRadioButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jRadioButton4.setText("Ver Activos");
+        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton4ActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -833,12 +842,27 @@ public class Product extends javax.swing.JPanel {
         jRadioButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jRadioButton1.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton1.setText("VER ACTIVOS");
+        jRadioButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton1MouseClicked(evt);
+            }
+        });
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
         jPanel4.add(jRadioButton1);
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jRadioButton2.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton2.setText("VER INACTIVOS");
+        jRadioButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton2MouseClicked(evt);
+            }
+        });
         jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton2ActionPerformed(evt);
@@ -926,11 +950,11 @@ public class Product extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        // TODO add your handling code here:
+        cargarModelo2();
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
-        // TODO add your handling code here:
+        cargarModelo2();
     }//GEN-LAST:event_jRadioButton3ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -1128,6 +1152,22 @@ public class Product extends javax.swing.JPanel {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         modificarProducto();
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        cargarModelo();
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jRadioButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton1MouseClicked
+
+    }//GEN-LAST:event_jRadioButton1MouseClicked
+
+    private void jRadioButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton2MouseClicked
+
+    }//GEN-LAST:event_jRadioButton2MouseClicked
+
+    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+        cargarModelo2();
+    }//GEN-LAST:event_jRadioButton4ActionPerformed
     
     public void vaciar() {
         jTextField3.setText("");
@@ -1152,7 +1192,7 @@ public class Product extends javax.swing.JPanel {
         int stock = Integer.parseInt(jTextField12.getText());
         int minimo = Integer.parseInt(jTextField14.getText());
       
-        Productos m = new Productos(nombre, desc, tipov, precio, precioM, cantM, estado, proveedor,minimo,stock);
+        Productos m = new Productos(nombre, desc, tipov, precio, precioM, cantM, estado, proveedor,stock,minimo);
         int id = ppd.insertar(m);
         return id;
     }
@@ -1163,6 +1203,15 @@ public class Product extends javax.swing.JPanel {
         jTable1.setModel(dt);
         jTable1.setAutoCreateRowSorter(true);
         sorter = new TableRowSorter<>(dt);
+        jTable1.setRowSorter(sorter);
+    }
+    
+    void cargarModelo2() {
+        ProductosDAO productosDAO = new ProductosDAO();
+        DefaultTableModel defaultTableModel = productosDAO.cargarModeloInactivos();
+        jTable1.setModel(defaultTableModel);
+        jTable1.setAutoCreateRowSorter(true);
+        sorter = new TableRowSorter<>(defaultTableModel);
         jTable1.setRowSorter(sorter);
     }
 

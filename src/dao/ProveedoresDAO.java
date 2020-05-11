@@ -75,6 +75,35 @@ public class ProveedoresDAO {
         return dt;
     }
       
+    public DefaultTableModel cargarModeloInactivos()  {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultTableModel dt = null;
+        String encabezados[] = {"ID","Nombre","Teléfono"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL  select_all_proveedor2()");
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[3];
+                Proveedores pojo = inflaPOJO(rs);
+                ob[0] = rs.getInt("idProveedor");
+                ob[1] = rs.getString("nombre");
+                ob[2] = rs.getString("telefono");          
+                dt.addRow(ob);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla Proveedor " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
+      
       public int insertar(Proveedores p) throws SQLException {
         Connection con = null;
         PreparedStatement st = null;
