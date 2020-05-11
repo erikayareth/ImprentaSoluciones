@@ -43,7 +43,15 @@ select*from EntradaSalida;
 Delimiter // 
 create procedure select_all_proveedor()
 begin 
-select * from proveedor ;
+select * from proveedor where estado = 1;
+end // 
+delimiter ; 
+
+-- Mostrar proveedores2
+Delimiter // 
+create procedure select_all_proveedor2()
+begin 
+select * from proveedor where estado = 0;
 end // 
 delimiter ; 
 
@@ -131,7 +139,7 @@ UPDATE Proveedor SET nombre=nombrep, telefono=telefonop, estado=estadop
 WHERE idProveedor=idProveedorp;
 END//
 DELIMITER ;
-CALL modificarProveedor(2, "Proveedor", "1234567898", true);
+CALL modificarProveedor(2, "Preedor", "1234567898", true);
 
 -- Seleccionar un Proveedor 
 DELIMITER //
