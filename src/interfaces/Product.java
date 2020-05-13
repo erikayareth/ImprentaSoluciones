@@ -108,6 +108,7 @@ public class Product extends javax.swing.JPanel {
     }
     
     public void verProducto(int id){
+        ProveedoresDAO proveedoresDAO = new ProveedoresDAO();
         ProductosDAO productosDAO = new ProductosDAO();
         Productos productos = productosDAO.seleccionar_producto(id);
         jTextField7.setText(productos.getNombre());
@@ -117,15 +118,22 @@ public class Product extends javax.swing.JPanel {
         } else{ 
             jComboBox6.setSelectedIndex(1);
         }
+        if(productos.getTipoDeVenta()=="por unidad"){
+            jComboBox4.setSelectedIndex(0);
+        } else {
+            jComboBox4.setSelectedIndex(1);
+        }
         jTextField9.setText(""+productos.getPrecio());
         jTextField10.setText(""+productos.getPrecioMayoreo());
         jTextField11.setText(""+productos.getCantidadMayoreo());
         jTextField15.setText(""+productos.getStock());
         jTextField16.setText(""+productos.getMinimo());
         int proveedor = productos.getProveedor_idProveedor();
+        Proveedores proveedore = proveedoresDAO.seleccionar_proveedor(proveedor);
+        String nombreProveedor = proveedore.getNombre();
         for (int i = 0; i < jComboBox5.getItemCount(); i++) {
-            if(i==proveedor){
-                jComboBox5.setSelectedIndex(i);
+            if(jComboBox5.getSelectedItem()==nombreProveedor){
+                jComboBox5.setSelectedItem(nombreProveedor);
             }
         }
     }
@@ -154,7 +162,7 @@ public class Product extends javax.swing.JPanel {
             int cantM = Integer.parseInt(jTextField11.getText());
             int stock = Integer.parseInt(jTextField15.getText());
             int minimo = Integer.parseInt(jTextField16.getText());
-            Productos productos = new Productos(id, nombre, desc, tipov, precio, precioM, cantM, estado, proveedor, minimo, stock);
+            Productos productos = new Productos(id, nombre, desc, tipov, precio, precioM, cantM, estado, proveedor, stock, minimo);
             ProductosDAO productosDAO = new ProductosDAO();
             if (productosDAO.modificar(productos)==true) {
                 JOptionPane.showMessageDialog(null, "Éxito al actualizar producto");
@@ -340,7 +348,8 @@ public class Product extends javax.swing.JPanel {
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Proveedor:");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un proveedor", " " }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un proveedor" }));
+        jComboBox3.setToolTipText("");
         jComboBox3.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox3ItemStateChanged(evt);

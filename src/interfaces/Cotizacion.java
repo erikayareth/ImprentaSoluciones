@@ -884,6 +884,7 @@ public class Cotizacion extends javax.swing.JPanel {
                 if (id != 0) {
                     JOptionPane.showMessageDialog(this, "Éxito al guardar la cotización");
                     limpiar();
+                    cargarModeloCotizacion();
                 } else {
                     JOptionPane.showMessageDialog(this, "Error");
                 }

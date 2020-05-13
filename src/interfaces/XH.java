@@ -1615,6 +1615,7 @@ public class XH extends javax.swing.JPanel {
                 if (id != 0) {
                     JOptionPane.showMessageDialog(this, "Éxito al realizar la venta el ticket se imprimirá");
                     Cobrar.dispose();
+                    cargarModeloVenata();
                     limpiar();
                 } else {
                     JOptionPane.showMessageDialog(this, "Error");

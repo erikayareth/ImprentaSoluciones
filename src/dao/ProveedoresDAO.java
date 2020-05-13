@@ -31,7 +31,6 @@ public class ProveedoresDAO {
             st = con.prepareStatement("call select_all_proveedor()");
             dt = new DefaultComboBoxModel();
             ResultSet rs = st.executeQuery();
-            dt.addElement("Selecciona un proveedor");
             while (rs.next()) {
                 Proveedores pojo = inflaPOJO(rs);
                 dt.addElement(pojo);
@@ -61,7 +60,7 @@ public class ProveedoresDAO {
                 Object ob[] = new Object[3];
                 Proveedores pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idProveedor");
-                ob[1] = rs.getString("nombre").toUpperCase();
+                ob[1] = rs.getString("nombre");
                 ob[2] = rs.getString("telefono");          
                 dt.addRow(ob);
             }
@@ -178,7 +177,7 @@ public class ProveedoresDAO {
         Proveedores pojo = new Proveedores();
         try {
             pojo.setIdProveedor(rs.getInt("idProveedor"));
-            pojo.setNombre(rs.getString("nombre"));
+            pojo.setNombre(rs.getString("nombre").toUpperCase());
             pojo.setTelefono(rs.getString("telefono"));
             pojo.setEstado(rs.getBoolean("estado"));
         } catch (SQLException ex) {
