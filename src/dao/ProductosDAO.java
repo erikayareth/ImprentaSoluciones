@@ -5,6 +5,7 @@
  */
 package dao;
 
+import com.mxrck.autocompleter.TextAutoCompleter;
 import interfaces.XH;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -96,8 +97,8 @@ public class ProductosDAO {
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("call insertarProducto(?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            st.setString(1, producto.getNombre().toUpperCase());
-            st.setString(2, producto.getDescripcion().toUpperCase());
+            st.setString(1, producto.getNombre());
+            st.setString(2, producto.getDescripcion());
             st.setString(3, producto.getTipoDeVenta());
             st.setDouble(4, producto.getPrecio());
             st.setDouble(5, producto.getPrecioMayoreo());
@@ -217,6 +218,26 @@ public class ProductosDAO {
             Conexion.close(st);
         }
         return dt;
+    }
+    
+    public void cargarModeloAutocompleter(TextAutoCompleter nombre) {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL select_all_productos()");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Productos pojo = inflaPOJO(rs);
+                nombre.addItem(pojo);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla productos " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
     }
     
     public DefaultTableModel cargarModeloInactivos() {

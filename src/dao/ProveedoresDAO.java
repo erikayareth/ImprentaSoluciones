@@ -60,7 +60,7 @@ public class ProveedoresDAO {
                 Object ob[] = new Object[3];
                 Proveedores pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idProveedor");
-                ob[1] = rs.getString("nombre");
+                ob[1] = rs.getString("nombre").toUpperCase();
                 ob[2] = rs.getString("telefono");          
                 dt.addRow(ob);
             }
@@ -110,8 +110,8 @@ public class ProveedoresDAO {
         try{
             con = Conexion.getConnection(); 
             st = con.prepareStatement("call insertarProveedor(?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            st.setString(1, p.getNombre().toUpperCase());
-            st.setString(2, p.getTelefono().toUpperCase());
+            st.setString(1, p.getNombre());
+            st.setString(2, p.getTelefono());
             st.setBoolean(3, p.isEstado());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
@@ -177,7 +177,7 @@ public class ProveedoresDAO {
         Proveedores pojo = new Proveedores();
         try {
             pojo.setIdProveedor(rs.getInt("idProveedor"));
-            pojo.setNombre(rs.getString("nombre").toUpperCase());
+            pojo.setNombre(rs.getString("nombre"));
             pojo.setTelefono(rs.getString("telefono"));
             pojo.setEstado(rs.getBoolean("estado"));
         } catch (SQLException ex) {

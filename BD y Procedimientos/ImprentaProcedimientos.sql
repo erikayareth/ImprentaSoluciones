@@ -1,5 +1,16 @@
 use imprenta;
 
+-- Insertar login
+DELIMITER //
+create procedure login(in usuariop varchar(45), in  contrasenap varchar(45))
+begin
+select*from usuario where Usuario=usuariop and contrasena=contrasenap;
+end //
+delimiter ;
+insert into usuario (usuario, contrasena) values('admin','12345');
+insert into usuario (usuario, contrasena) values('empleado','43');
+SELECT*FROM usuario;
+
 -- Insertar Venta
 create procedure insertarVenta(in importep double, in totalp double,in descuentop double, in cambiop double, in foliop varchar(255), in subtotalp double  )
 insert into Venta(importe,total,descuento,cambio,folio,subtotal) values(importep,totalp,descuentop,cambiop,foliop,subtotalp);
@@ -12,7 +23,7 @@ create procedure insertarProducto(in nombrep Varchar(250), in descripcionp Text,
 in precioMayoreop double, in cantMayoreop int, in estadop boolean, in Proveedor_idProveedorp int,in stockp int, in minimop int)
 insert into Productos(nombre, descripcion, tipoDeVenta, precio, precioMayoreo, cantMayoreo, estado, Proveedor_idProveedor,stock,minimo) 
 values(nombrep, descripcionp, tipoDeVentap, preciop, precioMayoreop, cantMayoreop, estadop, Proveedor_idProveedorp,stockp,minimop);
-call insertarProducto("Papel","papel couche tamaño 12","por paquete", 200, 100, 50, true, 2, 10, 10);
+call insertarProducto("Papel","papel couche tamaño 12","por paquete", 200, 100, 50, true, 1, 10, 10);
 select*from Productos;
 DROP PROCEDURE insertarProducto;
 
@@ -22,11 +33,11 @@ select*from productos;
 create procedure insertarProveedor(in nombrep Varchar(100), in telefonop varchar(10), in estadop boolean)
 insert into Proveedor(nombre,telefono,estado) values(nombrep,telefonop,estadop);
 select*from Proveedor;
+CALL insertarProveedor('Yareth', '1234567898', true);
 
 -- insertar Cotizacion
 create procedure insertarCotizacion(in nombreClientep varchar(255), in telefonop varchar(10),in descuentop double, in totalp double , in subtotalp double )
 insert into Cotizacion(nombreCliente,telefono,descuento,total,subtotal) values(nombreClientep,telefonop,descuentop,totalp, subtotalp);
-drop procedure insertarCotizacion;
 call insertarCotizacion("Avril","2292530407",100,2000,200);
 select*from Cotizacion;
 
@@ -77,7 +88,6 @@ BEGIN
 	SELECT * FROM productos WHERE estado = 0;
 END//
 DELIMITER ;
-DROP PROCEDURE select_all_productos2;
 
 -- Mostrar Productos Bajos en Inventarios
 DELIMITER //
@@ -86,7 +96,6 @@ BEGIN
 	SELECT*from Productos WHERE stock<=minimo and estado=1;
 END//
 DELIMITER ;
-DROP PROCEDURE select_all_productos3;
 
 -- Mostrar cotizaciones
 DELIMITER //
@@ -103,7 +112,6 @@ BEGIN
 	SELECT * FROM Venta;
 END//
 DELIMITER ;
-drop procedure select_all_ventas;
 call select_all_ventas();
 
 -- Mostrar salidas

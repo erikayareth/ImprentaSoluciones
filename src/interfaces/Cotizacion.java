@@ -5,6 +5,8 @@
  */
 package interfaces;
 
+import com.mxrck.autocompleter.AutoCompleterCallback;
+import com.mxrck.autocompleter.TextAutoCompleter;
 import dao.CotizacionesDAO;
 import dao.ProductosDAO;
 import dao.VentasDAO;
@@ -38,6 +40,8 @@ public class Cotizacion extends javax.swing.JPanel {
     JTableHeader th;
     TableRowSorter<TableModel> sorter;
     TableRowSorter<TableModel> sorter2;
+    ProductosDAO pp = new ProductosDAO();
+    TextAutoCompleter textAutoCompleter;
     
     public Cotizacion() {
         initComponents();
@@ -61,6 +65,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jTable1.getTableHeader().setBackground(fondo);
         // cambia el color de la letra del encabezado de la tabla
         jTable1.getTableHeader().setForeground(Color.BLACK);
+        textAutoCompleter = new TextAutoCompleter(jTextField1, new AutoCompleterCallback() {
+            @Override
+            public void callback(Object o) {
+                Productos productos = (Productos)textAutoCompleter.findItem(o);
+                consultarProducto2(productos);
+            }
+        });
+        pp.cargarModeloAutocompleter(textAutoCompleter);
     }
 
     public void cargarModelo() {
@@ -117,8 +129,13 @@ public class Cotizacion extends javax.swing.JPanel {
         String nombre = productos.getNombre();
         String descripcion = productos.getDescripcion();
         String tipo = productos.getTipoDeVenta();
-        double precio = productos.getPrecio();
+        double precio = 0;
         int cantidad = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
+        if (cantidad>=productos.getCantidadMayoreo()) {
+            precio = productos.getPrecioMayoreo();
+        } else {
+            precio = productos.getPrecio();
+        }
         Object f[] = {id, nombre, descripcion, precio, tipo, cantidad};
         String encabezados[] = {"ID", "Nombre", "Descripción", "Precio", "Tipo de venta", "Cantidad"};
         dtm.setColumnIdentifiers(encabezados);
@@ -128,6 +145,25 @@ public class Cotizacion extends javax.swing.JPanel {
         System.out.println("entro");
     }
 
+    
+    public void consultarProducto2(Productos a) {
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+        String nombre = a.getNombre();
+        String descripcion = a.getDescripcion();
+        String tipo = a.getTipoDeVenta();
+        double precio = 0;
+        int cantidad = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
+        if (cantidad>=a.getCantidadMayoreo()) {
+            precio = a.getPrecioMayoreo();
+        } else {
+            precio = a.getPrecio();
+        }
+        Object f[] = {a.getIdProducto(), nombre, descripcion, precio, tipo, cantidad};
+        dtm.addRow(f);
+        calcular();
+        System.out.println("entró");
+    }
+    
     void crearcomun() {
         DefaultTableModel dtm = new DefaultTableModel();
         String id = " ";
@@ -261,7 +297,6 @@ public class Cotizacion extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         jButton24 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -645,11 +680,6 @@ public class Cotizacion extends javax.swing.JPanel {
         });
         jPanel3.add(jButton3);
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton2.setText("MAYOREO");
-        jPanel3.add(jButton2);
-
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton1.setText("COMÚN");
@@ -870,7 +900,7 @@ public class Cotizacion extends javax.swing.JPanel {
         String e = jLabel10.getText();
         int cinco = e.length();
 
-        if (uno == 0  || tres == 0 || cuatro == 0|| cinco==0) {
+        if (uno == 0  || tres == 0 || cuatro == 0|| cinco==0 || c.length()<10) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
 //           limpiar();
 
@@ -1050,7 +1080,6 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton24;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton6;

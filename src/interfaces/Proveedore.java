@@ -80,8 +80,8 @@ public class Proveedore extends javax.swing.JPanel {
     }
 
     public void cargarModelo() {
-        ProveedoresDAO ninoDAO = new ProveedoresDAO();
-        DefaultTableModel dt = ninoDAO.cargarModelo2();
+        ProveedoresDAO proveedoresDAO = new ProveedoresDAO();
+        DefaultTableModel dt = proveedoresDAO.cargarModelo2();
         jTable1.setModel(dt);
         jTable1.setAutoCreateRowSorter(true);
         sorter = new TableRowSorter<>(dt);

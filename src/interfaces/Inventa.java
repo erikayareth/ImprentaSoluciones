@@ -5,6 +5,8 @@
  */
 package interfaces;
 
+import com.mxrck.autocompleter.AutoCompleterCallback;
+import com.mxrck.autocompleter.TextAutoCompleter;
 import dao.ProductosDAO;
 import java.awt.Color;
 import java.sql.SQLException;
@@ -26,6 +28,9 @@ public class Inventa extends javax.swing.JPanel {
     TableRowSorter<TableModel> sorter; 
     XH xh = new XH();
     Cotizacion cotizacion = new Cotizacion();
+    ProductosDAO pp = new ProductosDAO();
+    TextAutoCompleter textAutoCompleter;
+    
      
     public Inventa() throws SQLException {
         initComponents();
@@ -38,6 +43,14 @@ public class Inventa extends javax.swing.JPanel {
         jPanel7.setBackground(Color.WHITE);
         jPanel8.setBackground(Color.WHITE);
         cargarModelo();
+        textAutoCompleter = new TextAutoCompleter(jTextField1, new AutoCompleterCallback() {
+            @Override
+            public void callback(Object o) {
+                Productos productos = (Productos)textAutoCompleter.findItem(o);
+                verProducto2(productos);
+            }
+        });
+        pp.cargarModeloAutocompleter(textAutoCompleter);
     }
  
     public void cargarModelo() {
@@ -66,10 +79,11 @@ public class Inventa extends javax.swing.JPanel {
         jLabel12.setText(""+productos.getMinimo());
         jLabel13.setText(""+productos.getPrecio());
         jLabel14.setText(""+productos.getCantidadMayoreo());
+        jLabel16.setText(""+productos.getIdProducto());
     }
     
     public void Modificar(int producto){
-        int id = Integer.parseInt(jTextField1.getText());
+        int id = Integer.parseInt(jLabel16.getText());
         ProductosDAO productosDAO = new ProductosDAO();
         Productos productos = productosDAO.seleccionar_producto(id);
         String nombre = productos.getNombre();
@@ -82,25 +96,25 @@ public class Inventa extends javax.swing.JPanel {
         boolean estado = productos.isEstado();
         int minimo = productos.getMinimo();
         if (jTextField9.getText().length()==0) {
-            JOptionPane.showMessageDialog(null, "No ha escrito una cantidad");
+            JOptionPane.showMessageDialog(this, "No ha escrito una cantidad");
         } else {
             int stock = productos.getStock() + Integer.parseInt(jTextField9.getText());
             Productos productos2 = new Productos(id, nombre, desc, tipov, precio, precioM, cantM, estado, proveedor, stock, minimo);
             if (productosDAO.modificar(productos2)==true) {
-                JOptionPane.showMessageDialog(null, "Éxito al actualizar inventario");
+                JOptionPane.showMessageDialog(this, "Éxito al actualizar inventario");
                 cargarModelo();
                 xh.cargarModelo();
                 cotizacion.cargarModelo();
                 verProducto(id);
                 limpiar2();
             } else {
-                JOptionPane.showMessageDialog(null, "Error al actualizar inventario");
+                JOptionPane.showMessageDialog(this, "Error al actualizar inventario");
             } 
         }
     }
     
     public void Modificar2(int producto){
-        int id = Integer.parseInt(jTextField1.getText());
+        int id = Integer.parseInt(jLabel16.getText());
         ProductosDAO productosDAO = new ProductosDAO();
         Productos productos = productosDAO.seleccionar_producto(id);
         String nombre = productos.getNombre();
@@ -112,30 +126,43 @@ public class Inventa extends javax.swing.JPanel {
         int proveedor = productos.getProveedor_idProveedor();
         boolean estado = productos.isEstado();
         int minimo = productos.getMinimo();
-        int numero = Integer.parseInt(jTextField9.getText());
         if (jTextField9.getText().length()==0) {
-            JOptionPane.showMessageDialog(null, "No hay una cantidad");
-        } else if(numero>productos.getStock()){
-            JOptionPane.showMessageDialog(null, "No hay suficiente inventario");
-        } else {
-            int stock = productos.getStock() - Integer.parseInt(jTextField9.getText());
-            Productos productos2 = new Productos(id, nombre, desc, tipov, precio, precioM, cantM, estado, proveedor, minimo, stock);
-            if (productosDAO.modificar(productos2)==true) {
-                JOptionPane.showMessageDialog(null, "Éxito al actualizar inventario");
-                cargarModelo();
-                xh.cargarModelo();
-                cotizacion.cargarModelo();
-                verProducto(id);
-                limpiar2();
+            JOptionPane.showMessageDialog(this, "No ha escrito una cantidad");
+        } else if (jTextField9.getText().length()>=1) {
+            int numero = Integer.parseInt(jTextField9.getText());
+            if(numero<=productos.getStock()){
+                int stock = productos.getStock() - Integer.parseInt(jTextField9.getText());
+                Productos productos2 = new Productos(id, nombre, desc, tipov, precio, precioM, cantM, estado, proveedor, minimo, stock);
+                if (productosDAO.modificar(productos2)==true) {
+                    JOptionPane.showMessageDialog(this, "Éxito al actualizar inventario");
+                    cargarModelo();
+                    xh.cargarModelo();
+                    cotizacion.cargarModelo();
+                    verProducto(id);
+                    limpiar2();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al actualizar inventario");
+                } 
             } else {
-                JOptionPane.showMessageDialog(null, "Error al actualizar inventario");
-            } 
+                JOptionPane.showMessageDialog(this, "No hay suficiente inventario");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Error");
         }
+    }
+    
+    public void verProducto2(Productos productos){
+        jLabel15.setText(productos.getNombre());
+        jLabel8.setText(""+productos.getStock());
+        jLabel12.setText(""+productos.getMinimo());
+        jLabel13.setText(""+productos.getPrecio());
+        jLabel14.setText(""+productos.getCantidadMayoreo());
+        jLabel16.setText(""+productos.getIdProducto());
     }
     
     public void limpiar(){
         jTextField1.setText("");
-        jTextField1.setEditable(true);
+        jLabel16.setText("");
         jLabel8.setText("");
         jLabel12.setText("");
         jLabel13.setText("");
@@ -184,6 +211,8 @@ public class Inventa extends javax.swing.JPanel {
         jLabel14 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -378,6 +407,12 @@ public class Inventa extends javax.swing.JPanel {
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setText("ID:");
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -396,7 +431,8 @@ public class Inventa extends javax.swing.JPanel {
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addGap(109, 109, 109)
@@ -405,7 +441,8 @@ public class Inventa extends javax.swing.JPanel {
                                     .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -418,14 +455,18 @@ public class Inventa extends javax.swing.JPanel {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
@@ -448,7 +489,7 @@ public class Inventa extends javax.swing.JPanel {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addGap(52, 52, 52))
+                .addGap(70, 70, 70))
         );
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -461,7 +502,7 @@ public class Inventa extends javax.swing.JPanel {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 118, Short.MAX_VALUE))
+                .addGap(0, 40, Short.MAX_VALUE))
         );
 
         jPanel4.add(jPanel7, java.awt.BorderLayout.CENTER);
@@ -485,16 +526,14 @@ public class Inventa extends javax.swing.JPanel {
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         if (jTextField1.getText().length()==0){
-            JOptionPane.showMessageDialog(null, "¡UY! Debes colocar el código del producto");
+            JOptionPane.showMessageDialog(this, "¡UY! No has escogido ningún producto");
         } else {
             int id = Integer.parseInt(jTextField1.getText().toString());
-            jTextField1.setEnabled(true);
             ProductosDAO productosDAO = new ProductosDAO();
             Productos productos = productosDAO.seleccionar_producto(id);
             int numero = productos.getIdProducto();
             if (id == productos.getIdProducto() && id >= 1) {
                 verProducto(id);
-                jTextField1.setEditable(false);
             } else {
                 JOptionPane.showMessageDialog(this, "No existe el id del producto");
             }
@@ -513,12 +552,12 @@ public class Inventa extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField9KeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int id = Integer.parseInt(jTextField1.getText().toString());
+        int id = Integer.parseInt(jLabel16.getText().toString());
         Modificar(id);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int id = Integer.parseInt(jTextField1.getText().toString());
+        int id = Integer.parseInt(jLabel16.getText().toString());
         Modificar2(id);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -541,10 +580,12 @@ public class Inventa extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
