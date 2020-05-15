@@ -89,6 +89,7 @@ public class XH extends javax.swing.JPanel {
             public void callback(Object o) {
                 Productos productos = (Productos)textAutoCompleter.findItem(o);
                 consultarProducto2(productos);
+                cargarModelo();
             }
         });
         pp.cargarModeloAutocompleter(textAutoCompleter);

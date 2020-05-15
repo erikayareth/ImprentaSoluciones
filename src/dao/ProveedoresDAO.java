@@ -31,6 +31,7 @@ public class ProveedoresDAO {
             st = con.prepareStatement("call select_all_proveedor()");
             dt = new DefaultComboBoxModel();
             ResultSet rs = st.executeQuery();
+             dt.addElement("Seleccione un Proveedor");
             while (rs.next()) {
                 Proveedores pojo = inflaPOJO(rs);
                 dt.addElement(pojo);
