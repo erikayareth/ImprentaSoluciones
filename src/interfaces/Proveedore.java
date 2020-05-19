@@ -32,7 +32,7 @@ public class Proveedore extends javax.swing.JPanel {
     JTableHeader th;
     ProveedoresDAO proveedores = new ProveedoresDAO();
     TableRowSorter<TableModel> sorter;
-    
+     Color color = new Color(196, 219, 242);
     public Proveedore() {
         initComponents();
         pd = new ProveedoresDAO();
@@ -219,6 +219,14 @@ public class Proveedore extends javax.swing.JPanel {
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
         jButton9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton9.setText("GUARDAR");
+        jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton9MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton9MouseExited(evt);
+            }
+        });
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
@@ -228,6 +236,14 @@ public class Proveedore extends javax.swing.JPanel {
         jButton10.setBackground(new java.awt.Color(255, 255, 255));
         jButton10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton10.setText("CANCELAR");
+        jButton10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton10MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton10MouseExited(evt);
+            }
+        });
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton10ActionPerformed(evt);
@@ -325,6 +341,14 @@ public class Proveedore extends javax.swing.JPanel {
         jButton21.setBackground(new java.awt.Color(255, 255, 255));
         jButton21.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton21.setText("GUARDAR");
+        jButton21.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton21MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton21MouseExited(evt);
+            }
+        });
         jButton21.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton21ActionPerformed(evt);
@@ -334,6 +358,14 @@ public class Proveedore extends javax.swing.JPanel {
         jButton22.setBackground(new java.awt.Color(255, 255, 255));
         jButton22.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton22.setText("CANCELAR");
+        jButton22.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton22MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton22MouseExited(evt);
+            }
+        });
         jButton22.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton22ActionPerformed(evt);
@@ -507,6 +539,14 @@ public class Proveedore extends javax.swing.JPanel {
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton2.setText("MODIFICAR");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton2MouseExited(evt);
+            }
+        });
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -517,6 +557,14 @@ public class Proveedore extends javax.swing.JPanel {
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton1.setText("AGREGAR");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton1MouseExited(evt);
+            }
+        });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -708,6 +756,66 @@ public class Proveedore extends javax.swing.JPanel {
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         cargarModelo();
     }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseEntered
+        // TODO add your handling code here:
+        jButton2.setBackground(color);
+    }//GEN-LAST:event_jButton2MouseEntered
+
+    private void jButton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseEntered
+        // TODO add your handling code here:
+        jButton1.setBackground(color);
+    }//GEN-LAST:event_jButton1MouseEntered
+
+    private void jButton2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseExited
+        // TODO add your handling code here:
+        jButton2.setBackground(Color.white);
+    }//GEN-LAST:event_jButton2MouseExited
+
+    private void jButton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseExited
+        // TODO add your handling code here:
+          jButton1.setBackground(Color.white);
+    }//GEN-LAST:event_jButton1MouseExited
+
+    private void jButton9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseEntered
+        // TODO add your handling code here:
+        jButton9.setBackground(color);
+    }//GEN-LAST:event_jButton9MouseEntered
+
+    private void jButton9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseExited
+        // TODO add your handling code here:
+        jButton9.setBackground(Color.white);
+    }//GEN-LAST:event_jButton9MouseExited
+
+    private void jButton10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton10MouseEntered
+        // TODO add your handling code here:
+        jButton10.setBackground(color);
+    }//GEN-LAST:event_jButton10MouseEntered
+
+    private void jButton10MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton10MouseExited
+        // TODO add your handling code here:
+        jButton10.setBackground(Color.white);
+    }//GEN-LAST:event_jButton10MouseExited
+
+    private void jButton21MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton21MouseEntered
+        // TODO add your handling code here:
+        jButton21.setBackground(color);
+    }//GEN-LAST:event_jButton21MouseEntered
+
+    private void jButton21MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton21MouseExited
+        // TODO add your handling code here:
+        jButton21.setBackground(Color.white);
+    }//GEN-LAST:event_jButton21MouseExited
+
+    private void jButton22MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton22MouseEntered
+        // TODO add your handling code here:
+        jButton22.setBackground(color);
+    }//GEN-LAST:event_jButton22MouseEntered
+
+    private void jButton22MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton22MouseExited
+        // TODO add your handling code here:
+        jButton22.setBackground(Color.white);
+    }//GEN-LAST:event_jButton22MouseExited
 
     int crear() throws SQLException {
         String nombre = jTextField5.getText();

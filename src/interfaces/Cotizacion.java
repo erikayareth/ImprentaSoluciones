@@ -42,7 +42,8 @@ public class Cotizacion extends javax.swing.JPanel {
     TableRowSorter<TableModel> sorter2;
     ProductosDAO pp = new ProductosDAO();
     TextAutoCompleter textAutoCompleter;
-    
+    Color color = new Color(196, 219, 242);
+
     public Cotizacion() {
         initComponents();
         this.setBackground(Color.WHITE);
@@ -58,7 +59,7 @@ public class Cotizacion extends javax.swing.JPanel {
         jScrollPane1.getViewport().setBackground(Color.white);
         cargarModeloCotizacion();
         configureTable();
-         th = jTable1.getTableHeader();
+        th = jTable1.getTableHeader();
         Font fuente = new Font("TimesNewRoman", Font.PLAIN, 15);
         th.setFont(fuente);
         // cambia el fondo del encabezado de la tabla
@@ -68,7 +69,7 @@ public class Cotizacion extends javax.swing.JPanel {
         textAutoCompleter = new TextAutoCompleter(jTextField1, new AutoCompleterCallback() {
             @Override
             public void callback(Object o) {
-                Productos productos = (Productos)textAutoCompleter.findItem(o);
+                Productos productos = (Productos) textAutoCompleter.findItem(o);
                 consultarProducto2(productos);
             }
         });
@@ -83,12 +84,12 @@ public class Cotizacion extends javax.swing.JPanel {
         sorter = new TableRowSorter<>(dt);
         jTable2.setRowSorter(sorter);
     }
-    
-    void configureTable(){
+
+    void configureTable() {
         jTable1.setDefaultRenderer(Object.class, new MyJTableCellRenderer());
         jTable1.setRowHeight(20);
     }
-    
+
     void cargarDialogo(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
@@ -106,7 +107,7 @@ public class Cotizacion extends javax.swing.JPanel {
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
-    
+
     public void agregarBuscarProducto() {
         DefaultTableModel tabla2 = (DefaultTableModel) jTable1.getModel();
         int row = jTable2.getSelectedRow();
@@ -121,7 +122,7 @@ public class Cotizacion extends javax.swing.JPanel {
         tabla2.addRow(object);
         calcular();
     }
-    
+
     public void consultarProducto(int id) {
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         ProductosDAO productosDAO = new ProductosDAO();
@@ -131,7 +132,7 @@ public class Cotizacion extends javax.swing.JPanel {
         String tipo = productos.getTipoDeVenta();
         double precio = 0;
         int cantidad = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
-        if (cantidad>=productos.getCantidadMayoreo()) {
+        if (cantidad >= productos.getCantidadMayoreo()) {
             precio = productos.getPrecioMayoreo();
         } else {
             precio = productos.getPrecio();
@@ -145,7 +146,6 @@ public class Cotizacion extends javax.swing.JPanel {
         System.out.println("entro");
     }
 
-    
     public void consultarProducto2(Productos a) {
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         String nombre = a.getNombre();
@@ -153,7 +153,7 @@ public class Cotizacion extends javax.swing.JPanel {
         String tipo = a.getTipoDeVenta();
         double precio = 0;
         int cantidad = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
-        if (cantidad>=a.getCantidadMayoreo()) {
+        if (cantidad >= a.getCantidadMayoreo()) {
             precio = a.getPrecioMayoreo();
         } else {
             precio = a.getPrecio();
@@ -163,7 +163,7 @@ public class Cotizacion extends javax.swing.JPanel {
         calcular();
         System.out.println("entró");
     }
-    
+
     void crearcomun() {
         DefaultTableModel dtm = new DefaultTableModel();
         String id = " ";
@@ -205,13 +205,13 @@ public class Cotizacion extends javax.swing.JPanel {
         int id = cd.insertar(c);
         return id;
     }
-    
-    public void vaciar4(){
+
+    public void vaciar4() {
         jTextField12.setText("Producto común");
         jTextField13.setText("");
         jTextField14.setText("");
     }
-    
+
     public void limpiar() {
         jLabel10.setText("-----");
         jLabel9.setText("------");
@@ -220,12 +220,12 @@ public class Cotizacion extends javax.swing.JPanel {
         jFormattedTextField1.setText("");
         jTextField3.setText("0");
         try {
-            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel(); 
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
             int filas = jTable1.getRowCount();
-            for(int i = 0; filas>i; i++){
+            for (int i = 0; filas > i; i++) {
                 modelo.removeRow(0);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al limpiar la tabla");
         }
     }
@@ -246,7 +246,7 @@ public class Cotizacion extends javax.swing.JPanel {
             System.out.println("Texto vacío " + e);
         }
     }
-    
+
     public void filter2() {
         try {
             sorter2.setRowFilter(RowFilter.regexFilter(jTextField7.getText().toUpperCase(), jComboBox3.getSelectedIndex()));
@@ -254,7 +254,7 @@ public class Cotizacion extends javax.swing.JPanel {
             System.out.println("Texto vacío " + e);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -344,6 +344,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jButton17.setBackground(new java.awt.Color(255, 255, 255));
         jButton17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton17.setText("GUARDAR");
+        jButton17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton17MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton17MouseExited(evt);
+            }
+        });
         jButton17.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton17ActionPerformed(evt);
@@ -353,6 +361,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jButton18.setBackground(new java.awt.Color(255, 255, 255));
         jButton18.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton18.setText("CANCELAR");
+        jButton18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton18MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton18MouseExited(evt);
+            }
+        });
         jButton18.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton18ActionPerformed(evt);
@@ -459,6 +475,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
         jButton7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton7.setText("AGREGAR");
+        jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton7MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton7MouseExited(evt);
+            }
+        });
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
@@ -468,6 +492,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
         jButton8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton8.setText("CANCELAR");
+        jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton8MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton8MouseExited(evt);
+            }
+        });
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
@@ -557,6 +589,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jButton11.setBackground(new java.awt.Color(255, 255, 255));
         jButton11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton11.setText("CANCELAR");
+        jButton11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton11MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton11MouseExited(evt);
+            }
+        });
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton11ActionPerformed(evt);
@@ -663,6 +703,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jButton24.setBackground(new java.awt.Color(255, 255, 255));
         jButton24.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton24.setText("AGREGAR PRODUCTO");
+        jButton24.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton24MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton24MouseExited(evt);
+            }
+        });
         jButton24.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton24ActionPerformed(evt);
@@ -673,6 +721,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton3.setText("BUSCAR");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton3MouseExited(evt);
+            }
+        });
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -683,6 +739,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton1.setText("COMÚN");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton1MouseExited(evt);
+            }
+        });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -715,6 +779,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
         jButton6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton6.setText("EXPORTAR");
+        jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton6MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton6MouseExited(evt);
+            }
+        });
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -724,6 +796,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
         jButton9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton9.setText("VER COTIZACIONES");
+        jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton9MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton9MouseExited(evt);
+            }
+        });
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
@@ -874,7 +954,7 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         cargarDialogo2(ProductoComun, "Producto Común");
-          ProductoComun.setDefaultCloseOperation(0);
+        ProductoComun.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -900,43 +980,43 @@ public class Cotizacion extends javax.swing.JPanel {
         String e = jLabel10.getText();
         int cinco = e.length();
 
-        if (uno == 0  || tres == 0 || cuatro == 0|| cinco==0 || c.length()<10) {
+        if (uno == 0 || tres == 0 || cuatro == 0 || cinco == 0 || c.length() < 10) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
 //           limpiar();
 
         } else {
-            
-        int option = JOptionPane.showConfirmDialog(null, "¿Desea exportar la cotización?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-        if (option == 0) {
-            try {
-                System.out.println("Ok");
-                int id = crear();
-                if (id != 0) {
-                    JOptionPane.showMessageDialog(this, "Éxito al guardar la cotización");
-                    limpiar();
-                    cargarModeloCotizacion();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Error");
+
+            int option = JOptionPane.showConfirmDialog(null, "¿Desea exportar la cotización?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            if (option == 0) {
+                try {
+                    System.out.println("Ok");
+                    int id = crear();
+                    if (id != 0) {
+                        JOptionPane.showMessageDialog(this, "Éxito al guardar la cotización");
+                        limpiar();
+                        cargarModeloCotizacion();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Error");
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error " + ex);
                 }
-            } catch (SQLException ex) {
-               JOptionPane.showMessageDialog(this,"Error "+ ex);
-            }
-        } else {
-            try {
-                System.out.println("Ok");
-                int id = crear();
-                if (id != 0) {
-                    JOptionPane.showMessageDialog(this, "Éxito al guardar la cotización");
-                    limpiar();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Error");
+            } else {
+                try {
+                    System.out.println("Ok");
+                    int id = crear();
+                    if (id != 0) {
+                        JOptionPane.showMessageDialog(this, "Éxito al guardar la cotización");
+                        limpiar();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Error");
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error " + ex);
                 }
-            } catch (SQLException ex) {
-               JOptionPane.showMessageDialog(this,"Error "+ ex);
             }
         }
-        }
-        
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
@@ -994,7 +1074,7 @@ public class Cotizacion extends javax.swing.JPanel {
 //           limpiar();
 
         } else {
-             crearcomun();
+            crearcomun();
             ProductoComun.dispose();
             vaciar4();
         }
@@ -1002,7 +1082,7 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
         // TODO add your handling code here:
-          char validar = evt.getKeyChar();
+        char validar = evt.getKeyChar();
         if (Character.isLetter(validar)) {
             getToolkit().beep();
             evt.consume();
@@ -1013,7 +1093,7 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jFormattedTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFormattedTextField1KeyTyped
         // TODO add your handling code here:
-          char validar = evt.getKeyChar();
+        char validar = evt.getKeyChar();
         if (Character.isLetter(validar)) {
             getToolkit().beep();
             evt.consume();
@@ -1024,13 +1104,13 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-     try{
-         int id = Integer.parseInt(jTable2.getValueAt(jTable2.getSelectedRow(), 0).toString());
-         agregarBuscarProducto();
-         Buscar.dispose();
-      }catch(Exception e){
-          JOptionPane.showMessageDialog(this, "¡UPS! Debes seleccionar un producto de la Tabla");
-      }   
+        try {
+            int id = Integer.parseInt(jTable2.getValueAt(jTable2.getSelectedRow(), 0).toString());
+            agregarBuscarProducto();
+            Buscar.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "¡UPS! Debes seleccionar un producto de la Tabla");
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -1069,6 +1149,106 @@ public class Cotizacion extends javax.swing.JPanel {
     private void jTextField7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyReleased
         filter2();
     }//GEN-LAST:event_jTextField7KeyReleased
+
+    private void jButton24MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton24MouseEntered
+        // TODO add your handling code here:
+        jButton24.setBackground(color);
+    }//GEN-LAST:event_jButton24MouseEntered
+
+    private void jButton3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseEntered
+        // TODO add your handling code here:
+        jButton3.setBackground(color);
+    }//GEN-LAST:event_jButton3MouseEntered
+
+    private void jButton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseEntered
+        // TODO add your handling code here:
+        jButton1.setBackground(color);
+    }//GEN-LAST:event_jButton1MouseEntered
+
+    private void jButton6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseEntered
+        // TODO add your handling code here:
+        jButton6.setBackground(color);
+    }//GEN-LAST:event_jButton6MouseEntered
+
+    private void jButton9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseEntered
+        // TODO add your handling code here:
+        jButton9.setBackground(color);
+    }//GEN-LAST:event_jButton9MouseEntered
+
+    private void jButton9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseExited
+        // TODO add your handling code here:
+        jButton9.setBackground(Color.white);
+    }//GEN-LAST:event_jButton9MouseExited
+
+    private void jButton6MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseExited
+        // TODO add your handling code here:
+        jButton6.setBackground(Color.white);
+    }//GEN-LAST:event_jButton6MouseExited
+
+    private void jButton24MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton24MouseExited
+        // TODO add your handling code here:
+        jButton24.setBackground(Color.white);
+    }//GEN-LAST:event_jButton24MouseExited
+
+    private void jButton3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseExited
+        // TODO add your handling code here:
+        jButton3.setBackground(Color.white);
+    }//GEN-LAST:event_jButton3MouseExited
+
+    private void jButton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseExited
+        // TODO add your handling code here:
+        jButton1.setBackground(Color.white);
+    }//GEN-LAST:event_jButton1MouseExited
+
+    private void jButton17MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton17MouseEntered
+        // TODO add your handling code here:
+        jButton17.setBackground(color);
+    }//GEN-LAST:event_jButton17MouseEntered
+
+    private void jButton17MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton17MouseExited
+        // TODO add your handling code here:
+        jButton17.setBackground(Color.white);
+    }//GEN-LAST:event_jButton17MouseExited
+
+    private void jButton18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton18MouseEntered
+        // TODO add your handling code here:
+        jButton18.setBackground(color);
+    }//GEN-LAST:event_jButton18MouseEntered
+
+    private void jButton18MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton18MouseExited
+        // TODO add your handling code here:
+        jButton18.setBackground(Color.white);
+    }//GEN-LAST:event_jButton18MouseExited
+
+    private void jButton7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseEntered
+        // TODO add your handling code here:
+       jButton7.setBackground(color);
+    }//GEN-LAST:event_jButton7MouseEntered
+
+    private void jButton8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseEntered
+        // TODO add your handling code here:
+        jButton8.setBackground(color);
+    }//GEN-LAST:event_jButton8MouseEntered
+
+    private void jButton8MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseExited
+        // TODO add your handling code here:
+        jButton8.setBackground(Color.white);
+    }//GEN-LAST:event_jButton8MouseExited
+
+    private void jButton7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseExited
+        // TODO add your handling code here:
+        jButton7.setBackground(Color.white);
+    }//GEN-LAST:event_jButton7MouseExited
+
+    private void jButton11MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton11MouseEntered
+        // TODO add your handling code here:
+        jButton11.setBackground(color);
+    }//GEN-LAST:event_jButton11MouseEntered
+
+    private void jButton11MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton11MouseExited
+        // TODO add your handling code here:
+        jButton11.setBackground(Color.white);
+    }//GEN-LAST:event_jButton11MouseExited
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

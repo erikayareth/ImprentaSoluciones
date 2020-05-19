@@ -85,7 +85,7 @@
                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel6" min="-2" pref="22" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="716" max="32767" attributes="0"/>
+              <EmptySpace pref="528" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -169,6 +169,8 @@
         <Property name="text" type="java.lang.String" value="IMPRIMIR"/>
       </Properties>
       <Events>
+        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton1MouseEntered"/>
+        <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton1MouseExited"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
       </Events>
     </Component>
