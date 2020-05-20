@@ -901,8 +901,14 @@ public class Cotizacion extends javax.swing.JPanel {
         jLabel9.setText("--------");
         jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jLabel9KeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jLabel9KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jLabel9KeyTyped(evt);
             }
         });
         jPanel12.add(jLabel9);
@@ -1119,6 +1125,7 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jLabel9KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel9KeyReleased
         // TODO add your handling code here:
+       
     }//GEN-LAST:event_jLabel9KeyReleased
 
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
@@ -1249,6 +1256,16 @@ public class Cotizacion extends javax.swing.JPanel {
         // TODO add your handling code here:
         jButton11.setBackground(Color.white);
     }//GEN-LAST:event_jButton11MouseExited
+
+    private void jLabel9KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel9KeyTyped
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jLabel9KeyTyped
+
+    private void jLabel9KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel9KeyPressed
+        // TODO add your handling code here:
+         
+    }//GEN-LAST:event_jLabel9KeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
