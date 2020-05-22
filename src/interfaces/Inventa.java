@@ -53,6 +53,13 @@ public class Inventa extends javax.swing.JPanel {
         pp.cargarModeloAutocompleter(textAutoCompleter);
     }
  
+    void recargaCompleter(){
+        //Quitar todos los elementos presentes en el completer
+        textAutoCompleter.removeAllItems();
+        //Lo estamos volviendo a cargar
+        pp.cargarModeloAutocompleter(textAutoCompleter);
+    }
+    
     public void cargarModelo() {
         ProductosDAO productosDAO = new ProductosDAO();
         DefaultTableModel dt = productosDAO.cargarModeloProductosBajos();
@@ -361,7 +368,7 @@ public class Inventa extends javax.swing.JPanel {
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton3.setText("BORRAR");
+        jButton3.setText("LIMPIAR");
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jButton3MouseEntered(evt);

@@ -12,12 +12,16 @@ import dao.ProductosDAO;
 import dao.VentasDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -38,6 +42,7 @@ public class Cotizacion extends javax.swing.JPanel {
     double pre;
     double tpagar;
     JTableHeader th;
+    DefaultTableModel modelo = new DefaultTableModel();
     TableRowSorter<TableModel> sorter;
     TableRowSorter<TableModel> sorter2;
     ProductosDAO pp = new ProductosDAO();
@@ -56,6 +61,7 @@ public class Cotizacion extends javax.swing.JPanel {
         jPanel12.setBackground(Color.white);
         jPanel9.setBackground(Color.white);
         cargarModelo();
+        poputTable();
         jScrollPane1.getViewport().setBackground(Color.white);
         cargarModeloCotizacion();
         configureTable();
@@ -76,6 +82,32 @@ public class Cotizacion extends javax.swing.JPanel {
         pp.cargarModeloAutocompleter(textAutoCompleter);
     }
 
+    void recargaCompleter(){
+        //Quitar todos los elementos presentes en el completer
+        textAutoCompleter.removeAllItems();
+        //Lo estamos volviendo a cargar
+        pp.cargarModeloAutocompleter(textAutoCompleter);
+    }
+    
+    void poputTable(){
+        JPopupMenu jPopupMenu = new JPopupMenu();
+        JMenuItem menuItem1 = new JMenuItem("Eliminar");
+        menuItem1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int fila = jTable1.getSelectedRow();
+                if(fila>=0){
+                    modelo = (DefaultTableModel) jTable1.getModel();
+                    modelo.removeRow(fila);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Selecciona un dato de la tabla");
+                }
+            }
+        });
+        jPopupMenu.add(menuItem1);
+        jTable1.setComponentPopupMenu(jPopupMenu);
+    }
+    
     public void cargarModelo() {
         ProductosDAO productosDAO = new ProductosDAO();
         DefaultTableModel dt = productosDAO.cargarModelo2();
@@ -201,7 +233,11 @@ public class Cotizacion extends javax.swing.JPanel {
         double subtotal = Double.parseDouble(jLabel9.getText());
         String telefono = jFormattedTextField1.getText();
 //      double folio = 
-        Cotizaciones c = new Cotizaciones(nombre, telefono, descuento, total, subtotal);
+        String servicios = ""; 
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            servicios += (String) jTable1.getValueAt(i, 1)+" "; 
+        }
+        Cotizaciones c = new Cotizaciones(nombre, telefono, descuento, total, subtotal, servicios);
         int id = cd.insertar(c);
         return id;
     }
@@ -255,6 +291,17 @@ public class Cotizacion extends javax.swing.JPanel {
         }
     }
 
+    public static boolean isNumeric(String cadena) {
+        boolean resultado;
+        try {
+            Integer.parseInt(cadena);
+            resultado = true;
+        } catch (NumberFormatException excepcion) {
+            resultado = false;
+        }
+        return resultado;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -1025,8 +1072,11 @@ public class Cotizacion extends javax.swing.JPanel {
         int uno = a.length();
         if (uno == 0) {
             JOptionPane.showMessageDialog(this, "¡UY! Debes colocar el código del producto");
+            jTextField1.setText("");
+        } else if(isNumeric(a)==false) {
+            JOptionPane.showMessageDialog(null, "¡UY! Debes colocar el código del producto");
+            jTextField1.setText("");
         } else {
-
             int id = Integer.parseInt(jTextField1.getText().toString());
             ProductosDAO productosDAO = new ProductosDAO();
             Productos productos = productosDAO.seleccionar_producto(id);

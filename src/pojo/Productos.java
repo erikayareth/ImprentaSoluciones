@@ -152,7 +152,7 @@ public class Productos {
    
     @Override
     public String toString() {
-        return getNombre() + " " + getIdProducto();
+        return getNombre();
     }
     
 }

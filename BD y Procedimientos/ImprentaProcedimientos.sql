@@ -9,14 +9,11 @@ end //
 delimiter ;
 insert into usuario (usuario, contrasena) values('admin','12345');
 insert into usuario (usuario, contrasena) values('empleado','43');
-SELECT*FROM usuario;
 
 -- Insertar Venta
-create procedure insertarVenta(in importep double, in totalp double,in descuentop double, in cambiop double, in foliop varchar(255), in subtotalp double  )
-insert into Venta(importe,total,descuento,cambio,folio,subtotal) values(importep,totalp,descuentop,cambiop,foliop,subtotalp);
-drop procedure insertarVenta;
-call insertarVenta(5000,200,100,20,"LC20093",10);
-select*from Venta;
+create procedure insertarVenta(in importep double, in totalp double,in descuentop double, in cambiop double, in foliop varchar(255), in subtotalp double, in serviciosp TEXT)
+insert into Venta(importe,total,descuento,cambio,folio,subtotal,servicios) values(importep,totalp,descuentop,cambiop,foliop,subtotalp,serviciosp);
+call insertarVenta(5000,200,100,20,"LC20093",10,"Producto");
 
 -- insertar producto
 create procedure insertarProducto(in nombrep Varchar(250), in descripcionp Text,in tipoDeVentap Enum('por paquete','por unidad'), in preciop double, 
@@ -24,29 +21,21 @@ in precioMayoreop double, in cantMayoreop int, in estadop boolean, in Proveedor_
 insert into Productos(nombre, descripcion, tipoDeVenta, precio, precioMayoreo, cantMayoreo, estado, Proveedor_idProveedor,stock,minimo) 
 values(nombrep, descripcionp, tipoDeVentap, preciop, precioMayoreop, cantMayoreop, estadop, Proveedor_idProveedorp,stockp,minimop);
 call insertarProducto("Papel","papel couche tamaño 12","por paquete", 200, 100, 50, true, 1, 10, 10);
-select*from Productos;
-DROP PROCEDURE insertarProducto;
-
-select*from productos;
 
 -- insertar proveedor 
 create procedure insertarProveedor(in nombrep Varchar(100), in telefonop varchar(10), in estadop boolean)
 insert into Proveedor(nombre,telefono,estado) values(nombrep,telefonop,estadop);
-select*from Proveedor;
 CALL insertarProveedor('Yareth', '1234567898', true);
 
 -- insertar Cotizacion
-create procedure insertarCotizacion(in nombreClientep varchar(255), in telefonop varchar(10),in descuentop double, in totalp double , in subtotalp double )
-insert into Cotizacion(nombreCliente,telefono,descuento,total,subtotal) values(nombreClientep,telefonop,descuentop,totalp, subtotalp);
-call insertarCotizacion("Avril","2292530407",100,2000,200);
-select*from Cotizacion;
+create procedure insertarCotizacion(in nombreClientep varchar(255), in telefonop varchar(10),in descuentop double, in totalp double , in subtotalp double, in serviciosp TEXT)
+insert into Cotizacion(nombreCliente,telefono,descuento,total,subtotal,servicios) values(nombreClientep,telefonop,descuentop,totalp, subtotalp, serviciosp);
+call insertarCotizacion("Avril","2292530407",100,2000,200,"Hola");
 
 -- Insertar Entradas y salidas
 create procedure insertarES(in cantidadp double ,  in comentariop varchar(255),in entradap boolean )
 insert into EntradaSalida(cantidad,comentario,entrada) values(cantidadp,comentariop,entradap);
-drop procedure insertarES;
 call insertarES(200,"para el de la basura",true);
-select*from EntradaSalida;
 
 -- Mostrar proveedores
 Delimiter // 
@@ -71,7 +60,14 @@ BEGIN
 	SELECT*FROM productos WHERE idProductos = id;
 END //
 delimiter ;
-DROP PROCEDURE seleccionar_producto;
+
+-- Seleccionar una venta
+delimiter //
+create procedure seleccionar_venta(IN id int)
+begin 
+SELECT * from venta where idVenta = id;
+end //
+delimiter ;
 
 -- Mostrar Productos
 DELIMITER //
@@ -112,7 +108,7 @@ BEGIN
 	SELECT * FROM Venta;
 END//
 DELIMITER ;
-call select_all_ventas();
+
 
 -- Mostrar salidas
 DELIMITER //
@@ -121,8 +117,6 @@ BEGIN
 	SELECT * FROM EntradaSalida where entrada = 0;
 END//
 DELIMITER ;
-drop procedure select_all_salidas;
-call select_all_salidas;
 
 -- Mostrar entradas
 DELIMITER //
@@ -131,8 +125,6 @@ BEGIN
 	SELECT * FROM EntradaSalida where entrada = 1;
 END//
 DELIMITER ;
-drop procedure select_all_entradas;
-call select_all_entradas;
 
 -- Modificar Producto
 DELIMITER //
@@ -164,3 +156,10 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Actualizar stock 
+DELIMITER //
+CREATE PROCEDURE actualizar_stock(IN id INT, IN cant INT)
+BEGIN
+	update Productos set stock=cant where idProductos=id;
+END //
+DELIMITER ;

@@ -22,7 +22,7 @@ import pojo.Proveedores;
 public class ProveedoresDAO {
     
     
-     public DefaultComboBoxModel loadCombo( ) throws SQLException {
+     public DefaultComboBoxModel loadCombo() throws SQLException {
         Connection con = null;
         PreparedStatement st = null;
         DefaultComboBoxModel dt = null;

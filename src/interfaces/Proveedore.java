@@ -656,20 +656,19 @@ public class Proveedore extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        cargarDialogo2(Modificar, "Modificar proveedores");
-        Modificar.setDefaultCloseOperation(0);
         try{
         int id = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
         verProveedor(id);
+        cargarDialogo2(Modificar, "Modificar proveedores");
+        Modificar.setDefaultCloseOperation(0);
         }catch(Exception e){
-            JOptionPane.showMessageDialog(Modificar, "Error, debe seleccionar un proveedor");
-            Modificar.dispose();
+            JOptionPane.showMessageDialog(this, "Error, debe seleccionar un proveedor");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         cargarDialogo2(Agregar, "Agregar proveedores");
-          Agregar.setDefaultCloseOperation(0);
+        Agregar.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -685,7 +684,6 @@ public class Proveedore extends javax.swing.JPanel {
         if (uno == 0 || dos == 0 ) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
 //           limpiar();
-
         } else {
         try {
             // Agregar un proveedor (JDialogg):
@@ -693,7 +691,6 @@ public class Proveedore extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(Agregar, "¡Éxito! Se registró un proveedor");
                 vaciar();
                 cargarModelo();
-                
                 Agregar.dispose();
             } else {
                 JOptionPane.showMessageDialog(Agregar, "Ha ocurrido un problema, revise sus datos");

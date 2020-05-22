@@ -26,13 +26,13 @@ public class CotizacionesDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call insertarcotizacion(?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insertarcotizacion(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, v.getNombreCliente());
             st.setString(2, v.getTelefono());
             st.setDouble(3, v.getDescuento());
             st.setDouble(4, v.getTotal());
             st.setDouble(5, v.getSubtotal());
-
+            st.setString(6, v.getServicios());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {

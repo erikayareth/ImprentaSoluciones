@@ -26,14 +26,14 @@ public class VentasDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call insertarventa(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insertarventa(?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setDouble(1, v.getImporte());
             st.setDouble(2, v.getTotal());
             st.setDouble(3, v.getDescuento());
             st.setDouble(4, v.getCambio());
             st.setString(5, v.getFolio());
             st.setDouble(6, v.getSubtotal());
-
+            st.setString(7, v.getServicios());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -47,6 +47,7 @@ public class VentasDAO {
         }
         return id;
     }
+    
       public DefaultTableModel cargarModelo()  {
         Connection con = null;
         PreparedStatement st = null;
@@ -81,6 +82,31 @@ public class VentasDAO {
         }
         return dt;
     }
+      
+      
+    public Ventas seleccionar_venta(int i) {
+        Connection con = null;
+        PreparedStatement st = null;
+        Ventas ventas = new Ventas();
+        Productos productos = new Productos();
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL seleccionar_venta(?)");
+            st.setInt(1, i);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                ventas  = inflaPOJO(rs);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al consultar venta " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return ventas;
+    }  
+      
     private static Ventas inflaPOJO(ResultSet rs){
         Ventas pojo = new Ventas();
         try {
@@ -91,7 +117,7 @@ public class VentasDAO {
             pojo.setCambio(rs.getDouble("cambio"));
             pojo.setFolio(rs.getString("folio"));
             pojo.setSubtotal(rs.getDouble("subtotal"));
-           
+            pojo.setServicios(rs.getString("servicios"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo Ventas .." + ex);
         }

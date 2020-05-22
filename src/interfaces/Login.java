@@ -26,6 +26,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
+        this.setTitle("Login");
         this.setResizable(rootPaneCheckingEnabled);
         this.setLocationRelativeTo(this);
         Color azul = new Color(157, 195, 230);
@@ -162,6 +163,7 @@ public class Login extends javax.swing.JFrame {
                 try{
                     Principal2 principal2 = new Principal2();
                     principal2.setVisible(true);
+                    this.dispose();
                 } catch (SQLException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -23,50 +23,28 @@ import pojo.Proveedores;
  * @author Meraki .-. ._.
  */
 public class ProductosDAO {
-
-    public boolean modificarStock(int Stock, int idp) {
+    
+    public boolean modificar_stock(int id, int stock) { 
         Connection con = null;
         PreparedStatement st = null;
-
+        int idd=0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("update productos set stock=? where idProductos=?");
-
-            st.setInt(2, idp);
-            st.setInt(1, Stock);
+            st = con.prepareStatement("CALL actualizar_stock(?,?)");
+            st.setInt(1, id);
+            st.setInt(2, stock);
+            idd = st.executeUpdate();
             int x = st.executeUpdate();
             if (x == 0) {
                 return false;
             }
         } catch (Exception e) {
-            System.out.println("Error al actualizar Stock" + e);
+            System.out.println("Error al actualizar el stock de producto" + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return true;
-    }
-
-    public Productos listarID(int id) {
-        Productos p = new Productos();
-        Connection con = null;
-        PreparedStatement st = null;
-
-        try {
-            con = Conexion.getConnection();
-            st = con.prepareStatement("select * from productos where IdProductos=?");
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                p.setIdProducto(rs.getInt(1));
-                p.setNombre(rs.getString(2));
-                p.setPrecio(rs.getDouble(3));
-                p.setStock(rs.getInt(4));
-
-            }
-        } catch (Exception e) {
-        }
-        return p;
     }
 //    
 //     public boolean eliminar(int id) {
@@ -205,9 +183,9 @@ public class ProductosDAO {
                 ob[3] = rs.getString("tipoDeVenta");
                 ob[4] = rs.getDouble("precio");
                 ob[5] = rs.getDouble("precioMayoreo");
-                ob[6] = rs.getDouble("cantMayoreo");
-                ob[7] = rs.getDouble("stock");
-                ob[8] = rs.getDouble("minimo");
+                ob[6] = rs.getInt("cantMayoreo");
+                ob[7] = rs.getInt("stock");
+                ob[8] = rs.getInt("minimo");
                 dt.addRow(ob);
             }
             rs.close();
@@ -233,7 +211,7 @@ public class ProductosDAO {
             }
             rs.close();
         } catch (Exception e) {
-            System.out.println("Error al cargar la tabla productos " + e);
+            System.out.println("Error al cargar la tabla productoss " + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
@@ -267,7 +245,7 @@ public class ProductosDAO {
             }
             rs.close();
         } catch (Exception e) {
-            System.out.println("Error al cargar la tabla productos " + e);
+            System.out.println("Error al cargar la tabla productoss " + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
