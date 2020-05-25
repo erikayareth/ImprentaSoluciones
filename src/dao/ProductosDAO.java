@@ -46,28 +46,7 @@ public class ProductosDAO {
         }
         return true;
     }
-//    
-//     public boolean eliminar(int id) {
-//        Connection con = null;
-//        PreparedStatement st = null;
-//        try {
-//            con = Conexion.getConnection();
-//            st = con.prepareStatement("CALL bajaNino(?)");
-//            st.setInt(1, id);
-//            int num = st.executeUpdate();
-//            if (num == 0) {
-//                return false;
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Error al dar de baja Niño: " + e);
-//            return false;
-//        } finally {
-//            Conexion.close(con);
-//            Conexion.close(st);
-//        }
-//        return true;
-//    }
-
+    
     public int insertar(Productos producto) throws SQLException {
         Connection con = null;
         PreparedStatement st = null;
