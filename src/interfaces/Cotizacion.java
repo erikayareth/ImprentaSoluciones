@@ -48,7 +48,7 @@ public class Cotizacion extends javax.swing.JPanel {
     ProductosDAO pp = new ProductosDAO();
     TextAutoCompleter textAutoCompleter;
     Color color = new Color(196, 219, 242);
-
+    Color x = new Color(255, 153, 153);
     public Cotizacion() {
         initComponents();
         this.setBackground(Color.WHITE);
@@ -345,6 +345,8 @@ public class Cotizacion extends javax.swing.JPanel {
         jButton24 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton27 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -800,6 +802,42 @@ public class Cotizacion extends javax.swing.JPanel {
             }
         });
         jPanel3.add(jButton1);
+
+        jButton27.setBackground(new java.awt.Color(255, 255, 255));
+        jButton27.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton27.setText("LIMPIAR TABLA");
+        jButton27.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton27MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton27MouseExited(evt);
+            }
+        });
+        jButton27.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton27ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton27);
+
+        jButton10.setBackground(new java.awt.Color(255, 255, 255));
+        jButton10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton10.setText("REMOVER PRODUCTO");
+        jButton10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton10MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton10MouseExited(evt);
+            }
+        });
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton10);
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.PAGE_START);
 
@@ -1317,6 +1355,50 @@ public class Cotizacion extends javax.swing.JPanel {
          
     }//GEN-LAST:event_jLabel9KeyPressed
 
+    private void jButton27MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton27MouseEntered
+        // TODO add your handling code here:
+        jButton27.setBackground(x);
+    }//GEN-LAST:event_jButton27MouseEntered
+
+    private void jButton27MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton27MouseExited
+        // TODO add your handling code here:
+        jButton27.setBackground(Color.white);
+    }//GEN-LAST:event_jButton27MouseExited
+
+    private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
+        // TODO add your handling code here:
+        try{
+            limpiar();
+        }catch (Exception e ){
+            JOptionPane.showMessageDialog(this, "No hay nada en la tabla");
+        }
+    }//GEN-LAST:event_jButton27ActionPerformed
+
+    private void jButton10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton10MouseEntered
+        // TODO add your handling code here:
+        jButton10.setBackground(x);
+    }//GEN-LAST:event_jButton10MouseEntered
+
+    private void jButton10MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton10MouseExited
+        // TODO add your handling code here:
+        jButton10.setBackground(Color.white);
+    }//GEN-LAST:event_jButton10MouseExited
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+        try{
+            removerProducto();
+        }catch (Exception e ){
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un producto de la tabla");
+        }
+
+    }//GEN-LAST:event_jButton10ActionPerformed
+ public void removerProducto() {
+        DefaultTableModel tabla2 = (DefaultTableModel) jTable1.getModel();
+        int row = jTable1.getSelectedRow();
+        tabla2.removeRow(row);
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Buscar;
@@ -1324,10 +1406,12 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JDialog VerCotizaciones;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton24;
+    private javax.swing.JButton jButton27;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;

@@ -52,7 +52,7 @@ public class VentasDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID", "Folio", "Importe", "Subtotal", "Descuento", "Total", "Cambio", "Fecha"};
+        String encabezados[] = {"ID", "Folio", "Importe", "Subtotal", "Total","Descuento", "Cambio", "Fecha"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_ventas()");
