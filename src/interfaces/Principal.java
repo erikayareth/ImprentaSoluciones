@@ -247,6 +247,9 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         cargarPanel(corte);
+        corte.cargarModeloEntrada();
+        corte.cargarModeloSalida();
+        corte.cargarModeloVenata();
     }//GEN-LAST:event_jButton17ActionPerformed
 
     private void jButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseEntered

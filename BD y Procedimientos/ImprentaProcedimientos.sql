@@ -60,6 +60,13 @@ BEGIN
 	SELECT*FROM productos WHERE idProductos = id;
 END //
 delimiter ;
+-- Seleccionar entrada salida
+DELIMITER //
+CREATE PROCEDURE seleccionar_es(IN id INT) 
+BEGIN
+	SELECT*FROM EntradaSalida WHERE idSalida = id;
+END //
+delimiter ;
 
 -- Seleccionar una venta
 delimiter //
@@ -163,3 +170,45 @@ BEGIN
 	update Productos set stock=cant where idProductos=id;
 END //
 DELIMITER ;
+
+-- Ventas del dia
+delimiter //
+create procedure seleccionar_venta2(IN fechap TimesTamp)
+begin 
+SELECT * from venta where fecha = fechap;
+end //
+-- Total de las ventas de un dia 
+delimiter //
+create procedure total_ventas()
+begin
+select sum(total) from venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY;
+end //
+delimiter ;
+drop procedure total_ventas;
+Call total_ventas("2020-05-31 08:01:27");
+-- Cargar Ventas de un dia 
+delimiter //
+create procedure cargar_ventas()
+begin
+SELECT * FROM venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY;
+end //
+delimiter ;
+drop procedure cargar_ventas;
+-- Cargar Entradas del dia  
+delimiter //
+create procedure cargar_entradas()
+begin
+SELECT * FROM EntradaSalida WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY and entrada = true;
+end //
+delimiter ;
+-- Cargar Salidas del dia  
+delimiter //
+create procedure cargar_salidas()
+begin
+SELECT * FROM EntradaSalida WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY and entrada = false;
+end //
+delimiter ;
+
+drop procedure cargar_ventas;
+select sum(total) from venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY;
+select sum(cantidad) from EntradaSalida WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY and entrada = true;

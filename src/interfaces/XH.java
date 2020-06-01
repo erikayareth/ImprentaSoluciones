@@ -54,6 +54,7 @@ public class XH extends javax.swing.JPanel {
     int cant;
     double pre;
     double tpagar;
+    double tcorte;
     JTableHeader th;
     TableRowSorter<TableModel> sorter;
     TableRowSorter<TableModel> sorter2;
@@ -74,6 +75,7 @@ public class XH extends javax.swing.JPanel {
         jPanel14.setBackground(fondo);
         jPanel13.setBackground(Color.WHITE);
 
+        
         th = jTable6.getTableHeader();
         Font fuente = new Font("TimesNewRoman", Font.PLAIN, 15);
         th.setFont(fuente);
@@ -88,6 +90,7 @@ public class XH extends javax.swing.JPanel {
         cargarModeloSalida();
         configureTable();
         poputTable();
+        calcularT();
         jScrollPane6.getViewport().setBackground(Color.white);
         textAutoCompleter = new TextAutoCompleter(jTextField1, new AutoCompleterCallback() {
             @Override
@@ -282,6 +285,15 @@ public class XH extends javax.swing.JPanel {
             tpagar = tpagar + (cant * pre);
         }
         jLabel24.setText("" + tpagar + "0");
+    }
+     void calcularT() {
+        tcorte = 0;
+        for (int i = 0; i < jTable5.getRowCount(); i++) {
+            cant = Integer.parseInt(jTable5.getValueAt(i, 3).toString());
+            tcorte = tcorte + (cant);
+        }
+        
+        jLabel12.setText("" + tcorte+ "0");
     }
 
     int crear() throws SQLException {
@@ -1536,8 +1548,8 @@ public class XH extends javax.swing.JPanel {
                     .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton28)
                     .addComponent(jButton30))

@@ -1371,8 +1371,8 @@
                           <Component id="jComboBox3" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jScrollPane5" min="-2" pref="386" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jScrollPane5" min="-2" pref="325" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jButton28" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButton30" alignment="3" min="-2" max="-2" attributes="0"/>

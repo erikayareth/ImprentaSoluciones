@@ -147,11 +147,11 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        String usuario=jTextField1.getText();
+         String usuario=jTextField1.getText();
         String contraseña=jPasswordField1.getText();
         if(login(usuario, contraseña)){
             JOptionPane.showMessageDialog(null, "Bienvenido");
-            if(usuario=="admin"&&contraseña=="12345"){
+            if(usuario.equals("admin")&&contraseña.equals("12345")){
                 try {
                     Principal principal = new Principal();
                     principal.setVisible(true);

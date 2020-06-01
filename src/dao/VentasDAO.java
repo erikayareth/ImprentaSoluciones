@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import javax.swing.table.DefaultTableModel;
 import pojo.Cotizaciones;
 import pojo.Productos;
@@ -66,8 +67,8 @@ public class VentasDAO {
                 ob[1] = rs.getString("folio");
                 ob[2] = rs.getString("importe");
                 ob[3] = rs.getString("subtotal");
-                ob[4] = rs.getDouble("descuento");
-                ob[5] = rs.getDouble("total");
+                ob[5] = rs.getDouble("descuento");
+                ob[4] = rs.getDouble("total");
                 ob[6] = rs.getDouble("cambio");
                 ob[7] = rs.getTimestamp("fecha");
                 
@@ -82,7 +83,40 @@ public class VentasDAO {
         }
         return dt;
     }
-      
+       public DefaultTableModel cargarModelo2()  {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultTableModel dt = null;
+        String encabezados[] = {"ID", "Folio", "Importe", "Subtotal", "Total","Descuento", "Cambio", "Fecha"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL cargar_ventas()");
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[8];
+                Ventas pojo = inflaPOJO(rs);
+                ob[0] = rs.getInt("idVenta");
+                ob[1] = rs.getString("folio");
+                ob[2] = rs.getString("importe");
+                ob[3] = rs.getString("subtotal");
+                ob[5] = rs.getDouble("descuento");
+                ob[4] = rs.getDouble("total");
+                ob[6] = rs.getDouble("cambio");
+                ob[7] = rs.getTimestamp("fecha");
+                
+                dt.addRow(ob);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla ventas dia " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
       
     public Ventas seleccionar_venta(int i) {
         Connection con = null;
@@ -106,6 +140,7 @@ public class VentasDAO {
         }
         return ventas;
     }  
+     
       
     private static Ventas inflaPOJO(ResultSet rs){
         Ventas pojo = new Ventas();

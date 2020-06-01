@@ -96,12 +96,92 @@ public class EntradaSalidaDAO {
             }
             rs.close();
         } catch (Exception e) {
+            System.out.println("Error al cargar la tabla salidas " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
+      public DefaultTableModel cargarModeloE()  {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultTableModel dt = null;
+        String encabezados[] = {"Cantidad", "Descripción", "Fecha"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL cargar_entradas()");
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[3];
+                EntradaSalida pojo = inflaPOJO(rs);
+                ob[0] = rs.getDouble("cantidad");
+                ob[1] = rs.getString("comentario").toUpperCase();
+                ob[2] = rs.getTimestamp("fecha");
+                
+                dt.addRow(ob);
+            }
+            rs.close();
+        } catch (Exception e) {
             System.out.println("Error al cargar la tabla entradas " + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return dt;
+    }
+      
+      public DefaultTableModel cargarModeloS()  {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultTableModel dt = null;
+        String encabezados[] = {"Cantidad", "Descripción", "Fecha"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL cargar_salidas()");
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[3];
+                EntradaSalida pojo = inflaPOJO(rs);
+                ob[0] = rs.getDouble("cantidad");
+                ob[1] = rs.getString("comentario").toUpperCase();
+                ob[2] = rs.getTimestamp("fecha");
+                
+                dt.addRow(ob);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla entradas " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
+       public EntradaSalida seleccionar_es(int id) {
+        Connection con = null;
+        PreparedStatement st = null;
+           EntradaSalida entradaSalida = new EntradaSalida();
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL seleccionar_es(?)");
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                entradaSalida = inflaPOJO(rs);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al consultar entrada salida" + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return entradaSalida;
     }
     private static EntradaSalida inflaPOJO(ResultSet rs){
         EntradaSalida pojo = new EntradaSalida();

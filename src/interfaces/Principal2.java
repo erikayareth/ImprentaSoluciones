@@ -211,6 +211,7 @@ public class Principal2 extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         cargarPanel(proveedores);
+         proveedores.updateUI();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -221,6 +222,10 @@ public class Principal2 extends javax.swing.JFrame {
 
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         cargarPanel(corte);
+        corte.cargarModeloEntrada();
+        corte.cargarModeloSalida();
+        corte.cargarModeloVenata();
+         corte.updateUI();
     }//GEN-LAST:event_jButton17ActionPerformed
 
     private void jButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseEntered
