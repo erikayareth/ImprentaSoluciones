@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import com.itextpdf.text.Paragraph;
 import dao.EntradaSalidaDAO;
 import dao.VentasDAO;
 import dao.usuarioDAO;
@@ -62,11 +63,11 @@ public class Corte extends javax.swing.JPanel {
         jPanel7.setBackground(fondo);
         cargarModeloEntrada();
         cargarModeloSalida();
-       
+
     }
 
     public void fecha() {
-         Date fecha = new Date(); 
+        Date fecha = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); //formatear la fecha en una cadena
         jLabel2.setText(sdf.format(fecha)); //setear la representacion en cadena de la fecha
     }
@@ -88,11 +89,12 @@ public class Corte extends javax.swing.JPanel {
         }
         jLabel4.setText("" + tentrada + "0");
     }
-    public void diferencia(){
-         double tbm = Double.parseDouble(jLabel11.getText());
-         double tv = Double.parseDouble(jLabel12.getText());
-         double dif = tbm - tv;
-         jLabel23.setText(dif+"");
+
+    public void diferencia() {
+        double tbm = Double.parseDouble(jLabel11.getText());
+        double tv = Double.parseDouble(jLabel12.getText());
+        double dif = tbm - tv;
+        jLabel23.setText(dif + "");
     }
 
     public void calcularS() {
@@ -103,15 +105,18 @@ public class Corte extends javax.swing.JPanel {
         }
         jLabel6.setText("" + tsalida + "0");
     }
-    public void cajero (){
-        
+
+    public void cajero() {
+
     }
-    public void subtotal(){
-       double morralla = Double.parseDouble(jLabel15.getText());
-       double billete = Double.parseDouble(jLabel19.getText());
-       double total = morralla + billete;
-       jLabel11.setText(total+"");
+
+    public void subtotal() {
+        double morralla = Double.parseDouble(jLabel15.getText());
+        double billete = Double.parseDouble(jLabel19.getText());
+        double total = morralla + billete;
+        jLabel11.setText(total + "");
     }
+
     public void calcularBillete() {
         int mil = (int) jSpinner11.getValue();
         int qui = (int) jSpinner12.getValue();
@@ -224,6 +229,70 @@ public class Corte extends javax.swing.JPanel {
             sorter4.setRowFilter(RowFilter.regexFilter(jTextField15.getText().toUpperCase(), jComboBox4.getSelectedIndex()));
         } catch (Exception e) {
             System.out.println("texto vacio" + e);
+        }
+    }
+    boolean createPDF(){
+        try {
+            //Creo un objeto de mis herramientas de PDF
+            PDFTools pdfTools = new PDFTools();
+            //Obtengo mi título
+            String title = "CORTE DEL DÍA";
+            String titleF = "FECHA:";
+            String titleC = "CAJERO:";
+            String titleE = "ENTRADAS:";
+            String titleS = "SALIDAS:";
+            String titleM = "MORRALLA:";
+            String titleB = "BILLETES:";
+            String titleU = "SUBTOTAL:";
+            String titleT = "TOTAL:";
+            String titleD = "DIFERENCIA:";
+            String fecha = jLabel2.getText();
+            String cajero = jLabel9.getText();
+            String entradas =jLabel4.getText();
+            String salidas = jLabel6.getText();
+            String morralla = jLabel15.getText();
+            String billetes = jLabel19.getText();
+            String sub = jLabel11.getText();
+            String tot = jLabel12.getText();
+            String dif = jLabel23.getText();
+            /*Abro mi documento, le agrego nombre a la carpeta dentro de 
+            Mis Documentos donde se guaradarán todos y el nombre del archivo 
+            (recuerden agregar el .pdf)*/
+            pdfTools.openDocument("PDFTest", title);
+            /*Agrego el texto al documento. Tiene la fuente de TITULO definida en la 
+            Clase PDFTools y una alineación al centro*/
+            pdfTools.addParagraph(title, PDFTools.fTítle, Paragraph.ALIGN_CENTER);
+            //Obtengo mis comentarios
+            
+            /*Agrego el texto al documento. Tiene la fuente de TEXTOS definida en la 
+            Clase PDFTools y una alineación justificada*/
+            pdfTools.addParagraph(titleF, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+            pdfTools.addParagraph(fecha, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+             pdfTools.addParagraph(titleC, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+            pdfTools.addParagraph(cajero, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+             pdfTools.addParagraph(titleE, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+            pdfTools.addParagraph(entradas, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+             pdfTools.addParagraph(titleS, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+            pdfTools.addParagraph(salidas, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+             pdfTools.addParagraph(titleM, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+            pdfTools.addParagraph(morralla, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+             pdfTools.addParagraph(titleB, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+             pdfTools.addParagraph(billetes, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+              pdfTools.addParagraph(titleU, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+             pdfTools.addParagraph(sub, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+              pdfTools.addParagraph(titleT, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+             pdfTools.addParagraph(tot, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+              pdfTools.addParagraph(titleD, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+             pdfTools.addParagraph(dif, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+             
+            
+            //Cierro mi documento
+            pdfTools.closeDocument();
+            System.out.println("Success while creating PDF");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error while creating PDF: "+e);
+            return false;
         }
     }
 
@@ -1340,6 +1409,11 @@ public class Corte extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        if (createPDF()) {
+            JOptionPane.showMessageDialog(null, "PDF created successfully");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error while creating PDF");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseEntered

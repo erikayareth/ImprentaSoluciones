@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import com.itextpdf.text.Paragraph;
 import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import dao.CotizacionesDAO;
@@ -49,6 +50,7 @@ public class Cotizacion extends javax.swing.JPanel {
     TextAutoCompleter textAutoCompleter;
     Color color = new Color(196, 219, 242);
     Color x = new Color(255, 153, 153);
+
     public Cotizacion() {
         initComponents();
         this.setBackground(Color.WHITE);
@@ -82,21 +84,21 @@ public class Cotizacion extends javax.swing.JPanel {
         pp.cargarModeloAutocompleter(textAutoCompleter);
     }
 
-    void recargaCompleter(){
+    void recargaCompleter() {
         //Quitar todos los elementos presentes en el completer
         textAutoCompleter.removeAllItems();
         //Lo estamos volviendo a cargar
         pp.cargarModeloAutocompleter(textAutoCompleter);
     }
-    
-    void poputTable(){
+
+    void poputTable() {
         JPopupMenu jPopupMenu = new JPopupMenu();
         JMenuItem menuItem1 = new JMenuItem("Eliminar");
         menuItem1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int fila = jTable1.getSelectedRow();
-                if(fila>=0){
+                if (fila >= 0) {
                     modelo = (DefaultTableModel) jTable1.getModel();
                     modelo.removeRow(fila);
                 } else {
@@ -107,7 +109,7 @@ public class Cotizacion extends javax.swing.JPanel {
         jPopupMenu.add(menuItem1);
         jTable1.setComponentPopupMenu(jPopupMenu);
     }
-    
+
     public void cargarModelo() {
         ProductosDAO productosDAO = new ProductosDAO();
         DefaultTableModel dt = productosDAO.cargarModelo2();
@@ -177,7 +179,59 @@ public class Cotizacion extends javax.swing.JPanel {
         calcular();
         System.out.println("entro");
     }
-
+        
+    boolean createPDF(){
+        try {
+            //Creo un objeto de mis herramientas de PDF
+            PDFTools pdfTools = new PDFTools();
+            //Obtengo mi título
+           
+            String title = "Cotización";
+            String titleS = "SUBTOTAL:";
+            String titleD = "DESCUENTO:";
+            String titleT = "TOTAL:";
+            String titleN = "NOMBRE:";
+            String titleTT = "TELEFONO:";
+            String sub = jLabel9.getText();
+            String desc =jTextField3.getText();
+            String tot = jLabel10.getText();
+            String nombre = jTextField4.getText();
+            String tel = jFormattedTextField1.getText();
+            /*Abro mi documento, le agrego nombre a la carpeta dentro de 
+            Mis Documentos donde se guaradarán todos y el nombre del archivo 
+            (recuerden agregar el .pdf)*/
+            pdfTools.openDocument("PDFTest", title);
+            /*Agrego el texto al documento. Tiene la fuente de TITULO definida en la 
+            Clase PDFTools y una alineación al centro*/
+            pdfTools.addParagraph(title, PDFTools.fTítle, Paragraph.ALIGN_CENTER);
+            //Obtengo mis comentarios
+            
+            /*Agrego el texto al documento. Tiene la fuente de TEXTOS definida en la 
+            Clase PDFTools y una alineación justificada*/
+             pdfTools.addParagraph(titleS, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(sub, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+             pdfTools.addParagraph(titleD, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(desc, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+             pdfTools.addParagraph(titleT, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(tot, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+             pdfTools.addParagraph(titleN, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(nombre, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+             pdfTools.addParagraph(titleTT, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+             pdfTools.addParagraph(tel, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+             
+            //Obtengo el modelo de mi tabla
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            //Agrego mi tabla al PDF. Le agregué la misma fiente de los textos
+            pdfTools.addTable(model, PDFTools.fText);
+            //Cierro mi documento
+            pdfTools.closeDocument();
+            System.out.println("Success while creating PDF");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error while creating PDF: "+e);
+            return false;
+        }
+    }
     public void consultarProducto2(Productos a) {
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         String nombre = a.getNombre();
@@ -233,9 +287,9 @@ public class Cotizacion extends javax.swing.JPanel {
         double subtotal = Double.parseDouble(jLabel9.getText());
         String telefono = jFormattedTextField1.getText();
 //      double folio = 
-        String servicios = ""; 
+        String servicios = "";
         for (int i = 0; i < jTable1.getRowCount(); i++) {
-            servicios += (String) jTable1.getValueAt(i, 1)+" "; 
+            servicios += (String) jTable1.getValueAt(i, 1) + " ";
         }
         Cotizaciones c = new Cotizaciones(nombre, telefono, descuento, total, subtotal, servicios);
         int id = cd.insertar(c);
@@ -301,7 +355,7 @@ public class Cotizacion extends javax.swing.JPanel {
         }
         return resultado;
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -1084,6 +1138,11 @@ public class Cotizacion extends javax.swing.JPanel {
                     int id = crear();
                     if (id != 0) {
                         JOptionPane.showMessageDialog(this, "Éxito al guardar la cotización");
+                        if (createPDF()) {
+                            JOptionPane.showMessageDialog(null, "PDF creado con éxito");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error while creating PDF");
+                        }
                         limpiar();
                         cargarModeloCotizacion();
                     } else {
@@ -1117,7 +1176,7 @@ public class Cotizacion extends javax.swing.JPanel {
         if (uno == 0) {
             JOptionPane.showMessageDialog(this, "¡UY! Debes colocar el código del producto");
             jTextField1.setText("");
-        } else if(isNumeric(a)==false) {
+        } else if (isNumeric(a) == false) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes colocar el código del producto");
             jTextField1.setText("");
         } else {
@@ -1213,7 +1272,7 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jLabel9KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel9KeyReleased
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_jLabel9KeyReleased
 
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
@@ -1317,7 +1376,7 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jButton7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseEntered
         // TODO add your handling code here:
-       jButton7.setBackground(color);
+        jButton7.setBackground(color);
     }//GEN-LAST:event_jButton7MouseEntered
 
     private void jButton8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseEntered
@@ -1347,12 +1406,12 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jLabel9KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel9KeyTyped
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jLabel9KeyTyped
 
     private void jLabel9KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel9KeyPressed
         // TODO add your handling code here:
-         
+
     }//GEN-LAST:event_jLabel9KeyPressed
 
     private void jButton27MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton27MouseEntered
@@ -1367,9 +1426,9 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
         // TODO add your handling code here:
-        try{
+        try {
             limpiar();
-        }catch (Exception e ){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "No hay nada en la tabla");
         }
     }//GEN-LAST:event_jButton27ActionPerformed
@@ -1386,14 +1445,14 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
-        try{
+        try {
             removerProducto();
-        }catch (Exception e ){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un producto de la tabla");
         }
 
     }//GEN-LAST:event_jButton10ActionPerformed
- public void removerProducto() {
+    public void removerProducto() {
         DefaultTableModel tabla2 = (DefaultTableModel) jTable1.getModel();
         int row = jTable1.getSelectedRow();
         tabla2.removeRow(row);
