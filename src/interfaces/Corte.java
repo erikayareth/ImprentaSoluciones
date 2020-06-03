@@ -266,24 +266,18 @@ public class Corte extends javax.swing.JPanel {
             
             /*Agrego el texto al documento. Tiene la fuente de TEXTOS definida en la 
             Clase PDFTools y una alineación justificada*/
-            pdfTools.addParagraph(titleF, PDFTools.fTítle, Paragraph.ALIGN_TOP);
-            pdfTools.addParagraph(fecha, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-             pdfTools.addParagraph(titleC, PDFTools.fTítle, Paragraph.ALIGN_TOP);
-            pdfTools.addParagraph(cajero, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-             pdfTools.addParagraph(titleE, PDFTools.fTítle, Paragraph.ALIGN_TOP);
-            pdfTools.addParagraph(entradas, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-             pdfTools.addParagraph(titleS, PDFTools.fTítle, Paragraph.ALIGN_TOP);
-            pdfTools.addParagraph(salidas, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-             pdfTools.addParagraph(titleM, PDFTools.fTítle, Paragraph.ALIGN_TOP);
-            pdfTools.addParagraph(morralla, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-             pdfTools.addParagraph(titleB, PDFTools.fTítle, Paragraph.ALIGN_TOP);
-             pdfTools.addParagraph(billetes, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-              pdfTools.addParagraph(titleU, PDFTools.fTítle, Paragraph.ALIGN_TOP);
-             pdfTools.addParagraph(sub, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-              pdfTools.addParagraph(titleT, PDFTools.fTítle, Paragraph.ALIGN_TOP);
-             pdfTools.addParagraph(tot, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-              pdfTools.addParagraph(titleD, PDFTools.fTítle, Paragraph.ALIGN_TOP);
-             pdfTools.addParagraph(dif, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+            pdfTools.addParagraph(titleF+" "+fecha, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+             pdfTools.addParagraph(titleC+" "+cajero, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+             pdfTools.addParagraph(titleE+" "+entradas, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+             pdfTools.addParagraph(titleS+" "+salidas, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+             pdfTools.addParagraph(titleM+" "+morralla, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+             pdfTools.addParagraph(titleB+" "+billetes, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+              pdfTools.addParagraph(titleU+" "+sub, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+            
+              pdfTools.addParagraph(title+" "+tot, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+           
+              pdfTools.addParagraph(titleD+" "+dif, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+            
              
             
             //Cierro mi documento
@@ -1410,9 +1404,9 @@ public class Corte extends javax.swing.JPanel {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         if (createPDF()) {
-            JOptionPane.showMessageDialog(null, "PDF created successfully");
+            JOptionPane.showMessageDialog(null, "PDF creado con éxito");
         } else {
-            JOptionPane.showMessageDialog(null, "Error while creating PDF");
+            JOptionPane.showMessageDialog(null, "Error al crear el PDF");
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 

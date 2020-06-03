@@ -179,13 +179,13 @@ public class Cotizacion extends javax.swing.JPanel {
         calcular();
         System.out.println("entro");
     }
-        
-    boolean createPDF(){
+
+    boolean createPDF() {
         try {
             //Creo un objeto de mis herramientas de PDF
             PDFTools pdfTools = new PDFTools();
             //Obtengo mi título
-           
+
             String title = "Cotización";
             String titleS = "SUBTOTAL:";
             String titleD = "DESCUENTO:";
@@ -193,7 +193,7 @@ public class Cotizacion extends javax.swing.JPanel {
             String titleN = "NOMBRE:";
             String titleTT = "TELEFONO:";
             String sub = jLabel9.getText();
-            String desc =jTextField3.getText();
+            String desc = jTextField3.getText();
             String tot = jLabel10.getText();
             String nombre = jTextField4.getText();
             String tel = jFormattedTextField1.getText();
@@ -205,20 +205,20 @@ public class Cotizacion extends javax.swing.JPanel {
             Clase PDFTools y una alineación al centro*/
             pdfTools.addParagraph(title, PDFTools.fTítle, Paragraph.ALIGN_CENTER);
             //Obtengo mis comentarios
-            
+
             /*Agrego el texto al documento. Tiene la fuente de TEXTOS definida en la 
             Clase PDFTools y una alineación justificada*/
-             pdfTools.addParagraph(titleS, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(sub, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-             pdfTools.addParagraph(titleD, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(titleS + " " + sub, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            //pdfTools.addParagraph(sub, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+            pdfTools.addParagraph(titleD, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
             pdfTools.addParagraph(desc, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-             pdfTools.addParagraph(titleT, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(titleT, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
             pdfTools.addParagraph(tot, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-             pdfTools.addParagraph(titleN, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(titleN, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
             pdfTools.addParagraph(nombre, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-             pdfTools.addParagraph(titleTT, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-             pdfTools.addParagraph(tel, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-             
+            pdfTools.addParagraph(titleTT, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(tel, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
+
             //Obtengo el modelo de mi tabla
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             //Agrego mi tabla al PDF. Le agregué la misma fiente de los textos
@@ -228,10 +228,11 @@ public class Cotizacion extends javax.swing.JPanel {
             System.out.println("Success while creating PDF");
             return true;
         } catch (Exception e) {
-            System.out.println("Error while creating PDF: "+e);
+            System.out.println("Error while creating PDF: " + e);
             return false;
         }
     }
+
     public void consultarProducto2(Productos a) {
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         String nombre = a.getNombre();
@@ -1141,7 +1142,7 @@ public class Cotizacion extends javax.swing.JPanel {
                         if (createPDF()) {
                             JOptionPane.showMessageDialog(null, "PDF creado con éxito");
                         } else {
-                            JOptionPane.showMessageDialog(null, "Error while creating PDF");
+                            JOptionPane.showMessageDialog(null, "Error al crear el PDF");
                         }
                         limpiar();
                         cargarModeloCotizacion();
