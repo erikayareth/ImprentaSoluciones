@@ -200,7 +200,7 @@ public class Cotizacion extends javax.swing.JPanel {
             /*Abro mi documento, le agrego nombre a la carpeta dentro de 
             Mis Documentos donde se guaradarán todos y el nombre del archivo 
             (recuerden agregar el .pdf)*/
-            pdfTools.openDocument("PDFTest", title);
+            pdfTools.openDocument("COTIZACIONES", title);
             /*Agrego el texto al documento. Tiene la fuente de TITULO definida en la 
             Clase PDFTools y una alineación al centro*/
             pdfTools.addParagraph(title, PDFTools.fTítle, Paragraph.ALIGN_CENTER);

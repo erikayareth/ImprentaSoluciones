@@ -68,7 +68,7 @@ public class Corte extends javax.swing.JPanel {
 
     public void fecha() {
         Date fecha = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); //formatear la fecha en una cadena
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); //formatear la fecha en una cadena
         jLabel2.setText(sdf.format(fecha)); //setear la representacion en cadena de la fecha
     }
 
@@ -236,7 +236,8 @@ public class Corte extends javax.swing.JPanel {
             //Creo un objeto de mis herramientas de PDF
             PDFTools pdfTools = new PDFTools();
             //Obtengo mi título
-            String title = "CORTE DEL DÍA";
+             String fecha = jLabel2.getText();
+            String title = "CORTE DEL DÍA"+"  "+fecha;
             String titleF = "FECHA:";
             String titleC = "CAJERO:";
             String titleE = "ENTRADAS:";
@@ -246,7 +247,7 @@ public class Corte extends javax.swing.JPanel {
             String titleU = "SUBTOTAL:";
             String titleT = "TOTAL:";
             String titleD = "DIFERENCIA:";
-            String fecha = jLabel2.getText();
+           
             String cajero = jLabel9.getText();
             String entradas =jLabel4.getText();
             String salidas = jLabel6.getText();
@@ -258,7 +259,7 @@ public class Corte extends javax.swing.JPanel {
             /*Abro mi documento, le agrego nombre a la carpeta dentro de 
             Mis Documentos donde se guaradarán todos y el nombre del archivo 
             (recuerden agregar el .pdf)*/
-            pdfTools.openDocument("PDFTest", title);
+            pdfTools.openDocument("CORTES", title+".pdf");
             /*Agrego el texto al documento. Tiene la fuente de TITULO definida en la 
             Clase PDFTools y una alineación al centro*/
             pdfTools.addParagraph(title, PDFTools.fTítle, Paragraph.ALIGN_CENTER);
