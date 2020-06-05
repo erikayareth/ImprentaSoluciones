@@ -275,7 +275,7 @@ public class Corte extends javax.swing.JPanel {
              pdfTools.addParagraph(titleB+" "+billetes, PDFTools.fTítle, Paragraph.ALIGN_TOP);
               pdfTools.addParagraph(titleU+" "+sub, PDFTools.fTítle, Paragraph.ALIGN_TOP);
             
-              pdfTools.addParagraph(title+" "+tot, PDFTools.fTítle, Paragraph.ALIGN_TOP);
+              pdfTools.addParagraph(titleT+" "+tot, PDFTools.fTítle, Paragraph.ALIGN_TOP);
            
               pdfTools.addParagraph(titleD+" "+dif, PDFTools.fTítle, Paragraph.ALIGN_TOP);
             

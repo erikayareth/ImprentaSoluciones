@@ -183,6 +183,7 @@ public class EntradaSalidaDAO {
         }
         return entradaSalida;
     }
+      
     private static EntradaSalida inflaPOJO(ResultSet rs){
         EntradaSalida pojo = new EntradaSalida();
         try {

@@ -192,15 +192,17 @@ public class Cotizacion extends javax.swing.JPanel {
             String titleT = "TOTAL:";
             String titleN = "NOMBRE:";
             String titleTT = "TELEFONO:";
+            String titleSS = "SERVICIOS:";
             String sub = jLabel9.getText();
             String desc = jTextField3.getText();
             String tot = jLabel10.getText();
             String nombre = jTextField4.getText();
             String tel = jFormattedTextField1.getText();
+            String sev = jTextArea1.getText();
             /*Abro mi documento, le agrego nombre a la carpeta dentro de 
             Mis Documentos donde se guaradarán todos y el nombre del archivo 
             (recuerden agregar el .pdf)*/
-            pdfTools.openDocument("COTIZACIONES", title);
+            pdfTools.openDocument("COTIZACIONES", title + ".pdf");
             /*Agrego el texto al documento. Tiene la fuente de TITULO definida en la 
             Clase PDFTools y una alineación al centro*/
             pdfTools.addParagraph(title, PDFTools.fTítle, Paragraph.ALIGN_CENTER);
@@ -210,15 +212,11 @@ public class Cotizacion extends javax.swing.JPanel {
             Clase PDFTools y una alineación justificada*/
             pdfTools.addParagraph(titleS + " " + sub, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
             //pdfTools.addParagraph(sub, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-            pdfTools.addParagraph(titleD, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(desc, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-            pdfTools.addParagraph(titleT, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(tot, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-            pdfTools.addParagraph(titleN, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(nombre, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-            pdfTools.addParagraph(titleTT, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(tel, PDFTools.fText, Paragraph.ALIGN_JUSTIFIED);
-
+            pdfTools.addParagraph(titleD + " " + desc, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(titleT + " " + tot, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(titleN + " " + nombre, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(titleTT + " " + tel, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+           
             //Obtengo el modelo de mi tabla
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             //Agrego mi tabla al PDF. Le agregué la misma fiente de los textos
@@ -385,12 +383,30 @@ public class Cotizacion extends javax.swing.JPanel {
         buttonGroup2 = new javax.swing.ButtonGroup();
         VerCotizaciones = new javax.swing.JDialog();
         jPanel13 = new javax.swing.JPanel();
+        jButton30 = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox<>();
         jTextField7 = new javax.swing.JTextField();
         jButton11 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
+        verCotiSeleccionada = new javax.swing.JDialog();
+        jPanel18 = new javax.swing.JPanel();
+        jButton29 = new javax.swing.JButton();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel43 = new javax.swing.JLabel();
+        jLabel44 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel39 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -677,6 +693,15 @@ public class Cotizacion extends javax.swing.JPanel {
 
         jPanel13.setBackground(new java.awt.Color(255, 255, 255));
 
+        jButton30.setBackground(new java.awt.Color(255, 255, 255));
+        jButton30.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton30.setText("VISUALIZAR");
+        jButton30.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton30ActionPerformed(evt);
+            }
+        });
+
         jLabel11.setBackground(new java.awt.Color(255, 255, 255));
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(24, 192, 221));
@@ -739,14 +764,16 @@ public class Cotizacion extends javax.swing.JPanel {
                         .addComponent(jLabel11))
                     .addGroup(jPanel13Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton11)
-                            .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel13Layout.createSequentialGroup()
-                                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel13Layout.createSequentialGroup()
+                                .addComponent(jButton30)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton11))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel13Layout.createSequentialGroup()
+                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel13Layout.setVerticalGroup(
@@ -759,9 +786,11 @@ public class Cotizacion extends javax.swing.JPanel {
                     .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton11)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton11)
+                    .addComponent(jButton30))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
 
@@ -774,6 +803,147 @@ public class Cotizacion extends javax.swing.JPanel {
         VerCotizacionesLayout.setVerticalGroup(
             VerCotizacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        jPanel18.setBackground(new java.awt.Color(255, 255, 255));
+
+        jButton29.setBackground(new java.awt.Color(255, 255, 255));
+        jButton29.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton29.setText("CANCELAR");
+        jButton29.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton29MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton29MouseExited(evt);
+            }
+        });
+        jButton29.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton29ActionPerformed(evt);
+            }
+        });
+
+        jLabel31.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel31.setText("Nombre del cliente:");
+
+        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel32.setText("Descuento:");
+
+        jLabel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel35.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel35.setText("Subtotal:");
+
+        jLabel36.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel43.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel43.setText("Total:");
+
+        jLabel44.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel46.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel46.setText("Servicios:");
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane4.setViewportView(jTextArea1);
+
+        jLabel39.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel39.setText("Teléfono:");
+
+        jLabel40.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel13.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(24, 192, 221));
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/VERCOTIZACIONES2.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton29)
+                .addGap(33, 33, 33))
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel31)
+                    .addGroup(jPanel18Layout.createSequentialGroup()
+                        .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel46)
+                            .addComponent(jLabel43))
+                        .addGap(61, 61, 61)
+                        .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel44, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel18Layout.createSequentialGroup()
+                        .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel39)
+                            .addComponent(jLabel35)
+                            .addComponent(jLabel32))
+                        .addGap(48, 48, 48)
+                        .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel40, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel18Layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(49, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel13)
+                .addGap(67, 67, 67))
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel13)
+                .addGap(34, 34, 34)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel39, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel40, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel43, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel44, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel46, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(98, 98, 98)
+                .addComponent(jButton29)
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout verCotiSeleccionadaLayout = new javax.swing.GroupLayout(verCotiSeleccionada.getContentPane());
+        verCotiSeleccionada.getContentPane().setLayout(verCotiSeleccionadaLayout);
+        verCotiSeleccionadaLayout.setHorizontalGroup(
+            verCotiSeleccionadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        verCotiSeleccionadaLayout.setVerticalGroup(
+            verCotiSeleccionadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         setLayout(new java.awt.BorderLayout());
@@ -1453,6 +1623,51 @@ public class Cotizacion extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton30ActionPerformed
+        // TODO add your handling code here:
+        try {
+            cargarDialogo(verCotiSeleccionada, "Visualizar cotizacion");
+            verCotiSeleccionada.setDefaultCloseOperation(0);
+            int id = Integer.parseInt(jTable3.getValueAt(jTable3.getSelectedRow(), 0).toString());
+            verCoti(id);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(VerCotizaciones, "Seleccione una cotización");
+        }
+    }//GEN-LAST:event_jButton30ActionPerformed
+    public void verCoti(int id) {
+        CotizacionesDAO cotizacionesDAO = new CotizacionesDAO();
+        Cotizaciones ventas = cotizacionesDAO.seleccionar_coti(id);
+
+        jLabel4.setText(ventas.getNombreCliente() + "");
+        jLabel40.setText(ventas.getTelefono() + "");
+        jLabel12.setText(ventas.getDescuento() + "");
+        jLabel36.setText(ventas.getSubtotal() + "");
+        jLabel44.setText(ventas.getTotal() + "");
+        jTextArea1.setText(ventas.getServicios());
+
+    }
+
+    public void limpiarcoti() {
+        jLabel44.setText("");
+        jLabel4.setText("");
+        jLabel40.setText("");
+        jLabel36.setText("");
+        jLabel12.setText("");
+        jTextArea1.setText("");
+    }
+    private void jButton29MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton29MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton29MouseEntered
+
+    private void jButton29MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton29MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton29MouseExited
+
+    private void jButton29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton29ActionPerformed
+        verCotiSeleccionada.dispose();
+        limpiarcoti();
+    }//GEN-LAST:event_jButton29ActionPerformed
     public void removerProducto() {
         DefaultTableModel tabla2 = (DefaultTableModel) jTable1.getModel();
         int row = jTable1.getSelectedRow();
@@ -1472,7 +1687,9 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton24;
     private javax.swing.JButton jButton27;
+    private javax.swing.JButton jButton29;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
@@ -1483,6 +1700,8 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -1491,6 +1710,16 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1501,6 +1730,7 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1512,9 +1742,11 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField13;
@@ -1523,5 +1755,6 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
+    private javax.swing.JDialog verCotiSeleccionada;
     // End of variables declaration//GEN-END:variables
 }

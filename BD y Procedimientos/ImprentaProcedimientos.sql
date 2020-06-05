@@ -209,6 +209,13 @@ SELECT * FROM EntradaSalida WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERV
 end //
 delimiter ;
 
-drop procedure cargar_ventas;
+-- Seleccionar una venta
+delimiter //
+create procedure seleccionar_coti(IN id int)
+begin 
+SELECT * from Cotizacion where idCotizacion = id;
+end //
+delimiter ;
+
 select sum(total) from venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY;
 select sum(cantidad) from EntradaSalida WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY and entrada = true;

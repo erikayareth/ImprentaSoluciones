@@ -2264,11 +2264,9 @@ public class XH extends javax.swing.JPanel {
         double descuento = Double.parseDouble(jTextField3.getText());
         double tot = Double.parseDouble(jLabel24.getText());
         double sub = tot - descuento;
-        double iva = sub * .16;
-        double tot2 = sub + iva;
         double cambio = monto - sub;
         jLabel20.setText("" + cambio);
-        jLabel26.setText("" + tot2);
+        jLabel26.setText("" + sub);
     }//GEN-LAST:event_jTextField14KeyReleased
 
     private void jTextField14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField14ActionPerformed

@@ -79,7 +79,29 @@ public class CotizacionesDAO {
         }
         return dt;
     }
-
+public Cotizaciones seleccionar_coti(int i) {
+        Connection con = null;
+        PreparedStatement st = null;
+       
+        Cotizaciones cotizaciones = new Cotizaciones();
+        Productos productos = new Productos();
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL seleccionar_coti(?)");
+            st.setInt(1, i);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                cotizaciones  = inflaPOJO(rs);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al consultar la cotización " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return cotizaciones;
+    }  
     private static Cotizaciones inflaPOJO(ResultSet rs) {
         Cotizaciones pojo = new Cotizaciones();
         try {
@@ -89,6 +111,7 @@ public class CotizacionesDAO {
             pojo.setDescuento(rs.getDouble("descuento"));
             pojo.setTotal(rs.getDouble("total"));
             pojo.setSubtotal(rs.getDouble("subtotal"));
+            pojo.setServicios(rs.getString("servicios"));
 
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo  cotizaciones .." + ex);
