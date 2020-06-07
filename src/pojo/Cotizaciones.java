@@ -17,11 +17,12 @@ public class Cotizaciones {
   private double total;
   private double subtotal;
   private String servicios;
+  private String folio;
 
     public Cotizaciones() {
     }
 
-    public Cotizaciones(int idCotizacion, String nombreCliente, String telefono, double descuento, double total, double subtotal, String servicios) {
+    public Cotizaciones(int idCotizacion, String nombreCliente, String telefono, double descuento, double total, double subtotal, String servicios, String folio) {
         this.idCotizacion = idCotizacion;
         this.nombreCliente = nombreCliente;
         this.telefono = telefono;
@@ -29,15 +30,21 @@ public class Cotizaciones {
         this.total = total;
         this.subtotal = subtotal;
         this.servicios = servicios;
+        this.folio = folio;
     }
-    public Cotizaciones(String nombreCliente, String telefono, double descuento, double total, double subtotal, String servicios) {
+
+    public Cotizaciones(String nombreCliente, String telefono, double descuento, double total, double subtotal, String servicios, String folio) {
         this.nombreCliente = nombreCliente;
         this.telefono = telefono;
         this.descuento = descuento;
         this.total = total;
         this.subtotal = subtotal;
         this.servicios = servicios;
+        this.folio = folio;
     }
+
+    
+    
     public int getIdCotizacion() {
         return idCotizacion;
     }
@@ -92,6 +99,14 @@ public class Cotizaciones {
 
     public void setServicios(String servicios) {
         this.servicios = servicios;
+    }
+
+    public String getFolio() {
+        return folio;
+    }
+
+    public void setFolio(String folio) {
+        this.folio = folio;
     }
   
     

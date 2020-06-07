@@ -90,7 +90,7 @@ public class XH extends javax.swing.JPanel {
         cargarModeloSalida();
         configureTable();
         poputTable();
-        calcularT();
+       
         jScrollPane6.getViewport().setBackground(Color.white);
         textAutoCompleter = new TextAutoCompleter(jTextField1, new AutoCompleterCallback() {
             @Override
@@ -187,7 +187,7 @@ public class XH extends javax.swing.JPanel {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
-        dialogo.setSize(490, 590);
+        dialogo.setSize(490, 570);
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
@@ -286,15 +286,15 @@ public class XH extends javax.swing.JPanel {
         }
         jLabel24.setText("" + tpagar + "0");
     }
-     void calcularT() {
-        tcorte = 0;
-        for (int i = 0; i < jTable5.getRowCount(); i++) {
-            cant = Integer.parseInt(jTable5.getValueAt(i, 3).toString());
-            tcorte = tcorte + (cant);
-        }
-        
-        jLabel12.setText("" + tcorte+ "0");
-    }
+//     void calcularT() {
+//        tcorte = 0;
+//        for (int i = 0; i < jTable5.getRowCount(); i++) {
+//            cant = Integer.parseInt(jTable5.getValueAt(i, 3).toString());
+//            tcorte = tcorte + (cant);
+//        }
+//        
+//        jLabel2.setText("" + tcorte+ "0");
+//    }
 
     int crear() throws SQLException {
         VentasDAO vd = new VentasDAO();
@@ -305,10 +305,11 @@ public class XH extends javax.swing.JPanel {
         double subtotal = Double.parseDouble(jLabel24.getText());
         double cambio = Double.parseDouble(jLabel20.getText());
         String folio = jTextField2.getText();
+        String cla = (String) jComboBox5.getSelectedItem();
         for (int i = 0; i < jTable6.getRowCount(); i++) {
             servicios += (String) jTable6.getValueAt(i, 1) + " ";
         }
-        Ventas ventas = new Ventas(importe, total, descuento, cambio, folio, subtotal, servicios);
+        Ventas ventas = new Ventas(importe, total, descuento, cambio, folio, subtotal, servicios,cla);
         int id = vd.insertar(ventas);
         return id;
     }
@@ -337,9 +338,10 @@ public class XH extends javax.swing.JPanel {
         jLabel24.setText("");
         jLabel20.setText("");
         jTextField14.setText("");
-        jTextField3.setText("0");
+        jTextField3.setText("");
         jTextField2.setText("");
         jTextField1.setText("");
+        
         try {
             DefaultTableModel modelo = (DefaultTableModel) jTable6.getModel();
             int filas = jTable6.getRowCount();
@@ -450,6 +452,8 @@ public class XH extends javax.swing.JPanel {
         jLabel20 = new javax.swing.JLabel();
         jTextField14 = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
+        jLabel41 = new javax.swing.JLabel();
+        jComboBox5 = new javax.swing.JComboBox<>();
         EntradasPasadas = new javax.swing.JDialog();
         jPanel11 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
@@ -531,7 +535,7 @@ public class XH extends javax.swing.JPanel {
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BUSCARPRODUCTO2.png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Ebuscar.png"))); // NOI18N
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nombre" }));
 
@@ -642,7 +646,7 @@ public class XH extends javax.swing.JPanel {
         jLabel6.setBackground(new java.awt.Color(255, 255, 255));
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ENTRADADEDINERO2.png"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Eentrada.png"))); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Cantidad:");
@@ -730,11 +734,12 @@ public class XH extends javax.swing.JPanel {
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jLabel6)))
+                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(62, 62, 62))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -773,7 +778,7 @@ public class XH extends javax.swing.JPanel {
         jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/SALIDADEDINERO2.png"))); // NOI18N
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Esalida.png"))); // NOI18N
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel10.setText("Cantidad:");
@@ -904,7 +909,7 @@ public class XH extends javax.swing.JPanel {
         jLabel12.setBackground(new java.awt.Color(255, 255, 255));
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/PRODUCTOCOMUN2.png"))); // NOI18N
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Ecomun.png"))); // NOI18N
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel13.setText("Descripción del producto: ");
@@ -1044,7 +1049,7 @@ public class XH extends javax.swing.JPanel {
         jLabel17.setBackground(new java.awt.Color(255, 255, 255));
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/COBRAR2.png"))); // NOI18N
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Ecobrar.png"))); // NOI18N
 
         jButton17.setBackground(new java.awt.Color(255, 255, 255));
         jButton17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -1132,6 +1137,11 @@ public class XH extends javax.swing.JPanel {
         jLabel18.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel18.setText("Pago con:");
 
+        jLabel41.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel41.setText("C/L/A");
+
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONA", "C", "L", "A" }));
+
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
         jPanel16Layout.setHorizontalGroup(
@@ -1142,12 +1152,15 @@ public class XH extends javax.swing.JPanel {
                     .addComponent(jLabel19)
                     .addComponent(jLabel27)
                     .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addComponent(jLabel18)
+                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel41))
                         .addGap(26, 26, 26)
                         .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
-                            .addComponent(jTextField14))))
+                            .addComponent(jTextField14)
+                            .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(148, Short.MAX_VALUE))
         );
         jPanel16Layout.setVerticalGroup(
@@ -1170,6 +1183,12 @@ public class XH extends javax.swing.JPanel {
                     .addGroup(jPanel16Layout.createSequentialGroup()
                         .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel41, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel16Layout.createSequentialGroup()
+                        .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 1, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -1179,34 +1198,34 @@ public class XH extends javax.swing.JPanel {
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel10Layout.createSequentialGroup()
+                            .addComponent(jButton19)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton18))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel10Layout.createSequentialGroup()
+                            .addGap(29, 29, 29)
+                            .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(jLabel17))
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addComponent(jButton19)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton18)))))
-                .addContainerGap(54, Short.MAX_VALUE))
+                        .addGap(107, 107, 107)
+                        .addComponent(jLabel17)))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addContainerGap()
                 .addComponent(jLabel17)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton19)
                     .addComponent(jButton17)
                     .addComponent(jButton18))
-                .addGap(93, 93, 93))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout CobrarLayout = new javax.swing.GroupLayout(Cobrar.getContentPane());
@@ -1217,7 +1236,7 @@ public class XH extends javax.swing.JPanel {
         );
         CobrarLayout.setVerticalGroup(
             CobrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         jPanel11.setBackground(new java.awt.Color(255, 255, 255));
@@ -1225,7 +1244,7 @@ public class XH extends javax.swing.JPanel {
         jLabel21.setBackground(new java.awt.Color(255, 255, 255));
         jLabel21.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ENTRADADEDINERO2.png"))); // NOI18N
+        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Eentrada.png"))); // NOI18N
 
         jButton20.setBackground(new java.awt.Color(255, 255, 255));
         jButton20.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -1293,12 +1312,14 @@ public class XH extends javax.swing.JPanel {
                     .addGroup(jPanel11Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel21)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel11Layout.createSequentialGroup()
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField4)))))
+                                .addComponent(jTextField4))
+                            .addGroup(jPanel11Layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel21)))))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
@@ -1335,7 +1356,7 @@ public class XH extends javax.swing.JPanel {
         jLabel22.setBackground(new java.awt.Color(255, 255, 255));
         jLabel22.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/SALIDADEDINERO2.png"))); // NOI18N
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Esalida.png"))); // NOI18N
 
         jButton22.setBackground(new java.awt.Color(255, 255, 255));
         jButton22.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -1458,7 +1479,7 @@ public class XH extends javax.swing.JPanel {
         jLabel29.setBackground(new java.awt.Color(255, 255, 255));
         jLabel29.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel29.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/VERvENTAS2.png"))); // NOI18N
+        jLabel29.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Everventas.png"))); // NOI18N
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Folio" }));
 
@@ -1572,7 +1593,7 @@ public class XH extends javax.swing.JPanel {
         jLabel30.setBackground(new java.awt.Color(255, 255, 255));
         jLabel30.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/VERvENTAS2.png"))); // NOI18N
+        jLabel30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Everventas.png"))); // NOI18N
 
         jButton29.setBackground(new java.awt.Color(255, 255, 255));
         jButton29.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -1738,7 +1759,7 @@ public class XH extends javax.swing.JPanel {
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/VENTASETIR.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Eventas.png"))); // NOI18N
         jPanel2.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
@@ -2095,8 +2116,9 @@ public class XH extends javax.swing.JPanel {
         int tres = c.length();
         String d = jTextField3.getText();
         int cuatro = d.length();
+        
 
-        if (uno == 0 || tres == 0 || cuatro == 0) {
+        if (uno == 0 || tres == 0 || cuatro == 0||jComboBox5.getSelectedIndex()==0) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
 //           limpiar();
         } else {
@@ -2146,7 +2168,7 @@ public class XH extends javax.swing.JPanel {
         int tres = c.length();
         String d = jTextField3.getText();
         int cuatro = d.length();
-        if (uno == 0 || tres == 0 || cuatro == 0) {
+        if (uno == 0 || tres == 0 || cuatro == 0||jComboBox5.getSelectedIndex()==0) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
         } else {
             try {
@@ -2794,6 +2816,7 @@ public class XH extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2829,6 +2852,7 @@ public class XH extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel46;

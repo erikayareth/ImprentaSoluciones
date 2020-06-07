@@ -94,7 +94,7 @@
                   <Color blue="dd" green="c0" red="18" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/img/VERvENTAS2.png"/>
+                  <Image iconType="3" name="/img/Everventas.png"/>
                 </Property>
               </Properties>
             </Component>
@@ -319,7 +319,7 @@
                   <Color blue="dd" green="c0" red="18" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/img/VERvENTAS2.png"/>
+                  <Image iconType="3" name="/img/Everventas.png"/>
                 </Property>
               </Properties>
             </Component>
@@ -522,7 +522,6 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel21" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jScrollPane3" alignment="0" min="-2" pref="344" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
@@ -533,6 +532,11 @@
                           </Group>
                       </Group>
                       <EmptySpace pref="12" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jLabel21" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -571,7 +575,7 @@
                   <Color blue="dd" green="c0" red="18" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/img/ENTRADADEDINERO2.png"/>
+                  <Image iconType="3" name="/img/Eentrada.png"/>
                 </Property>
               </Properties>
             </Component>
@@ -740,7 +744,7 @@
                   <Color blue="dd" green="c0" red="18" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/img/SALIDADEDINERO2.png"/>
+                  <Image iconType="3" name="/img/Esalida.png"/>
                 </Property>
               </Properties>
             </Component>
@@ -860,7 +864,7 @@
               <Color blue="dd" green="c0" red="18" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/img/CORTEETIr.png"/>
+              <Image iconType="3" name="/img/Ecorte.png"/>
             </Property>
           </Properties>
         </Component>
@@ -1304,7 +1308,7 @@
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="300" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="302" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                           </Layout>
@@ -1324,7 +1328,7 @@
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="300" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="302" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                           </Layout>

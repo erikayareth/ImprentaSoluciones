@@ -27,7 +27,7 @@ public class VentasDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call insertarventa(?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insertarventa(?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setDouble(1, v.getImporte());
             st.setDouble(2, v.getTotal());
             st.setDouble(3, v.getDescuento());
@@ -35,6 +35,7 @@ public class VentasDAO {
             st.setString(5, v.getFolio());
             st.setDouble(6, v.getSubtotal());
             st.setString(7, v.getServicios());
+            st.setString(8, v.getCLA());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -53,7 +54,7 @@ public class VentasDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID", "Folio", "Importe", "Subtotal", "Total","Descuento", "Cambio", "Fecha"};
+        String encabezados[] = {"ID", "Folio", "Importe", "Subtotal", "Total","Descuento", "Cambio","C/L/A", "Fecha"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_ventas()");
@@ -61,7 +62,7 @@ public class VentasDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[8];
+                Object ob[] = new Object[9];
                 Ventas pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idVenta");
                 ob[1] = rs.getString("folio");
@@ -70,7 +71,8 @@ public class VentasDAO {
                 ob[5] = rs.getDouble("descuento");
                 ob[4] = rs.getDouble("total");
                 ob[6] = rs.getDouble("cambio");
-                ob[7] = rs.getTimestamp("fecha");
+                ob[8] = rs.getTimestamp("fecha");
+                ob[7] = rs.getString("CLA");
                 
                 dt.addRow(ob);
             }
@@ -87,7 +89,7 @@ public class VentasDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID", "Folio", "Importe", "Subtotal", "Total","Descuento", "Cambio", "Fecha"};
+        String encabezados[] = {"ID", "Folio", "Importe", "Subtotal", "Total","Descuento", "Cambio","C/L/A", "Fecha"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL cargar_ventas()");
@@ -95,7 +97,7 @@ public class VentasDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[8];
+                Object ob[] = new Object[9];
                 Ventas pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idVenta");
                 ob[1] = rs.getString("folio");
@@ -104,7 +106,8 @@ public class VentasDAO {
                 ob[5] = rs.getDouble("descuento");
                 ob[4] = rs.getDouble("total");
                 ob[6] = rs.getDouble("cambio");
-                ob[7] = rs.getTimestamp("fecha");
+                ob[8] = rs.getTimestamp("fecha");
+                ob[7] = rs.getString("CLA");
                 
                 dt.addRow(ob);
             }
@@ -153,6 +156,7 @@ public class VentasDAO {
             pojo.setFolio(rs.getString("folio"));
             pojo.setSubtotal(rs.getDouble("subtotal"));
             pojo.setServicios(rs.getString("servicios"));
+            pojo.setCLA(rs.getString("CLA"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo Ventas .." + ex);
         }

@@ -26,13 +26,14 @@ public class CotizacionesDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call insertarcotizacion(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insertarcotizacion(?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, v.getNombreCliente());
             st.setString(2, v.getTelefono());
             st.setDouble(3, v.getDescuento());
             st.setDouble(4, v.getTotal());
             st.setDouble(5, v.getSubtotal());
             st.setString(6, v.getServicios());
+            st.setString(7, v.getFolio());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -51,7 +52,7 @@ public class CotizacionesDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID", "Nombre del cliente", "Teléfono", "Descuento", "Total", "Subtotal"};
+        String encabezados[] = {"ID","Folio", "Nombre del cliente", "Teléfono", "Descuento", "Subtotal", "Total"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_cotizacion()");
@@ -59,13 +60,14 @@ public class CotizacionesDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[6];
+                Object ob[] = new Object[7];
                 Cotizaciones pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idCotizacion");
-                ob[1] = rs.getString("nombreCliente");
-                ob[2] = rs.getString("telefono");
-                ob[3] = rs.getDouble("descuento");
-                ob[4] = rs.getDouble("total");
+                ob[1] = rs.getString("folio");
+                ob[2] = rs.getString("nombreCliente");
+                ob[3] = rs.getString("telefono");
+                ob[4] = rs.getDouble("descuento");
+                ob[6] = rs.getDouble("total");
                 ob[5] = rs.getDouble("subtotal");
 
                 dt.addRow(ob);
@@ -112,6 +114,7 @@ public Cotizaciones seleccionar_coti(int i) {
             pojo.setTotal(rs.getDouble("total"));
             pojo.setSubtotal(rs.getDouble("subtotal"));
             pojo.setServicios(rs.getString("servicios"));
+            pojo.setFolio(rs.getString("folio"));
 
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo  cotizaciones .." + ex);

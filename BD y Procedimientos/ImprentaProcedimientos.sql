@@ -11,10 +11,10 @@ insert into usuario (usuario, contrasena) values('admin','12345');
 insert into usuario (usuario, contrasena) values('empleado','43');
 
 -- Insertar Venta
-create procedure insertarVenta(in importep double, in totalp double,in descuentop double, in cambiop double, in foliop varchar(255), in subtotalp double, in serviciosp TEXT)
-insert into Venta(importe,total,descuento,cambio,folio,subtotal,servicios) values(importep,totalp,descuentop,cambiop,foliop,subtotalp,serviciosp);
-call insertarVenta(5000,200,100,20,"LC20093",10,"Producto");
-
+create procedure insertarVenta(in importep double, in totalp double,in descuentop double, in cambiop double, in foliop varchar(255), in subtotalp double, in serviciosp TEXT,IN CLAp enum('C','L','A'))
+insert into Venta(importe,total,descuento,cambio,folio,subtotal,servicios,CLA) values(importep,totalp,descuentop,cambiop,foliop,subtotalp,serviciosp,CLAp);
+call insertarVenta(5000,200,100,20,"LC20093",10,"Producto",'C');
+SELECT * FROM Venta;
 -- insertar producto
 create procedure insertarProducto(in nombrep Varchar(250), in descripcionp Text,in tipoDeVentap Enum('por paquete','por unidad'), in preciop double, 
 in precioMayoreop double, in cantMayoreop int, in estadop boolean, in Proveedor_idProveedorp int,in stockp int, in minimop int)
@@ -28,9 +28,9 @@ insert into Proveedor(nombre,telefono,estado) values(nombrep,telefonop,estadop);
 CALL insertarProveedor('Yareth', '1234567898', true);
 
 -- insertar Cotizacion
-create procedure insertarCotizacion(in nombreClientep varchar(255), in telefonop varchar(10),in descuentop double, in totalp double , in subtotalp double, in serviciosp TEXT)
-insert into Cotizacion(nombreCliente,telefono,descuento,total,subtotal,servicios) values(nombreClientep,telefonop,descuentop,totalp, subtotalp, serviciosp);
-call insertarCotizacion("Avril","2292530407",100,2000,200,"Hola");
+create procedure insertarCotizacion(in nombreClientep varchar(255), in telefonop varchar(10),in descuentop double, in totalp double , in subtotalp double, in serviciosp TEXT,in foliop varchar(255))
+insert into Cotizacion(nombreCliente,telefono,descuento,total,subtotal,servicios,folio) values(nombreClientep,telefonop,descuentop,totalp, subtotalp, serviciosp,foliop);
+call insertarCotizacion("Avril","2292530407",100,2000,200,"Hola","SKA");
 
 -- Insertar Entradas y salidas
 create procedure insertarES(in cantidadp double ,  in comentariop varchar(255),in entradap boolean )
@@ -184,7 +184,7 @@ begin
 select sum(total) from venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY;
 end //
 delimiter ;
-drop procedure total_ventas;
+
 Call total_ventas("2020-05-31 08:01:27");
 -- Cargar Ventas de un dia 
 delimiter //
@@ -193,7 +193,7 @@ begin
 SELECT * FROM venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY;
 end //
 delimiter ;
-drop procedure cargar_ventas;
+
 -- Cargar Entradas del dia  
 delimiter //
 create procedure cargar_entradas()

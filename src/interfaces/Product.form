@@ -54,7 +54,6 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -104,7 +103,7 @@
                                       <Component id="jComboBox3" min="-2" pref="186" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="60" max="32767" attributes="0"/>
+                              <EmptySpace pref="95" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jButton7" min="-2" max="-2" attributes="0"/>
@@ -113,6 +112,11 @@
                               <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -189,7 +193,7 @@
                   <Color blue="dd" green="c0" red="18" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/img/AGREGARPRODUCTO2.png"/>
+                  <Image iconType="3" name="/img/EagregarProducto.png"/>
                 </Property>
               </Properties>
             </Component>
@@ -556,7 +560,7 @@
                   <Color blue="dd" green="c0" red="18" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/img/MODIFICARPRODUCTO2.png"/>
+                  <Image iconType="3" name="/img/Emodiproduct.png"/>
                 </Property>
               </Properties>
             </Component>
@@ -704,6 +708,9 @@
               </AuxValues>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField15">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField15ActionPerformed"/>
                 <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField15KeyTyped"/>
@@ -921,7 +928,7 @@
               <Color blue="dd" green="c0" red="18" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/img/PRODUCTOSETIr.png"/>
+              <Image iconType="3" name="/img/Eproductos.png"/>
             </Property>
           </Properties>
           <Constraints>

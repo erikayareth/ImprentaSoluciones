@@ -226,7 +226,7 @@ public class Inventa extends javax.swing.JPanel {
         jLabel19.setBackground(new java.awt.Color(255, 255, 255));
         jLabel19.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BAJOSENINVENTARIO2.png"))); // NOI18N
+        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/EbajosenInventa.png"))); // NOI18N
 
         jButton12.setBackground(new java.awt.Color(255, 255, 255));
         jButton12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -303,7 +303,7 @@ public class Inventa extends javax.swing.JPanel {
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/INVENTARIOETI.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Einventario.png"))); // NOI18N
         jPanel1.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -549,7 +549,7 @@ public class Inventa extends javax.swing.JPanel {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 40, Short.MAX_VALUE))
+                .addGap(0, 47, Short.MAX_VALUE))
         );
 
         jPanel4.add(jPanel7, java.awt.BorderLayout.CENTER);

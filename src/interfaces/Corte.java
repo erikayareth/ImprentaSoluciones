@@ -162,7 +162,7 @@ public class Corte extends javax.swing.JPanel {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
-        dialogo.setSize(490, 590);
+        dialogo.setSize(490, 580);
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
@@ -413,7 +413,7 @@ public class Corte extends javax.swing.JPanel {
         jLabel38.setBackground(new java.awt.Color(255, 255, 255));
         jLabel38.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel38.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/VERvENTAS2.png"))); // NOI18N
+        jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Everventas.png"))); // NOI18N
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Folio" }));
 
@@ -527,7 +527,7 @@ public class Corte extends javax.swing.JPanel {
         jLabel39.setBackground(new java.awt.Color(255, 255, 255));
         jLabel39.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel39.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel39.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/VERvENTAS2.png"))); // NOI18N
+        jLabel39.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Everventas.png"))); // NOI18N
 
         jButton29.setBackground(new java.awt.Color(255, 255, 255));
         jButton29.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -691,7 +691,7 @@ public class Corte extends javax.swing.JPanel {
         jLabel21.setBackground(new java.awt.Color(255, 255, 255));
         jLabel21.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ENTRADADEDINERO2.png"))); // NOI18N
+        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Eentrada.png"))); // NOI18N
 
         jButton20.setBackground(new java.awt.Color(255, 255, 255));
         jButton20.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -764,13 +764,16 @@ public class Corte extends javax.swing.JPanel {
                     .addGroup(jPanel14Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel21)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel14Layout.createSequentialGroup()
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jTextField4)))))
                 .addContainerGap(12, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel21)
+                .addGap(40, 40, 40))
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -806,7 +809,7 @@ public class Corte extends javax.swing.JPanel {
         jLabel22.setBackground(new java.awt.Color(255, 255, 255));
         jLabel22.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/SALIDADEDINERO2.png"))); // NOI18N
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Esalida.png"))); // NOI18N
 
         jButton22.setBackground(new java.awt.Color(255, 255, 255));
         jButton22.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -931,7 +934,7 @@ public class Corte extends javax.swing.JPanel {
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(24, 192, 221));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/CORTEETIr.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Ecorte.png"))); // NOI18N
         jPanel5.add(jLabel1);
 
         add(jPanel5, java.awt.BorderLayout.PAGE_START);
@@ -1172,7 +1175,7 @@ public class Corte extends javax.swing.JPanel {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 302, Short.MAX_VALUE)
         );
 
         jPanel4.add(jPanel2, java.awt.BorderLayout.LINE_START);
@@ -1185,7 +1188,7 @@ public class Corte extends javax.swing.JPanel {
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 302, Short.MAX_VALUE)
         );
 
         jPanel4.add(jPanel15, java.awt.BorderLayout.LINE_END);

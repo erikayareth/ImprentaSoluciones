@@ -22,11 +22,12 @@ public class Ventas {
     private String folio;
     private double subtotal;
     private String servicios;
+    private String CLA;
     
     public Ventas() {
     }
 
-    public Ventas(int idVenta, double importe, double total, double descuento, double cambio, Timestamp fecha, String folio, double subtotal, String servicios) {
+    public Ventas(int idVenta, double importe, double total, double descuento, double cambio, Timestamp fecha, String folio, double subtotal, String servicios, String CLA) {
         this.idVenta = idVenta;
         this.importe = importe;
         this.total = total;
@@ -36,17 +37,26 @@ public class Ventas {
         this.folio = folio;
         this.subtotal = subtotal;
         this.servicios = servicios;
+        this.CLA = CLA;
     }
 
-    public Ventas(double importe, double total, double descuento, double cambio, String folio, double subtotal, String servicios) {
+    public Ventas(double importe, double total, double descuento, double cambio, String folio, double subtotal, String servicios, String CLA) {
         this.importe = importe;
         this.total = total;
         this.descuento = descuento;
         this.cambio = cambio;
+        
         this.folio = folio;
         this.subtotal = subtotal;
         this.servicios = servicios;
+        this.CLA = CLA;
     }
+
+   
+
+   
+
+   
 
     
     public String getFolio() {
@@ -119,6 +129,14 @@ public class Ventas {
 
     public void setServicios(String servicios) {
         this.servicios = servicios;
+    }
+
+    public String getCLA() {
+        return CLA;
+    }
+
+    public void setCLA(String CLA) {
+        this.CLA = CLA;
     }
     
     
