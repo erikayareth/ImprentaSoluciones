@@ -10,6 +10,7 @@ delimiter ;
 insert into usuario (usuario, contrasena) values('admin','12345');
 insert into usuario (usuario, contrasena) values('empleado','43');
 
+
 -- Insertar Venta
 create procedure insertarVenta(in importep double, in totalp double,in descuentop double, in cambiop double, in foliop varchar(255), in subtotalp double, in serviciosp TEXT,IN CLAp enum('C','L','A'))
 insert into Venta(importe,total,descuento,cambio,folio,subtotal,servicios,CLA) values(importep,totalp,descuentop,cambiop,foliop,subtotalp,serviciosp,CLAp);
@@ -73,6 +74,21 @@ delimiter //
 create procedure seleccionar_venta(IN id int)
 begin 
 SELECT * from venta where idVenta = id;
+end //
+delimiter ;
+
+-- Seleccionar un usuario
+delimiter //
+create procedure seleccionar_usuario()
+begin 
+SELECT * from usuario where idUsuario = 2;
+end //
+delimiter ;
+-- seleccionar usuario 2 
+delimiter //
+create procedure seleccionar_usuario2()
+begin 
+SELECT * from usuario where idUsuario = 1;
 end //
 delimiter ;
 

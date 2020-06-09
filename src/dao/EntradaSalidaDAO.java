@@ -48,7 +48,7 @@ public class EntradaSalidaDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Cantidad", "Descripción", "Fecha"};
+        String encabezados[] = {"ID","Cantidad", "Descripción", "Fecha"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_entradas()");
@@ -56,11 +56,12 @@ public class EntradaSalidaDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[3];
+                Object ob[] = new Object[4];
                 EntradaSalida pojo = inflaPOJO(rs);
-                ob[0] = rs.getDouble("cantidad");
-                ob[1] = rs.getString("comentario").toUpperCase();
-                ob[2] = rs.getTimestamp("fecha");
+                ob[0] = rs.getInt("idSalida");
+                ob[1] = rs.getDouble("cantidad");
+                ob[2] = rs.getString("comentario").toUpperCase();
+                ob[3] = rs.getTimestamp("fecha");
                 
                 dt.addRow(ob);
             }
@@ -78,7 +79,7 @@ public class EntradaSalidaDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Cantidad", "Descripción", "Fecha"};
+        String encabezados[] = {"ID","Cantidad", "Descripción", "Fecha"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_salidas()");
@@ -86,11 +87,12 @@ public class EntradaSalidaDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[3];
+                Object ob[] = new Object[4];
                 EntradaSalida pojo = inflaPOJO(rs);
-                ob[0] = rs.getDouble("cantidad");
-                ob[1] = rs.getString("comentario").toUpperCase();
-                ob[2] = rs.getTimestamp("fecha");
+                ob[0] = rs.getInt("idSalida");
+                ob[1] = rs.getDouble("cantidad");
+                ob[2] = rs.getString("comentario").toUpperCase();
+                ob[3] = rs.getTimestamp("fecha");
                 
                 dt.addRow(ob);
             }
@@ -107,7 +109,7 @@ public class EntradaSalidaDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Cantidad", "Descripción", "Fecha"};
+        String encabezados[] = {"ID","Cantidad", "Descripción", "Fecha"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL cargar_entradas()");
@@ -115,11 +117,12 @@ public class EntradaSalidaDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[3];
+                Object ob[] = new Object[4];
                 EntradaSalida pojo = inflaPOJO(rs);
-                ob[0] = rs.getDouble("cantidad");
-                ob[1] = rs.getString("comentario").toUpperCase();
-                ob[2] = rs.getTimestamp("fecha");
+                ob[0] = rs.getInt("idSalida");
+                ob[1] = rs.getDouble("cantidad");
+                ob[2] = rs.getString("comentario").toUpperCase();
+                ob[3] = rs.getTimestamp("fecha");
                 
                 dt.addRow(ob);
             }
@@ -137,7 +140,7 @@ public class EntradaSalidaDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Cantidad", "Descripción", "Fecha"};
+        String encabezados[] = {"ID","Cantidad", "Descripción", "Fecha"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL cargar_salidas()");
@@ -145,11 +148,12 @@ public class EntradaSalidaDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[3];
+                Object ob[] = new Object[4];
                 EntradaSalida pojo = inflaPOJO(rs);
-                ob[0] = rs.getDouble("cantidad");
-                ob[1] = rs.getString("comentario").toUpperCase();
-                ob[2] = rs.getTimestamp("fecha");
+                ob[0] = rs.getInt("idSalida");
+                ob[1] = rs.getDouble("cantidad");
+                ob[2] = rs.getString("comentario").toUpperCase();
+                ob[3] = rs.getTimestamp("fecha");
                 
                 dt.addRow(ob);
             }
@@ -183,7 +187,28 @@ public class EntradaSalidaDAO {
         }
         return entradaSalida;
     }
-      
+         private static final String TABLE="EntradaSalida";
+         private static final String SQL_DELETE=" DELETE FROM "+TABLE+" WHERE idSalida = ?";
+        public boolean eliminar(int id) {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement(SQL_DELETE);
+            st.setInt(1, id);
+            int num = st.executeUpdate();
+            if (num == 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al eliminar entrada o salida: " + e);
+            return false;
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return true;
+    }
     private static EntradaSalida inflaPOJO(ResultSet rs){
         EntradaSalida pojo = new EntradaSalida();
         try {

@@ -62,7 +62,8 @@ public class XH extends javax.swing.JPanel {
     TableRowSorter<TableModel> sorter4;
     TextAutoCompleter textAutoCompleter;
     Color color = new Color(196, 219, 242);
-     Color x = new Color(255, 153, 153);
+    Color x = new Color(255, 153, 153);
+
     public XH() {
         initComponents();
         this.setBackground(Color.WHITE);
@@ -75,7 +76,6 @@ public class XH extends javax.swing.JPanel {
         jPanel14.setBackground(fondo);
         jPanel13.setBackground(Color.WHITE);
 
-        
         th = jTable6.getTableHeader();
         Font fuente = new Font("TimesNewRoman", Font.PLAIN, 15);
         th.setFont(fuente);
@@ -90,7 +90,7 @@ public class XH extends javax.swing.JPanel {
         cargarModeloSalida();
         configureTable();
         poputTable();
-       
+
         jScrollPane6.getViewport().setBackground(Color.white);
         textAutoCompleter = new TextAutoCompleter(jTextField1, new AutoCompleterCallback() {
             @Override
@@ -120,6 +120,7 @@ public class XH extends javax.swing.JPanel {
                 if (fila >= 0) {
                     modelo = (DefaultTableModel) jTable6.getModel();
                     modelo.removeRow(fila);
+                    jLabel24.setText("");
                 } else {
                     JOptionPane.showMessageDialog(null, "Selecciona un dato de la tabla");
                 }
@@ -309,7 +310,7 @@ public class XH extends javax.swing.JPanel {
         for (int i = 0; i < jTable6.getRowCount(); i++) {
             servicios += (String) jTable6.getValueAt(i, 1) + " ";
         }
-        Ventas ventas = new Ventas(importe, total, descuento, cambio, folio, subtotal, servicios,cla);
+        Ventas ventas = new Ventas(importe, total, descuento, cambio, folio, subtotal, servicios, cla);
         int id = vd.insertar(ventas);
         return id;
     }
@@ -341,7 +342,7 @@ public class XH extends javax.swing.JPanel {
         jTextField3.setText("");
         jTextField2.setText("");
         jTextField1.setText("");
-        
+
         try {
             DefaultTableModel modelo = (DefaultTableModel) jTable6.getModel();
             int filas = jTable6.getRowCount();
@@ -392,6 +393,22 @@ public class XH extends javax.swing.JPanel {
         jLabel36.setText("");
         jLabel37.setText("");
         jLabel44.setText("");
+    }
+
+    public void eliminar() {
+        try {
+            int id = Integer.parseInt(jTable3.getValueAt(jTable3.getSelectedRow(), 0).toString());
+            if (JOptionPane.showConfirmDialog(null, "Estas seguro de eliminarlo?") == 0) {
+                if (esd.eliminar(id)) {
+                    JOptionPane.showMessageDialog(this, "Lo ha eliminado");
+                    cargarModeloEntrada();
+                } else {
+                    JOptionPane.showMessageDialog(this, "error");
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Selecciona un elemento de la tabla");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -716,25 +733,22 @@ public class XH extends javax.swing.JPanel {
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
                         .addComponent(jLabel7)
                         .addGap(34, 34, 34)
                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jButton9)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton10)
-                                .addGap(10, 10, 10)
-                                .addComponent(jButton11))
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(jButton9)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton10)
+                        .addGap(10, 10, 10)
+                        .addComponent(jButton11))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -1257,6 +1271,11 @@ public class XH extends javax.swing.JPanel {
                 jButton20MouseExited(evt);
             }
         });
+        jButton20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton20ActionPerformed(evt);
+            }
+        });
 
         jButton21.setBackground(new java.awt.Color(255, 255, 255));
         jButton21.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -1280,7 +1299,7 @@ public class XH extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Cantidad", "Descripción", "Fecha"
+                "ID", "Cantidad", "Descripción", "Fecha"
             }
         ));
         jScrollPane3.setViewportView(jTable3);
@@ -1397,7 +1416,7 @@ public class XH extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Cantidad", "Descripción", "Fecha"
+                "ID", "Cantidad", "Descripción", "Fecha"
             }
         ));
         jScrollPane4.setViewportView(jTable4);
@@ -2042,6 +2061,7 @@ public class XH extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        cargarModeloEntrada();
         cargarDialogo3(EntradasPasadas, Entrada, "Entradas pasadas");
         EntradasPasadas.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton11ActionPerformed
@@ -2052,6 +2072,7 @@ public class XH extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        cargarModeloSalida();
         cargarDialogo3(SalidasPasadas, Salida, "Salidas pasadas");
         SalidasPasadas.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton14ActionPerformed
@@ -2106,7 +2127,20 @@ public class XH extends javax.swing.JPanel {
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
         // TODO add your handling code here:
-        cargarModeloSalida();
+        try {
+            int id = Integer.parseInt(jTable4.getValueAt(jTable4.getSelectedRow(), 0).toString());
+            if (JOptionPane.showConfirmDialog(null, "Estas seguro de eliminarlo?") == 0) {
+                if (esd.eliminar(id)) {
+                    JOptionPane.showMessageDialog(this, "Lo ha eliminado");
+                    cargarModeloSalida();
+                } else {
+                    JOptionPane.showMessageDialog(this, "error");
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Selecciona un elemento de la tabla");
+        }
+
     }//GEN-LAST:event_jButton22ActionPerformed
 
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
@@ -2116,9 +2150,8 @@ public class XH extends javax.swing.JPanel {
         int tres = c.length();
         String d = jTextField3.getText();
         int cuatro = d.length();
-        
 
-        if (uno == 0 || tres == 0 || cuatro == 0||jComboBox5.getSelectedIndex()==0) {
+        if (uno == 0 || tres == 0 || cuatro == 0 || jComboBox5.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
 //           limpiar();
         } else {
@@ -2168,7 +2201,7 @@ public class XH extends javax.swing.JPanel {
         int tres = c.length();
         String d = jTextField3.getText();
         int cuatro = d.length();
-        if (uno == 0 || tres == 0 || cuatro == 0||jComboBox5.getSelectedIndex()==0) {
+        if (uno == 0 || tres == 0 || cuatro == 0 || jComboBox5.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
         } else {
             try {
@@ -2664,22 +2697,23 @@ public class XH extends javax.swing.JPanel {
 
     private void jButton6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseEntered
         // TODO add your handling code here:
-         jButton6.setBackground(x);
+        jButton6.setBackground(x);
     }//GEN-LAST:event_jButton6MouseEntered
 
     private void jButton6MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseExited
         // TODO add your handling code here:
-         jButton6.setBackground(Color.white);
+        jButton6.setBackground(Color.white);
     }//GEN-LAST:event_jButton6MouseExited
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-      try{
-          removerProducto();
-      }catch (Exception e ){
-          JOptionPane.showMessageDialog(this, "Debes seleccionar un producto de la tabla");
-      }
-        
+        try {
+            removerProducto();
+            jLabel24.setText("");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un producto de la tabla");
+        }
+
     }//GEN-LAST:event_jButton6ActionPerformed
     public void removerProducto() {
         DefaultTableModel tabla2 = (DefaultTableModel) jTable6.getModel();
@@ -2699,12 +2733,17 @@ public class XH extends javax.swing.JPanel {
 
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
         // TODO add your handling code here:
-       try{
-        limpiar();
-       }catch (Exception e ){
-           JOptionPane.showMessageDialog(this, "No hay nada en la tabla");
-       }
+        try {
+            limpiar();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "No hay nada en la tabla");
+        }
     }//GEN-LAST:event_jButton27ActionPerformed
+
+    private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
+        // TODO add your handling code here:
+        eliminar();
+    }//GEN-LAST:event_jButton20ActionPerformed
 
     public void vaciar() {
         jTextField5.setText("");
@@ -2758,11 +2797,13 @@ public class XH extends javax.swing.JPanel {
         String tipov = jTable2.getValueAt(row, 4).toString();
         double cantidad = Double.parseDouble(jTable2.getValueAt(row, 5).toString());
         cant = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
+        
         Object object[] = {id, nombre, descripcion, precio, tipov, cant};
         tabla2.addRow(object);
         calcular();
+       
     }
-
+    
     public static boolean isNumeric(String cadena) {
         boolean resultado;
         try {

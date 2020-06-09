@@ -24,7 +24,7 @@ public class Principal2 extends javax.swing.JFrame {
     XH ventas;
     Proveedore proveedores = new Proveedore();
     Inventa inventario = new Inventa();
-    Corte corte = new Corte();
+    Corte1 corte = new Corte1();
     Cotizacion cotizaciones = new Cotizacion();
     Color color = new Color(196, 219, 242);
     Color x = new Color(255, 153, 153);

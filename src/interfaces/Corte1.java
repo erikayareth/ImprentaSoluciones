@@ -29,7 +29,7 @@ import pojo.Ventas;
  *
  * @author erika
  */
-public class Corte extends javax.swing.JPanel {
+public class Corte1 extends javax.swing.JPanel {
 
     /**
      * Creates new form Corte
@@ -47,7 +47,7 @@ public class Corte extends javax.swing.JPanel {
     double tsalida;
     double tentrada;
 
-    public Corte() {
+    public Corte1() {
         initComponents();
         cargarModeloVenata();
         Color fondo = new Color(24, 192, 221);
@@ -111,7 +111,7 @@ public class Corte extends javax.swing.JPanel {
      
     public void cajero() {
        
-            jLabel9.setText(usuarioD.seleccionar_usuario2()+"");
+            jLabel9.setText(usuarioD.seleccionar_usuario()+"");
           
     }
     
@@ -1439,7 +1439,7 @@ public class Corte extends javax.swing.JPanel {
         subtotal();
         diferencia();
        cajero();
-        
+       
          
     }//GEN-LAST:event_jButton2ActionPerformed
 
