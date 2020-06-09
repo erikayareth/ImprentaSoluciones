@@ -120,7 +120,7 @@ public class XH extends javax.swing.JPanel {
                 if (fila >= 0) {
                     modelo = (DefaultTableModel) jTable6.getModel();
                     modelo.removeRow(fila);
-                    jLabel24.setText("");
+                     jLabel24.setText("");
                 } else {
                     JOptionPane.showMessageDialog(null, "Selecciona un dato de la tabla");
                 }
@@ -1120,6 +1120,7 @@ public class XH extends javax.swing.JPanel {
         jLabel19.setText("Cambio");
 
         jTextField3.setText("0");
+        jTextField3.setToolTipText("Coloca un descuento");
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField3KeyReleased(evt);
@@ -1956,6 +1957,7 @@ public class XH extends javax.swing.JPanel {
         jLabel23.setText("CÓDIGO DEL PRODUCTO");
         jPanel14.add(jLabel23);
 
+        jTextField1.setToolTipText("Escribe el ID o nombre del producto");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -2167,7 +2169,7 @@ public class XH extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(this, "Error");
                 }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Debes seleccionar un producto");
+                JOptionPane.showMessageDialog(this, "Debes seleccionar un producto"+e);
             }
         }
     }//GEN-LAST:event_jButton17ActionPerformed

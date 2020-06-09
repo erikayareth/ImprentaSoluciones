@@ -139,7 +139,7 @@ public class Inventa extends javax.swing.JPanel {
             int numero = Integer.parseInt(jTextField9.getText());
             if(numero<=productos.getStock()){
                 int stock = productos.getStock() - Integer.parseInt(jTextField9.getText());
-                Productos productos2 = new Productos(id, nombre, desc, tipov, precio, precioM, cantM, estado, proveedor, minimo, stock);
+                Productos productos2 = new Productos(id, nombre, desc, tipov, precio, precioM, cantM, estado, proveedor, stock, minimo);
                 if (productosDAO.modificar(productos2)==true) {
                     JOptionPane.showMessageDialog(this, "Éxito al actualizar inventario");
                     cargarModelo();
@@ -404,6 +404,7 @@ public class Inventa extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Buscar producto:");
 
+        jTextField1.setToolTipText("Escribe el ID o nombre del producto");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -428,6 +429,7 @@ public class Inventa extends javax.swing.JPanel {
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setText("Mayoreo:");
 
+        jTextField9.setToolTipText("Escribe la cantidad que deseas agregar o quitar de stock");
         jTextField9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField9ActionPerformed(evt);

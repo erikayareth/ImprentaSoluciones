@@ -101,6 +101,7 @@ public class Cotizacion extends javax.swing.JPanel {
                 if (fila >= 0) {
                     modelo = (DefaultTableModel) jTable1.getModel();
                     modelo.removeRow(fila);
+                     jLabel9.setText("--------");
                 } else {
                     JOptionPane.showMessageDialog(null, "Selecciona un dato de la tabla");
                 }
@@ -202,10 +203,10 @@ public class Cotizacion extends javax.swing.JPanel {
             /*Abro mi documento, le agrego nombre a la carpeta dentro de 
             Mis Documentos donde se guaradarán todos y el nombre del archivo 
             (recuerden agregar el .pdf)*/
-            pdfTools.openDocument("COTIZACIONES", title + ".pdf");
+            pdfTools.openDocument("COTIZACIONES", "COTIZACIÓN_"+title + ".pdf");
             /*Agrego el texto al documento. Tiene la fuente de TITULO definida en la 
             Clase PDFTools y una alineación al centro*/
-            pdfTools.addParagraph("Cotización N°"+" "+title, PDFTools.fTítle, Paragraph.ALIGN_CENTER);
+            pdfTools.addParagraph("Cotización_"+" "+title, PDFTools.fTítle, Paragraph.ALIGN_CENTER);
             //Obtengo mis comentarios
 
             /*Agrego el texto al documento. Tiene la fuente de TEXTOS definida en la 
@@ -1238,7 +1239,7 @@ public class Cotizacion extends javax.swing.JPanel {
         jLabel3.setText("DESCUENTO:");
         jPanel12.add(jLabel3);
 
-        jTextField3.setText("0");
+        jTextField3.setToolTipText("Coloca un descuento");
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
@@ -1630,6 +1631,7 @@ public class Cotizacion extends javax.swing.JPanel {
         // TODO add your handling code here:
         try {
             removerProducto();
+             jLabel9.setText("");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un producto de la tabla");
         }
