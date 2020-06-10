@@ -117,13 +117,9 @@ public class Login extends javax.swing.JFrame {
         if(login(usuario, contraseña)){
             JOptionPane.showMessageDialog(null, "Bienvenido");
             if(usuario.equals("admin")&&contraseña.equals("12345")){
-                try {
-                    Principal principal = new Principal();
-                    principal.setVisible(true);
-                    this.dispose();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                DineroInicial principal = new DineroInicial();
+                principal.setVisible(true);
+                this.dispose();
             } else {
                 try{
                     Principal2 principal2 = new Principal2();
@@ -152,13 +148,9 @@ public class Login extends javax.swing.JFrame {
         if(login(usuario, contraseña)){
             JOptionPane.showMessageDialog(null, "Bienvenido");
             if(usuario.equals("admin")&&contraseña.equals("12345")){
-                try {
-                    Principal principal = new Principal();
-                    principal.setVisible(true);
-                    this.dispose();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                DineroInicial principal = new DineroInicial();
+                principal.setVisible(true);
+                this.dispose();
             } else {
                 try{
                     Principal2 principal2 = new Principal2();
