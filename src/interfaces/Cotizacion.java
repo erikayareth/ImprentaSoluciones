@@ -11,10 +11,22 @@ import com.mxrck.autocompleter.TextAutoCompleter;
 import dao.CotizacionesDAO;
 import dao.ProductosDAO;
 import dao.VentasDAO;
+import fr.opensagres.xdocreport.converter.ConverterTypeTo;
+import fr.opensagres.xdocreport.converter.Options;
+import fr.opensagres.xdocreport.core.XDocReportException;
+import fr.opensagres.xdocreport.document.IXDocReport;
+import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
+import fr.opensagres.xdocreport.template.IContext;
+import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -181,56 +193,114 @@ public class Cotizacion extends javax.swing.JPanel {
         System.out.println("entro");
     }
 
-    boolean createPDF() {
+//    boolean createPDF() {
+//        try {
+//            //Creo un objeto de mis herramientas de PDF
+//            PDFTools pdfTools = new PDFTools();
+//            //Obtengo mi título
+//
+//            String title = jTextField5.getText();
+//            String titleS = "SUBTOTAL:";
+//            String titleD = "DESCUENTO:";
+//            String titleT = "TOTAL:";
+//            String titleN = "NOMBRE:";
+//            String titleTT = "TELEFONO:";
+//            String titleSS = "SERVICIOS:";
+//            String sub = jLabel9.getText();
+//            String desc = jTextField3.getText();
+//            String tot = jLabel10.getText();
+//            String nombre = jTextField4.getText();
+//            String tel = jFormattedTextField1.getText();
+//            String sev = jTextArea1.getText();
+//            /*Abro mi documento, le agrego nombre a la carpeta dentro de 
+//            Mis Documentos donde se guaradarán todos y el nombre del archivo 
+//            (recuerden agregar el .pdf)*/
+//            pdfTools.openDocument("COTIZACIONES", "COTIZACIÓN_"+title + ".pdf");
+//            /*Agrego el texto al documento. Tiene la fuente de TITULO definida en la 
+//            Clase PDFTools y una alineación al centro*/
+//            pdfTools.addParagraph("Cotización_"+" "+title, PDFTools.fTítle, Paragraph.ALIGN_CENTER);
+//            //Obtengo mis comentarios
+//
+//            /*Agrego el texto al documento. Tiene la fuente de TEXTOS definida en la 
+//            Clase PDFTools y una alineación justificada*/
+//            pdfTools.addParagraph(titleN + " " + nombre, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+//            pdfTools.addParagraph(titleTT + " " + tel, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+//            pdfTools.addParagraph(titleS + " " + sub, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+//            pdfTools.addParagraph(titleT + " " + tot, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+//            pdfTools.addParagraph(titleD + " " + desc, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+//
+//            //Obtengo el modelo de mi tabla
+//            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//            //Agrego mi tabla al PDF. Le agregué la misma fiente de los textos
+//            pdfTools.addTable(model, PDFTools.fText);
+//            //Cierro mi documento
+//            pdfTools.closeDocument();
+//            System.out.println("Success while creating PDF");
+//            return true;
+//        } catch (Exception e) {
+//            System.out.println("Error while creating PDF: " + e);
+//            return false;
+//        }
+//    }
+        boolean createPDF(){
+            String concepto = "";
+            String precio = "";
+            String cant = "";
+            String impor = "";
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                concepto = concepto + "\n$"+jTable1.getValueAt(i, 1).toString();
+                precio = precio + "\n$"+jTable1.getValueAt(i, 3).toString();
+                cant = cant + "\n"+jTable1.getValueAt(i, 5).toString();
+                double c = Double.parseDouble(jTable1.getValueAt(i, 5).toString());
+                double p = Double.parseDouble(jTable1.getValueAt(i, 3).toString());
+                double im = c*p;
+                impor = "$"+im+" \n";
+                
+            }
+                String subt = jLabel9.getText();
+                String total = jLabel3.getText();
+                String iva = jTextField3.getText();
+                
         try {
-            //Creo un objeto de mis herramientas de PDF
-            PDFTools pdfTools = new PDFTools();
-            //Obtengo mi título
-
-            String title = jTextField5.getText();
-            String titleS = "SUBTOTAL:";
-            String titleD = "DESCUENTO:";
-            String titleT = "TOTAL:";
-            String titleN = "NOMBRE:";
-            String titleTT = "TELEFONO:";
-            String titleSS = "SERVICIOS:";
-            String sub = jLabel9.getText();
-            String desc = jTextField3.getText();
-            String tot = jLabel10.getText();
-            String nombre = jTextField4.getText();
-            String tel = jFormattedTextField1.getText();
-            String sev = jTextArea1.getText();
-            /*Abro mi documento, le agrego nombre a la carpeta dentro de 
-            Mis Documentos donde se guaradarán todos y el nombre del archivo 
-            (recuerden agregar el .pdf)*/
-            pdfTools.openDocument("COTIZACIONES", "COTIZACIÓN_"+title + ".pdf");
-            /*Agrego el texto al documento. Tiene la fuente de TITULO definida en la 
-            Clase PDFTools y una alineación al centro*/
-            pdfTools.addParagraph("Cotización_"+" "+title, PDFTools.fTítle, Paragraph.ALIGN_CENTER);
-            //Obtengo mis comentarios
-
-            /*Agrego el texto al documento. Tiene la fuente de TEXTOS definida en la 
-            Clase PDFTools y una alineación justificada*/
-            pdfTools.addParagraph(titleN + " " + nombre, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(titleTT + " " + tel, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(titleS + " " + sub, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(titleT + " " + tot, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(titleD + " " + desc, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-
-            //Obtengo el modelo de mi tabla
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            //Agrego mi tabla al PDF. Le agregué la misma fiente de los textos
-            pdfTools.addTable(model, PDFTools.fText);
-            //Cierro mi documento
-            pdfTools.closeDocument();
-            System.out.println("Success while creating PDF");
+            pdf(concepto, cant,precio, impor,subt,iva,total);
             return true;
-        } catch (Exception e) {
-            System.out.println("Error while creating PDF: " + e);
+        } catch (IOException ex) {
+            
+            Logger.getLogger(Cotizacion.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (XDocReportException ex) {
+            
+            Logger.getLogger(Cotizacion.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-    }
+            
+        }
+        
+        public void pdf (String concepto,String piezas, String precio,String importe , String sub,String iva,String total) throws IOException, XDocReportException{
+            
+            System.out.println("H");
+            InputStream S = Prueba2.class.getResourceAsStream("FORMATO.docx");
+            IXDocReport report = XDocReportRegistry.getRegistry().loadReport
+        (S, TemplateEngineKind.Velocity);
+            
+            IContext context = report.createContext();
+            context.put("CONCEPTO", concepto);
+            context.put("PIEZAS", piezas);
+            context.put("PRECIO", precio);
+            context.put("IMPORTE", importe);
+            context.put("SUBTOTAL", sub);
+            context.put("IVA", iva);
+            context.put("TOTAL", total);
 
+            Options options = Options.getTo(ConverterTypeTo.PDF);
+            
+            OutputStream out = new FileOutputStream(new File("Formato_Out.pdf"));
+            report.convert(context, options, out);
+            System.out.println("Éxito");
+
+        
+        
+        }
     public void consultarProducto2(Productos a) {
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         String nombre = a.getNombre();

@@ -23,6 +23,7 @@ public class Ventas {
     private double subtotal;
     private String servicios;
     private String CLA;
+    private boolean tarjeta;
     
     public Ventas() {
     }
