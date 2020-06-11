@@ -58,12 +58,13 @@ public class Corte extends javax.swing.JPanel {
     TableRowSorter<TableModel> sorter3;
     TableRowSorter<TableModel> sorter4;
     TableRowSorter<TableModel> sorter5;
-    double tcorte ;
-    double tcorte2 ;
+    double tcorte;
+    double tcorte2;
     int cant;
     double tsalida;
     double tentrada;
-    double dd ; 
+    double dd;
+
     public Corte() {
         initComponents();
         cargarModeloVenata();
@@ -85,10 +86,10 @@ public class Corte extends javax.swing.JPanel {
         jPanel7.setBackground(fondo);
         cargarModeloEntrada();
         cargarModeloSalida();
-        
+
         dd = di.d;
-        jLabel24.setText(dd+"");
-        
+        jLabel24.setText(dd + "");
+
     }
 
     public void fecha() {
@@ -105,20 +106,22 @@ public class Corte extends javax.swing.JPanel {
         }
         jLabel61.setText("" + tcorte + "0");
     }
+
     public void calcularT() {
         double tarjeta = Double.parseDouble(jLabel61.getText());
         double efectivo = Double.parseDouble(jLabel59.getText());
         double total = tarjeta + efectivo;
-        jLabel63.setText(total+"");
+        jLabel63.setText(total + "");
     }
-    
-     public void calcularTE() {
+
+    public void calcularTE() {
         double gastos = Double.parseDouble(jLabel6.getText());
         double subtotal = Double.parseDouble(jLabel63.getText());
-        double total = subtotal-gastos;
-        jLabel65.setText(total+"");
+        double total = subtotal - gastos;
+        jLabel65.setText(total + "");
     }
- public void calcularTEf() {
+
+    public void calcularTEf() {
         tcorte2 = 0;
         for (int i = 0; i < jTable6.getRowCount(); i++) {
             cant = (int) Double.parseDouble(jTable6.getValueAt(i, 4).toString());
@@ -126,6 +129,7 @@ public class Corte extends javax.swing.JPanel {
         }
         jLabel59.setText("" + tcorte2 + "0");
     }
+
     public void calcularE() {
         tentrada = 0;
         for (int i = 0; i < jTable3.getRowCount(); i++) {
@@ -150,18 +154,18 @@ public class Corte extends javax.swing.JPanel {
         }
         jLabel6.setText("" + tsalida + "0");
     }
-     
+
     public void cajero() {
-      jLabel9.setText(usuarioD.seleccionar_usuario2()+"");
-          
+        jLabel9.setText(usuarioD.seleccionar_usuario2() + "");
+
     }
-    public void cajainicial(){
+
+    public void cajainicial() {
         DineroInicial di = new DineroInicial();
-       jLabel24.setText(di.d+"");
-      
+        jLabel24.setText(di.d + "");
+
     }
-    
-    
+
     public void subtotal() {
         double morralla = Double.parseDouble(jLabel15.getText());
         double billete = Double.parseDouble(jLabel19.getText());
@@ -209,6 +213,7 @@ public class Corte extends javax.swing.JPanel {
         jTable5.setRowSorter(sorter2);
 
     }
+
     public void cargarModeloEfectivo() {
         VentasDAO ventasDAO = new VentasDAO();
         DefaultTableModel dt = ventasDAO.cargarModelo3();
@@ -292,12 +297,72 @@ public class Corte extends javax.swing.JPanel {
             System.out.println("texto vacio" + e);
         }
     }
-     public void filter5() {
+
+    public void filter5() {
         try {
             sorter5.setRowFilter(RowFilter.regexFilter(jTextField13.getText().toUpperCase(), jComboBox5.getSelectedIndex()));
         } catch (Exception e) {
             System.out.println("texto vacio" + e);
         }
+    }
+
+    boolean createPDF() {
+        String cajero = jLabel9.getText();
+        String entradas = jLabel4.getText();
+        String salidas = jLabel6.getText();
+        String morralla = jLabel15.getText();
+        String billetes = jLabel19.getText();
+        String subtotal = jLabel11.getText();
+        String fecha = jLabel2.getText();
+        String efectivo = jLabel59.getText();
+        String credito = jLabel61.getText();
+        String subtt = jLabel63.getText();
+        String total = jLabel65.getText();
+        String diferencia = jLabel76.getText();
+        String jefe = jTextField1.getText();
+
+        try {
+            pdf(fecha, cajero, entradas, salidas, total, morralla, billetes, subtotal,credito,efectivo,subtt,diferencia,jefe);
+            return true;
+        } catch (IOException ex) {
+
+            Logger.getLogger(Cotizacion.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (XDocReportException ex) {
+
+            Logger.getLogger(Cotizacion.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+
+    }
+
+    public void pdf(String fecha, String cajero, String entradas, String gastos, String total, String morralla, String billetes, String subtotal, String credito, String efectivo, String subtt, String diferencia, String jefe) throws IOException, XDocReportException {
+
+        System.out.println("H");
+        InputStream S = Prueba2.class.getResourceAsStream("CORTEF.docx");
+        IXDocReport report = XDocReportRegistry.getRegistry().loadReport(S, TemplateEngineKind.Velocity);
+
+        IContext context = report.createContext();
+        context.put("FECHA", fecha);
+        context.put("CAJERO", cajero);
+        context.put("ENTRADAS", entradas);
+        context.put("SALIDAS", gastos);
+        context.put("TOTAL", total);
+        context.put("MORRALLA", morralla);
+        context.put("BILLETES", billetes);
+        context.put("SUBTOTAL", subtotal);
+        context.put("CREDITO", credito);
+        context.put("EFECTIVO", efectivo);
+        context.put("SUBTT", subtt);
+        context.put("DIFERENCIA", diferencia);
+        context.put("JEFE", jefe);
+
+        Options options = Options.getTo(ConverterTypeTo.PDF);
+
+        OutputStream out = new FileOutputStream(new File("C:\\Users\\Avril\\Documents\\CORTES\\CORTE DEL DÍA_" + fecha + ".pdf"));
+        report.convert(context, options, out);
+        System.out.println("Éxito");
+
     }
 //    boolean createPDF(){
 //            String concepto = "";
@@ -361,7 +426,7 @@ public class Corte extends javax.swing.JPanel {
 //        
 //        
 //        }
-    
+
 //    boolean createPDF(){
 //        try {
 //            //Creo un objeto de mis herramientas de PDF
@@ -421,7 +486,6 @@ public class Corte extends javax.swing.JPanel {
 //            return false;
 //        }
 //    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1784,11 +1848,11 @@ public class Corte extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-//        if (createPDF()) {
-//            JOptionPane.showMessageDialog(null, "PDF creado con éxito");
-//        } else {
-//            JOptionPane.showMessageDialog(null, "Error al crear el PDF");
-//        }
+        if (createPDF()) {
+            JOptionPane.showMessageDialog(null, "PDF creado con éxito");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al crear el PDF");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseEntered
@@ -1801,21 +1865,21 @@ public class Corte extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code her
-       
+
         calcularE();
         calcularS();
         calcularBillete();
         calcularMorralla();
         fecha();
         subtotal();
-       cajero();
-       calcularTEf();
-       calcularTT();
+        cajero();
+        calcularTEf();
+        calcularTT();
         calcularT();
-       calcularTE();
-       diferencia();
-        
-         
+        calcularTE();
+        diferencia();
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField12KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField12KeyReleased
@@ -1944,7 +2008,7 @@ public class Corte extends javax.swing.JPanel {
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
         // TODO add your handling code here:
-      try {
+        try {
             int id = Integer.parseInt(jTable4.getValueAt(jTable4.getSelectedRow(), 0).toString());
             if (JOptionPane.showConfirmDialog(null, "Estas seguro de eliminarlo?") == 0) {
                 if (entrada.eliminar(id)) {
@@ -2013,11 +2077,11 @@ public class Corte extends javax.swing.JPanel {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-      
+
         cargarDialogo(EFECTIVO, "Ver ventas");
         EFECTIVO.setDefaultCloseOperation(0);
-       
-        
+
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTextField13KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField13KeyReleased
@@ -2034,7 +2098,7 @@ public class Corte extends javax.swing.JPanel {
 
     private void jButton31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton31ActionPerformed
         // TODO add your handling code here:
-         EFECTIVO.dispose();
+        EFECTIVO.dispose();
         jTextField13.setText("");
     }//GEN-LAST:event_jButton31ActionPerformed
 

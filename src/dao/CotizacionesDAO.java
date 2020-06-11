@@ -69,7 +69,7 @@ public class CotizacionesDAO {
                 ob[4] = rs.getDouble("descuento");
                 ob[6] = rs.getDouble("total");
                 ob[5] = rs.getDouble("subtotal");
-                ob[7] = rs.getDouble("fecha");
+                ob[7] = rs.getTimestamp("fecha");
 
                 dt.addRow(ob);
             }
