@@ -310,7 +310,13 @@ public class XH extends javax.swing.JPanel {
         for (int i = 0; i < jTable6.getRowCount(); i++) {
             servicios += (String) jTable6.getValueAt(i, 1) + " ";
         }
-        Ventas ventas = new Ventas(importe, total, descuento, cambio, folio, subtotal, servicios, cla);
+        boolean tarjeta = false;
+        if(jRadioButton1.isSelected()){
+             tarjeta = true;
+        }else if(jRadioButton2.isSelected()){
+             tarjeta = false;
+        }
+        Ventas ventas = new Ventas(importe, total, descuento, cambio, folio, subtotal, servicios, cla,tarjeta);
         int id = vd.insertar(ventas);
         return id;
     }

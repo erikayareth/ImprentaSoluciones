@@ -52,7 +52,7 @@ public class CotizacionesDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID","Folio", "Nombre del cliente", "Teléfono", "Descuento", "Subtotal", "Total"};
+        String encabezados[] = {"ID","Folio", "Nombre del cliente", "Teléfono", "Descuento", "Subtotal", "Total","Fecha"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_cotizacion()");
@@ -60,7 +60,7 @@ public class CotizacionesDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[7];
+                Object ob[] = new Object[8];
                 Cotizaciones pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idCotizacion");
                 ob[1] = rs.getString("folio");
@@ -69,6 +69,7 @@ public class CotizacionesDAO {
                 ob[4] = rs.getDouble("descuento");
                 ob[6] = rs.getDouble("total");
                 ob[5] = rs.getDouble("subtotal");
+                ob[7] = rs.getDouble("fecha");
 
                 dt.addRow(ob);
             }

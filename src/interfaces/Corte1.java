@@ -42,6 +42,7 @@ public class Corte1 extends javax.swing.JPanel {
     TableRowSorter<TableModel> sorter2;
     TableRowSorter<TableModel> sorter3;
     TableRowSorter<TableModel> sorter4;
+    TableRowSorter<TableModel> sorter5;
     double tcorte;
     int cant;
     double tsalida;
@@ -50,6 +51,7 @@ public class Corte1 extends javax.swing.JPanel {
     public Corte1() {
         initComponents();
         cargarModeloVenata();
+         cargarModeloEfectivo();
         Color fondo = new Color(24, 192, 221);
         this.setBackground(Color.WHITE);
         jPanel4.setBackground(Color.white);
@@ -163,7 +165,15 @@ public class Corte1 extends javax.swing.JPanel {
         jTable5.setRowSorter(sorter2);
 
     }
+public void cargarModeloEfectivo() {
+        VentasDAO ventasDAO = new VentasDAO();
+        DefaultTableModel dt = ventasDAO.cargarModelo3();
+        jTable6.setModel(dt);
+        jTable6.setAutoCreateRowSorter(true);
+        sorter5 = new TableRowSorter<>(dt);
+        jTable6.setRowSorter(sorter5);
 
+    }
     void cargarDialogo(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
@@ -233,6 +243,13 @@ public class Corte1 extends javax.swing.JPanel {
     public void filter4() {
         try {
             sorter4.setRowFilter(RowFilter.regexFilter(jTextField15.getText().toUpperCase(), jComboBox4.getSelectedIndex()));
+        } catch (Exception e) {
+            System.out.println("texto vacio" + e);
+        }
+    }
+    public void filter5() {
+        try {
+            sorter5.setRowFilter(RowFilter.regexFilter(jTextField13.getText().toUpperCase(), jComboBox5.getSelectedIndex()));
         } catch (Exception e) {
             System.out.println("texto vacio" + e);
         }
@@ -354,10 +371,20 @@ public class Corte1 extends javax.swing.JPanel {
         jTable4 = new javax.swing.JTable();
         jComboBox4 = new javax.swing.JComboBox<>();
         jTextField15 = new javax.swing.JTextField();
+        EFECTIVO = new javax.swing.JDialog();
+        jPanel21 = new javax.swing.JPanel();
+        jLabel53 = new javax.swing.JLabel();
+        jComboBox5 = new javax.swing.JComboBox<>();
+        jTextField13 = new javax.swing.JTextField();
+        jButton31 = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTable6 = new javax.swing.JTable();
+        jButton32 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
+        jButton6 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -933,6 +960,120 @@ public class Corte1 extends javax.swing.JPanel {
             .addComponent(jPanel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jPanel21.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel53.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel53.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel53.setForeground(new java.awt.Color(24, 192, 221));
+        jLabel53.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Everventas.png"))); // NOI18N
+
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Folio" }));
+
+        jTextField13.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField13KeyReleased(evt);
+            }
+        });
+
+        jButton31.setBackground(new java.awt.Color(255, 255, 255));
+        jButton31.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton31.setText("CANCELAR");
+        jButton31.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton31MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton31MouseExited(evt);
+            }
+        });
+        jButton31.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton31ActionPerformed(evt);
+            }
+        });
+
+        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Importe", "Total", "Descuento", "Cambio", "Fecha", "Folio", "subtotal"
+            }
+        ));
+        jScrollPane6.setViewportView(jTable6);
+
+        jButton32.setBackground(new java.awt.Color(255, 255, 255));
+        jButton32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton32.setText("VISUALIZAR");
+        jButton32.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton32MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton32MouseExited(evt);
+            }
+        });
+        jButton32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton32ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
+        jPanel21.setLayout(jPanel21Layout);
+        jPanel21Layout.setHorizontalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel21Layout.createSequentialGroup()
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel21Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel21Layout.createSequentialGroup()
+                                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField13))
+                            .addGroup(jPanel21Layout.createSequentialGroup()
+                                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel21Layout.createSequentialGroup()
+                                        .addComponent(jButton32)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton31))
+                                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(jPanel21Layout.createSequentialGroup()
+                        .addGap(145, 145, 145)
+                        .addComponent(jLabel53)))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+        jPanel21Layout.setVerticalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel21Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel53)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton31)
+                    .addComponent(jButton32))
+                .addGap(31, 31, 31))
+        );
+
+        javax.swing.GroupLayout EFECTIVOLayout = new javax.swing.GroupLayout(EFECTIVO.getContentPane());
+        EFECTIVO.getContentPane().setLayout(EFECTIVOLayout);
+        EFECTIVOLayout.setHorizontalGroup(
+            EFECTIVOLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        EFECTIVOLayout.setVerticalGroup(
+            EFECTIVOLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
         setLayout(new java.awt.BorderLayout());
 
         jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.LINE_AXIS));
@@ -949,9 +1090,27 @@ public class Corte1 extends javax.swing.JPanel {
 
         jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.LINE_AXIS));
 
+        jButton6.setBackground(new java.awt.Color(255, 255, 255));
+        jButton6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton6.setText("VENTAS DEL DÍA EFECTIVO");
+        jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton6MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton6MouseExited(evt);
+            }
+        });
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton6);
+
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton1.setText("VER VENTAS DEL DÍA ");
+        jButton1.setText("VENTAS DEL DÍA CON TARJETA");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jButton1MouseEntered(evt);
@@ -1385,22 +1544,6 @@ public class Corte1 extends javax.swing.JPanel {
         add(jPanel6, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseEntered
-        // TODO add your handling code here:
-        jButton1.setBackground(color);
-    }//GEN-LAST:event_jButton1MouseEntered
-
-    private void jButton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseExited
-        // TODO add your handling code here:
-        jButton1.setBackground(Color.white);
-    }//GEN-LAST:event_jButton1MouseExited
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        cargarDialogo(VerVentas, "Ver ventas");
-        VerVentas.setDefaultCloseOperation(0);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jButton3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseEntered
         // TODO add your handling code here:
         jButton1.setBackground(color);
@@ -1627,6 +1770,76 @@ public class Corte1 extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Selecciona un elemento de la tabla");
         }
     }//GEN-LAST:event_jButton20ActionPerformed
+
+    private void jTextField13KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField13KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField13KeyReleased
+
+    private void jButton31MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton31MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton31MouseEntered
+
+    private void jButton31MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton31MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton31MouseExited
+
+    private void jButton31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton31ActionPerformed
+        // TODO add your handling code here:
+        EFECTIVO.dispose();
+        jTextField13.setText("");
+    }//GEN-LAST:event_jButton31ActionPerformed
+
+    private void jButton32MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton32MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton32MouseEntered
+
+    private void jButton32MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton32MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton32MouseExited
+
+    private void jButton32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton32ActionPerformed
+        // TODO add your handling code here:
+        try {
+            cargarDialogo(verVentaSeleccionada, "Visualizar venta");
+            verVentaSeleccionada.setDefaultCloseOperation(0);
+            int id = Integer.parseInt(jTable6.getValueAt(jTable6.getSelectedRow(), 0).toString());
+            verVentas(id);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(EFECTIVO, "Seleccione una venta");
+        }
+    }//GEN-LAST:event_jButton32ActionPerformed
+
+    private void jButton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseEntered
+        // TODO add your handling code here:
+        jButton1.setBackground(color);
+    }//GEN-LAST:event_jButton1MouseEntered
+
+    private void jButton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseExited
+        // TODO add your handling code here:
+        jButton1.setBackground(Color.white);
+    }//GEN-LAST:event_jButton1MouseExited
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        cargarDialogo(VerVentas, "Ver ventas");
+        VerVentas.setDefaultCloseOperation(0);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6MouseEntered
+
+    private void jButton6MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6MouseExited
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+
+        cargarDialogo(EFECTIVO, "Ver ventas");
+        EFECTIVO.setDefaultCloseOperation(0);
+
+    }//GEN-LAST:event_jButton6ActionPerformed
     public void limpiarVerVenta() {
         jLabel16.setText("");
         jLabel17.setText("");
@@ -1639,6 +1852,7 @@ public class Corte1 extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog EFECTIVO;
     private javax.swing.JDialog EntradasPasadas;
     private javax.swing.JDialog SalidasPasadas;
     private javax.swing.JDialog VerVentas;
@@ -1652,11 +1866,15 @@ public class Corte1 extends javax.swing.JPanel {
     private javax.swing.JButton jButton29;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton30;
+    private javax.swing.JButton jButton31;
+    private javax.swing.JButton jButton32;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1701,6 +1919,7 @@ public class Corte1 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1717,6 +1936,7 @@ public class Corte1 extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -1728,6 +1948,7 @@ public class Corte1 extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSpinner jSpinner11;
     private javax.swing.JSpinner jSpinner12;
     private javax.swing.JSpinner jSpinner13;
@@ -1741,8 +1962,10 @@ public class Corte1 extends javax.swing.JPanel {
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
+    private javax.swing.JTable jTable6;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField12;
+    private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField15;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JDialog verVentaSeleccionada;

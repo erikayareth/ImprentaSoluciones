@@ -27,7 +27,7 @@ public class VentasDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call insertarventa(?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insertarventa(?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setDouble(1, v.getImporte());
             st.setDouble(2, v.getTotal());
             st.setDouble(3, v.getDescuento());
@@ -36,6 +36,9 @@ public class VentasDAO {
             st.setDouble(6, v.getSubtotal());
             st.setString(7, v.getServicios());
             st.setString(8, v.getCLA());
+            st.setBoolean(9, v.isTarjeta());
+           
+            
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -113,14 +116,48 @@ public class VentasDAO {
             }
             rs.close();
         } catch (Exception e) {
-            System.out.println("Error al cargar la tabla ventas dia " + e);
+            System.out.println("Error al cargar la tabla ventas dia con tarjeta " + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return dt;
     }
-      
+      public DefaultTableModel cargarModelo3()  {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultTableModel dt = null;
+        String encabezados[] = {"ID", "Folio", "Importe", "Subtotal", "Total","Descuento", "Cambio","C/L/A", "Fecha"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("CALL cargar_ventasS()");
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[9];
+                Ventas pojo = inflaPOJO(rs);
+                ob[0] = rs.getInt("idVenta");
+                ob[1] = rs.getString("folio");
+                ob[2] = rs.getString("importe");
+                ob[3] = rs.getString("subtotal");
+                ob[5] = rs.getDouble("descuento");
+                ob[4] = rs.getDouble("total");
+                ob[6] = rs.getDouble("cambio");
+                ob[8] = rs.getTimestamp("fecha");
+                ob[7] = rs.getString("CLA");
+                
+                dt.addRow(ob);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla ventas dia sin tarjeta" + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
     public Ventas seleccionar_venta(int i) {
         Connection con = null;
         PreparedStatement st = null;
@@ -157,6 +194,7 @@ public class VentasDAO {
             pojo.setSubtotal(rs.getDouble("subtotal"));
             pojo.setServicios(rs.getString("servicios"));
             pojo.setCLA(rs.getString("CLA"));
+            pojo.setTarjeta(rs.getBoolean("tarjeta"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo Ventas .." + ex);
         }

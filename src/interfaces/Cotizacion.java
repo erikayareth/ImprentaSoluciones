@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -65,6 +67,7 @@ public class Cotizacion extends javax.swing.JPanel {
 
     public Cotizacion() {
         initComponents();
+        fecha();
         this.setBackground(Color.WHITE);
         Color fondo = new Color(24, 192, 221);
         jPanel3.setBackground(fondo);
@@ -242,27 +245,33 @@ public class Cotizacion extends javax.swing.JPanel {
 //            return false;
 //        }
 //    }
+        public void fecha() {
+        Date fecha = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); //formatear la fecha en una cadena
+        jLabel14.setText(sdf.format(fecha)); //setear la representacion en cadena de la fecha
+    }
         boolean createPDF(){
             String concepto = "";
             String precio = "";
             String cant = "";
             String impor = "";
             for (int i = 0; i < jTable1.getRowCount(); i++) {
-                concepto = concepto + "\n$"+jTable1.getValueAt(i, 1).toString();
+                concepto = concepto + "\n"+jTable1.getValueAt(i, 1).toString();
                 precio = precio + "\n$"+jTable1.getValueAt(i, 3).toString();
-                cant = cant + "\n"+jTable1.getValueAt(i, 5).toString();
+                cant = cant + "\n$"+jTable1.getValueAt(i, 5).toString();
                 double c = Double.parseDouble(jTable1.getValueAt(i, 5).toString());
                 double p = Double.parseDouble(jTable1.getValueAt(i, 3).toString());
                 double im = c*p;
-                impor = "$"+im+" \n";
+                impor = "$"+im+"\n";
                 
             }
+                String fecha = jLabel14.getText();
                 String subt = jLabel9.getText();
-                String total = jLabel3.getText();
+                String total = jLabel10.getText();
                 String iva = jTextField3.getText();
                 
         try {
-            pdf(concepto, cant,precio, impor,subt,iva,total);
+            pdf(concepto, cant,precio, impor,subt,iva,total,fecha);
             return true;
         } catch (IOException ex) {
             
@@ -276,7 +285,7 @@ public class Cotizacion extends javax.swing.JPanel {
             
         }
         
-        public void pdf (String concepto,String piezas, String precio,String importe , String sub,String iva,String total) throws IOException, XDocReportException{
+        public void pdf (String concepto,String piezas, String precio,String importe , String sub,String iva,String total,String fecha) throws IOException, XDocReportException{
             
             System.out.println("H");
             InputStream S = Prueba2.class.getResourceAsStream("FORMATO.docx");
@@ -291,10 +300,12 @@ public class Cotizacion extends javax.swing.JPanel {
             context.put("SUBTOTAL", sub);
             context.put("IVA", iva);
             context.put("TOTAL", total);
+            context.put("FECHA", fecha);
+            String folio = jTextField5.getText();
 
             Options options = Options.getTo(ConverterTypeTo.PDF);
             
-            OutputStream out = new FileOutputStream(new File("Formato_Out.pdf"));
+            OutputStream out = new FileOutputStream(new File("C:\\Users\\Avril\\Documents\\COTIZACIONES\\"+"COTIZACIÓN_"+folio+".pdf"));
             report.convert(context, options, out);
             System.out.println("Éxito");
 
@@ -477,6 +488,11 @@ public class Cotizacion extends javax.swing.JPanel {
         jLabel39 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        fech = new javax.swing.JDialog();
+        jPanel19 = new javax.swing.JPanel();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -1016,6 +1032,58 @@ public class Cotizacion extends javax.swing.JPanel {
             .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        jPanel19.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel33.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel33.setText("Fecha:");
+
+        jLabel14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel16.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(24, 192, 221));
+        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Evercoti.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
+        jPanel19.setLayout(jPanel19Layout);
+        jPanel19Layout.setHorizontalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel33)
+                    .addGroup(jPanel19Layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(137, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel19Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel16)
+                .addGap(70, 70, 70))
+        );
+        jPanel19Layout.setVerticalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel16)
+                .addGap(34, 34, 34)
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(42, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout fechLayout = new javax.swing.GroupLayout(fech.getContentPane());
+        fech.getContentPane().setLayout(fechLayout);
+        fechLayout.setHorizontalGroup(
+            fechLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        fechLayout.setVerticalGroup(
+            fechLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -1378,7 +1446,7 @@ public class Cotizacion extends javax.swing.JPanel {
         String e = jLabel10.getText();
         int cinco = e.length();
         String f = jTextField5.getText();
-        int seis = e.length();
+        int seis = f.length();
 
         if (uno == 0 || tres == 0 || cuatro == 0 || cinco == 0 || c.length() < 10 || seis == 0) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
@@ -1768,6 +1836,7 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JDialog ProductoComun;
     private javax.swing.JDialog VerCotizaciones;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JDialog fech;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -1790,6 +1859,8 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -1801,6 +1872,7 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel39;
@@ -1820,6 +1892,7 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
