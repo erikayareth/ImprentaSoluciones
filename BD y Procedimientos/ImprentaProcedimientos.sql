@@ -12,10 +12,11 @@ insert into usuario (usuario, contrasena) values('empleado','43');
 
 
 -- Insertar Venta
-create procedure insertarVenta(in importep double, in totalp double,in descuentop double, in cambiop double, in foliop varchar(255), in subtotalp double, in serviciosp TEXT,IN CLAp enum('C','L','A'))
-insert into Venta(importe,total,descuento,cambio,folio,subtotal,servicios,CLA) values(importep,totalp,descuentop,cambiop,foliop,subtotalp,serviciosp,CLAp);
-call insertarVenta(5000,200,100,20,"LC20093",10,"Producto",'C');
+create procedure insertarVenta(in importep double, in totalp double,in descuentop double, in cambiop double, in foliop varchar(255), in subtotalp double, in serviciosp TEXT,IN CLAp enum('C','L','A'),in tarjetap boolean)
+insert into Venta(importe,total,descuento,cambio,folio,subtotal,servicios,CLA,tarjeta) values(importep,totalp,descuentop,cambiop,foliop,subtotalp,serviciosp,CLAp,tarjetap);
+call insertarVenta(5000,200,100,20,"LC20093",10,"Producto",'C',true);
 SELECT * FROM Venta;
+
 -- insertar producto
 create procedure insertarProducto(in nombrep Varchar(250), in descripcionp Text,in tipoDeVentap Enum('por paquete','por unidad'), in preciop double, 
 in precioMayoreop double, in cantMayoreop int, in estadop boolean, in Proveedor_idProveedorp int,in stockp int, in minimop int)
@@ -202,11 +203,19 @@ end //
 delimiter ;
 
 Call total_ventas("2020-05-31 08:01:27");
--- Cargar Ventas de un dia 
+-- Cargar Ventas de un dia con tarjeta
 delimiter //
 create procedure cargar_ventas()
 begin
-SELECT * FROM venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY;
+SELECT * FROM venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY and tarjeta like 1;
+end //
+delimiter ;
+
+-- Cargar Ventas de un dia sin tarjeta
+delimiter //
+create procedure cargar_ventasS()
+begin
+SELECT * FROM venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY and tarjeta like 0;
 end //
 delimiter ;
 

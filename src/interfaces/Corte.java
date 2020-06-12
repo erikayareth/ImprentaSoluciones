@@ -141,7 +141,7 @@ public class Corte extends javax.swing.JPanel {
 
     public void diferencia() {
         double tbm = Double.parseDouble(jLabel11.getText());
-        double tv = Double.parseDouble(jLabel61.getText());
+        double tv = Double.parseDouble(jLabel63.getText());
         double dif = tbm - tv;
         jLabel76.setText(dif + "");
     }

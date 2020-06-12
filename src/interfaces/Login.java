@@ -33,17 +33,16 @@ public class Login extends javax.swing.JFrame {
         jPanel1.setBackground(azul);
     }
 
-    
-    boolean login(String usuario, String contrasena){
-         usuarioDAO ud1 = new usuarioDAO();
-         int id= ud1.login(usuario, contrasena);
-         if (id!=0) {
-             return true;
-         }else{
-             return false;
-         }
-     }
-    
+    boolean login(String usuario, String contrasena) {
+        usuarioDAO ud1 = new usuarioDAO();
+        int id = ud1.login(usuario, contrasena);
+        if (id != 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -112,24 +111,20 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String usuario=jTextField1.getText();
-        String contraseña=jPasswordField1.getText();
-        if(login(usuario, contraseña)){
+        String usuario = jTextField1.getText();
+        String contraseña = jPasswordField1.getText();
+        if (login(usuario, contraseña)) {
             JOptionPane.showMessageDialog(null, "Bienvenido");
-            if(usuario.equals("admin")&&contraseña.equals("12345")){
+            if (usuario.equalsIgnoreCase("admin") && contraseña.equalsIgnoreCase("12345")) {
                 DineroInicial principal = new DineroInicial();
                 principal.setVisible(true);
                 this.dispose();
             } else {
-                try{
-                    Principal2 principal2 = new Principal2();
-                    principal2.setVisible(true);
-                    this.dispose();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                DineroInicial1 di1 = new DineroInicial1();
+                di1.setVisible(true);
+                this.dispose();
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Acesso denegado");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -143,24 +138,20 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-         String usuario=jTextField1.getText();
-        String contraseña=jPasswordField1.getText();
-        if(login(usuario, contraseña)){
+        String usuario = jTextField1.getText();
+        String contraseña = jPasswordField1.getText();
+        if (login(usuario, contraseña)) {
             JOptionPane.showMessageDialog(null, "Bienvenido");
-            if(usuario.equals("admin")&&contraseña.equals("12345")){
+            if (usuario.equalsIgnoreCase("admin") && contraseña.equalsIgnoreCase("12345")) {
                 DineroInicial principal = new DineroInicial();
                 principal.setVisible(true);
                 this.dispose();
             } else {
-                try{
-                    Principal2 principal2 = new Principal2();
-                    principal2.setVisible(true);
-                    this.dispose();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                DineroInicial1 di1 = new DineroInicial1();
+                di1.setVisible(true);
+                this.dispose();
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Acesso denegado");
         }
     }//GEN-LAST:event_jPasswordField1ActionPerformed
