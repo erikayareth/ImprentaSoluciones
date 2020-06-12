@@ -51,7 +51,7 @@ public class Corte1 extends javax.swing.JPanel {
     usuarioDAO usuarioD = new usuarioDAO();
     EntradaSalidaDAO entrada = new EntradaSalidaDAO();
     VentasDAO ventasDAO = new VentasDAO();
-    DineroInicial di = new DineroInicial();
+    DineroInicial1 di = new DineroInicial1();
     Usuario usu = new Usuario();
     Color color = new Color(196, 219, 242);
     TableRowSorter<TableModel> sorter2;
@@ -64,7 +64,7 @@ public class Corte1 extends javax.swing.JPanel {
     double tsalida;
     double tentrada;
     double dd;
-
+    double valor1 = 0;
     public Corte1() {
         initComponents();
         cargarModeloVenata();
@@ -87,11 +87,14 @@ public class Corte1 extends javax.swing.JPanel {
         cargarModeloEntrada();
         cargarModeloSalida();
 
-        dd = di.d;
-        jLabel24.setText(dd + "");
+        
 
     }
-
+    
+     public void c (double valor){
+       this.valor1 = valor;
+        jLabel24.setText(valor1+"");
+   }
     public void fecha() {
         Date fecha = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); //formatear la fecha en una cadena
@@ -160,11 +163,7 @@ public class Corte1 extends javax.swing.JPanel {
 
     }
 
-    public void cajainicial() {
-        DineroInicial di = new DineroInicial();
-        jLabel24.setText(di.d + "");
-
-    }
+  
 
     public void subtotal() {
         double morralla = Double.parseDouble(jLabel15.getText());

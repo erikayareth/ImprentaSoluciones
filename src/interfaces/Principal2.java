@@ -18,6 +18,7 @@ import javax.swing.JPanel;
  *
  * @author erika
  */
+
 public class Principal2 extends javax.swing.JFrame {
 
     Product productos;
@@ -28,8 +29,8 @@ public class Principal2 extends javax.swing.JFrame {
     Cotizacion cotizaciones = new Cotizacion();
     Color color = new Color(196, 219, 242);
     Color x = new Color(255, 153, 153);
-
-    public Principal2() throws SQLException {
+     private double valor1 = 0;
+    public Principal2(double valor) throws SQLException {
 
         initComponents();
         ventas = new XH();
@@ -45,9 +46,13 @@ public class Principal2 extends javax.swing.JFrame {
         jPanel1.setBackground(Color.WHITE);
         jPanel2.setBackground(fondo);
         cargarPanel(ventas);
+         this.valor1 = valor;
+        jLabel1.setText(this.valor1+"");
     }
 
     void cargarPanel(JPanel panel) {
+         double p = Double.parseDouble(jLabel1.getText());
+        corte.c(p);
         jPanel1.removeAll();
         jPanel1.add(panel);
         jPanel1.revalidate();
@@ -63,6 +68,8 @@ public class Principal2 extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
+        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
@@ -71,6 +78,9 @@ public class Principal2 extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         jButton17 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+
+        jLabel1.setText("0");
+        jDialog1.getContentPane().add(jLabel1, java.awt.BorderLayout.CENTER);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -333,7 +343,7 @@ public class Principal2 extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new Principal2().setVisible(true);
+                    new Principal2(NORMAL).setVisible(true);
                 } catch (SQLException ex) {
                     Logger.getLogger(Principal2.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -348,6 +358,8 @@ public class Principal2 extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JDialog jDialog1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables

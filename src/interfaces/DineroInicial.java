@@ -21,7 +21,7 @@ public class DineroInicial extends javax.swing.JFrame {
     /**
      * Creates new form DineroInicial
      */
-    double d = 0 ;
+    
      Color color = new Color(196, 219, 242);
     public DineroInicial() {
         initComponents();
@@ -48,7 +48,6 @@ public class DineroInicial extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,8 +78,6 @@ public class DineroInicial extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/DINICIAL.png"))); // NOI18N
 
-        jLabel24.setText("jLabel2");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -92,9 +89,7 @@ public class DineroInicial extends javax.swing.JFrame {
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jLabel24)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(38, 162, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addGap(156, 156, 156))
         );
@@ -106,9 +101,7 @@ public class DineroInicial extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jLabel24))
+                .addComponent(jButton3)
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -145,8 +138,8 @@ public class DineroInicial extends javax.swing.JFrame {
 //           limpiar();
         } else {
         try {
-           d = Double.parseDouble(jTextField1.getText());
-            Principal principal = new Principal();
+            
+            Principal principal = new Principal(Double.parseDouble(jTextField1.getText().toString()));
              principal.setVisible(true);
                     this.dispose();
         } catch (SQLException ex) {
@@ -165,8 +158,8 @@ public class DineroInicial extends javax.swing.JFrame {
 //           limpiar();
         } else {
         try {
-           d = Double.parseDouble(jTextField1.getText());
-            Principal principal = new Principal();
+             
+            Principal principal = new Principal(Double.parseDouble(jTextField1.getText().toString()));
              principal.setVisible(true);
                     this.dispose();
         } catch (SQLException ex) {
@@ -213,7 +206,6 @@ public class DineroInicial extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables

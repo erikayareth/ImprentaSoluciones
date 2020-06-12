@@ -140,8 +140,7 @@ public class DineroInicial1 extends javax.swing.JFrame {
 //           limpiar();
         } else {
         try {
-           d = Double.parseDouble(jTextField1.getText());
-            Principal2 principal = new Principal2();
+            Principal2 principal = new Principal2(Double.parseDouble(jTextField1.getText().toString()));
              principal.setVisible(true);
                     this.dispose();
         } catch (SQLException ex) {
@@ -161,8 +160,7 @@ public class DineroInicial1 extends javax.swing.JFrame {
 //           limpiar();
         } else {
         try {
-           d = Double.parseDouble(jTextField1.getText());
-            Principal2 principal = new Principal2();
+            Principal2 principal = new Principal2(Double.parseDouble(jTextField1.getText().toString()));
              principal.setVisible(true);
                     this.dispose();
         } catch (SQLException ex) {
