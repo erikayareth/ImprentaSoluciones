@@ -7,6 +7,7 @@ package interfaces;
 
 //import com.mxrck.autocompleter.AutoCompleterCallback;
 //import com.mxrck.autocompleter.TextAutoCompleter;
+import com.itextpdf.text.Paragraph;
 import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import dao.EntradaSalidaDAO;
@@ -75,7 +76,6 @@ public class XH extends javax.swing.JPanel {
         jPanel4.setBackground(Color.WHITE);
         jPanel14.setBackground(fondo);
         jPanel13.setBackground(Color.WHITE);
-
         th = jTable6.getTableHeader();
         Font fuente = new Font("TimesNewRoman", Font.PLAIN, 15);
         th.setFont(fuente);
@@ -120,7 +120,7 @@ public class XH extends javax.swing.JPanel {
                 if (fila >= 0) {
                     modelo = (DefaultTableModel) jTable6.getModel();
                     modelo.removeRow(fila);
-                     jLabel24.setText("");
+                    calcular();
                 } else {
                     JOptionPane.showMessageDialog(null, "Selecciona un dato de la tabla");
                 }
@@ -180,7 +180,8 @@ public class XH extends javax.swing.JPanel {
         jLabel36.setText(ventas.getDescuento() + "");
         jLabel37.setText(ventas.getCambio() + "");
         jLabel44.setText(ventas.getSubtotal() + "");
-        jTextArea1.setText(ventas.getServicios());
+        String palabra = ventas.getServicios().replace(" ", "\n");
+        jTextArea1.setText(palabra);
         jLabel40.setText(ventas.getFolio());
     }
 
@@ -283,7 +284,7 @@ public class XH extends javax.swing.JPanel {
         for (int i = 0; i < jTable6.getRowCount(); i++) {
             cant = Integer.parseInt(jTable6.getValueAt(i, 5).toString());
             pre = Double.parseDouble(jTable6.getValueAt(i, 3).toString());
-            tpagar = tpagar + (cant * pre);
+            tpagar = tpagar + (cant * pre); 
         }
         jLabel24.setText("" + tpagar + "0");
     }
@@ -316,7 +317,7 @@ public class XH extends javax.swing.JPanel {
         }else if(jRadioButton2.isSelected()){
              tarjeta = false;
         }
-        Ventas ventas = new Ventas(importe, total, descuento, cambio, folio, subtotal, servicios, cla,tarjeta);
+        Ventas ventas = new Ventas(importe, total, descuento, cambio, folio, subtotal, servicios, cla, tarjeta);
         int id = vd.insertar(ventas);
         return id;
     }
@@ -414,6 +415,43 @@ public class XH extends javax.swing.JPanel {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Selecciona un elemento de la tabla");
+        }
+    }
+    
+        boolean createPDF() {
+        try {
+            PDFTools pdfTools = new PDFTools();
+            String titleS = "SUBTOTAL:";
+            String titleF = "FOLIO:";
+            String titleD = "DESCUENTO:";
+            String titleT = "TOTAL:";
+            String titleImp = "IMPORTE:";
+            String titleCambio = "CAMBIO:";
+            String titleSS = "SERVICIOS:";
+            String sub = jLabel24.getText() + "";
+            String tot = jLabel26.getText() + "";
+            String folio = jTextField2.getText() + "";
+            String desc = jTextField3.getText() + "";
+            String importe = jTextField14.getText() + "";
+            String cambio = jLabel20.getText();
+           
+            pdfTools.openDocument("TICKETS", "ticket_"+folio+".pdf");
+            pdfTools.addParagraph("ticket_"+" "+folio, PDFTools.fTítle, Paragraph.ALIGN_CENTER);
+            pdfTools.addParagraph(titleF + " " + folio, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(titleImp + " " + importe, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(titleS + " " + sub, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(titleT + " " + tot, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(titleD + " " + desc, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+            pdfTools.addParagraph(titleCambio + " " + cambio, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+
+            DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
+            pdfTools.addTable(model, PDFTools.fText);
+            pdfTools.closeDocument();
+            System.out.println("PDF creado con ´éxito");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error al crear el PDF: " + e);
+            return false;
         }
     }
 
@@ -1184,13 +1222,17 @@ public class XH extends javax.swing.JPanel {
                 .addGap(46, 46, 46)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel19)
-                    .addComponent(jLabel27)
                     .addGroup(jPanel16Layout.createSequentialGroup()
                         .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel41)
-                            .addComponent(jLabel42))
-                        .addGap(26, 26, 26)
+                            .addGroup(jPanel16Layout.createSequentialGroup()
+                                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel41)
+                                    .addComponent(jLabel42))
+                                .addGap(26, 26, 26))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
+                                .addComponent(jLabel27)
+                                .addGap(18, 18, 18)))
                         .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel16Layout.createSequentialGroup()
                                 .addComponent(jRadioButton1)
@@ -1205,16 +1247,14 @@ public class XH extends javax.swing.JPanel {
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel16Layout.createSequentialGroup()
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addComponent(jLabel18)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addContainerGap(2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1783,9 +1823,9 @@ public class XH extends javax.swing.JPanel {
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel46, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                .addGap(38, 38, 38)
                 .addComponent(jButton29)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout verVentaSeleccionadaLayout = new javax.swing.GroupLayout(verVentaSeleccionada.getContentPane());
@@ -2233,22 +2273,44 @@ public class XH extends javax.swing.JPanel {
         if (uno == 0 || tres == 0 || cuatro == 0 || jComboBox5.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
         } else {
-            try {
-                int id = crear();
-                if (id != 0) {
-                    JOptionPane.showMessageDialog(this, "Éxito al realizar la venta, el ticket se imprimirá");
-                    actualizarStock();
-                    Cobrar.dispose();
-                    cargarModeloVenata();
-                    limpiar();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Error");
+            int option = JOptionPane.showConfirmDialog(null, "¿Desea exportar la venta?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            if (option == 0){
+                try {
+                    int id = crear();
+                    if (id != 0) {
+                        JOptionPane.showMessageDialog(this, "Éxito al guardar la venta. El ticket se imprimirá");
+                        if (createPDF()) {
+                            JOptionPane.showMessageDialog(null, "PDF creado con éxito");
+                            actualizarStock();
+                            Cobrar.dispose();
+                            cargarModeloVenata();
+                            limpiar();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error al crear el PDF");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Error");
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error " + ex);
                 }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Debes seleccionar un cliente");
+            } else {
+                try {
+                    int id = crear();
+                    if (id != 0) {
+                        JOptionPane.showMessageDialog(this, "No se imprimirá el ticket");
+                        actualizarStock();
+                        Cobrar.dispose();
+                        cargarModeloVenata();
+                        limpiar();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Error");
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Debes seleccionar algo");
+                }
             }
         }
-
     }//GEN-LAST:event_jButton19ActionPerformed
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
@@ -2336,21 +2398,23 @@ public class XH extends javax.swing.JPanel {
         // TODO add your handling code here:
         double monto = Double.parseDouble(jTextField14.getText()); // 200
         double descuento = Double.parseDouble(jTextField3.getText()); // 100
-        double tot = Double.parseDouble(jLabel24.getText()); // 120
-        double sub = tot - descuento; // 120 - 100 = 20
-        double cambio = monto - sub; // 200 - 20 = 80
+        double sub = Double.parseDouble(jLabel24.getText()); // 120
+        double iva = sub * .16;
+        double total = (sub - descuento) + iva; // 120 - 100 = 20
+        double cambio = monto - total; // 200 - 20 = 80
         jLabel20.setText(" " + cambio);
-        jLabel26.setText(" " + sub);
+        jLabel26.setText(" " + total);
     }//GEN-LAST:event_jTextField3KeyReleased
 
     private void jTextField14KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyReleased
         double monto = Double.parseDouble(jTextField14.getText());
         double descuento = Double.parseDouble(jTextField3.getText());
-        double tot = Double.parseDouble(jLabel24.getText());
-        double sub = tot - descuento;
-        double cambio = monto - sub;
+        double sub = Double.parseDouble(jLabel24.getText());
+        double iva = sub * .16;
+        double total = (sub - descuento) + iva;
+        double cambio = monto - total;
         jLabel20.setText("" + cambio);
-        jLabel26.setText("" + sub);
+        jLabel26.setText("" + total);
     }//GEN-LAST:event_jTextField14KeyReleased
 
     private void jTextField14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField14ActionPerformed
@@ -2738,18 +2802,19 @@ public class XH extends javax.swing.JPanel {
         // TODO add your handling code here:
         try {
             removerProducto();
-            jLabel24.setText("");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un producto de la tabla");
         }
 
     }//GEN-LAST:event_jButton6ActionPerformed
+    
     public void removerProducto() {
         DefaultTableModel tabla2 = (DefaultTableModel) jTable6.getModel();
         int row = jTable6.getSelectedRow();
         tabla2.removeRow(row);
-
+        calcular();
     }
+    
     private void jButton27MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton27MouseEntered
         // TODO add your handling code here:
         jButton27.setBackground(x);
@@ -2825,12 +2890,24 @@ public class XH extends javax.swing.JPanel {
         double precio = Double.parseDouble(jTable2.getValueAt(row, 3).toString());
         String tipov = jTable2.getValueAt(row, 4).toString();
         double cantidad = Double.parseDouble(jTable2.getValueAt(row, 5).toString());
-        cant = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
+        int id2 = Integer.parseInt(id);
+        Productos productos = pp.seleccionar_producto(id2);
+        int stock = productos.getStock();
+        int canti = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
+        if (canti <= stock) {
+            if (cantidad >= productos.getCantidadMayoreo()) {
+                precio = productos.getPrecioMayoreo();
+            } else {
+                precio = productos.getPrecio();
+            }
+             Object object[] = {id, nombre, descripcion, precio, tipov, canti};
+             tabla2.addRow(object);
+             calcular();
+            System.out.println("entro");
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay existencias suficientes");
+        }
         
-        Object object[] = {id, nombre, descripcion, precio, tipov, cant};
-        tabla2.addRow(object);
-        calcular();
-       
     }
     
     public static boolean isNumeric(String cadena) {

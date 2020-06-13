@@ -15,14 +15,12 @@ insert into usuario (usuario, contrasena) values('empleado','43');
 create procedure insertarVenta(in importep double, in totalp double,in descuentop double, in cambiop double, in foliop varchar(255), in subtotalp double, in serviciosp TEXT,IN CLAp enum('C','L','A'),in tarjetap boolean)
 insert into Venta(importe,total,descuento,cambio,folio,subtotal,servicios,CLA,tarjeta) values(importep,totalp,descuentop,cambiop,foliop,subtotalp,serviciosp,CLAp,tarjetap);
 call insertarVenta(5000,200,100,20,"LC20093",10,"Producto",'C',true);
-SELECT * FROM Venta;
 
 -- insertar producto
 create procedure insertarProducto(in nombrep Varchar(250), in descripcionp Text,in tipoDeVentap Enum('por paquete','por unidad'), in preciop double, 
 in precioMayoreop double, in cantMayoreop int, in estadop boolean, in Proveedor_idProveedorp int,in stockp int, in minimop int)
 insert into Productos(nombre, descripcion, tipoDeVenta, precio, precioMayoreo, cantMayoreo, estado, Proveedor_idProveedor,stock,minimo) 
 values(nombrep, descripcionp, tipoDeVentap, preciop, precioMayoreop, cantMayoreop, estadop, Proveedor_idProveedorp,stockp,minimop);
-call insertarProducto("Papel","papel couche tamaño 12","por paquete", 200, 100, 50, true, 1, 10, 10);
 
 -- insertar proveedor 
 create procedure insertarProveedor(in nombrep Varchar(100), in telefonop varchar(10), in estadop boolean)
@@ -62,6 +60,7 @@ BEGIN
 	SELECT*FROM productos WHERE idProductos = id;
 END //
 delimiter ;
+
 -- Seleccionar entrada salida
 DELIMITER //
 CREATE PROCEDURE seleccionar_es(IN id INT) 
@@ -85,6 +84,7 @@ begin
 SELECT * from usuario where idUsuario = 2;
 end //
 delimiter ;
+
 -- seleccionar usuario 2 
 delimiter //
 create procedure seleccionar_usuario2()
@@ -194,6 +194,8 @@ create procedure seleccionar_venta2(IN fechap TimesTamp)
 begin 
 SELECT * from venta where fecha = fechap;
 end //
+delimiter ;
+
 -- Total de las ventas de un dia 
 delimiter //
 create procedure total_ventas()
@@ -202,7 +204,6 @@ select sum(total) from venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTER
 end //
 delimiter ;
 
-Call total_ventas("2020-05-31 08:01:27");
 -- Cargar Ventas de un dia con tarjeta
 delimiter //
 create procedure cargar_ventas()
@@ -226,6 +227,7 @@ begin
 SELECT * FROM EntradaSalida WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY and entrada = true;
 end //
 delimiter ;
+
 -- Cargar Salidas del dia  
 delimiter //
 create procedure cargar_salidas()

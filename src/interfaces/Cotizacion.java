@@ -99,6 +99,14 @@ public class Cotizacion extends javax.swing.JPanel {
         pp.cargarModeloAutocompleter(textAutoCompleter);
     }
 
+    
+    public void removerProducto() {
+        DefaultTableModel tabla2 = (DefaultTableModel) jTable1.getModel();
+        int row = jTable1.getSelectedRow();
+        tabla2.removeRow(row);
+        calcular();
+    }
+    
     void recargaCompleter() {
         //Quitar todos los elementos presentes en el completer
         textAutoCompleter.removeAllItems();
@@ -116,7 +124,7 @@ public class Cotizacion extends javax.swing.JPanel {
                 if (fila >= 0) {
                     modelo = (DefaultTableModel) jTable1.getModel();
                     modelo.removeRow(fila);
-                     jLabel9.setText("--------");
+                    calcular();
                 } else {
                     JOptionPane.showMessageDialog(null, "Selecciona un dato de la tabla");
                 }
@@ -167,10 +175,23 @@ public class Cotizacion extends javax.swing.JPanel {
         double precio = Double.parseDouble(jTable2.getValueAt(row, 3).toString());
         String tipov = jTable2.getValueAt(row, 4).toString();
         double cantidad = Double.parseDouble(jTable2.getValueAt(row, 5).toString());
-        cant = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
-        Object object[] = {id, nombre, descripcion, precio, tipov, cant};
-        tabla2.addRow(object);
-        calcular();
+        int id2 = Integer.parseInt(id);
+        Productos productos = pp.seleccionar_producto(id2);
+        int stock = productos.getStock();
+        int canti = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuántos desea llevar?"));
+        if (canti <= stock) {
+            if (cantidad >= productos.getCantidadMayoreo()) {
+                precio = productos.getPrecioMayoreo();
+            } else {
+                precio = productos.getPrecio();
+            }
+            Object object[] = {id, nombre, descripcion, precio, tipov, cant};
+            tabla2.addRow(object);
+            calcular();
+            System.out.println("entro");
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay existencias suficientes");
+        }
     }
 
     public void consultarProducto(int id) {
@@ -245,11 +266,13 @@ public class Cotizacion extends javax.swing.JPanel {
 //            return false;
 //        }
 //    }
+    
         public void fecha() {
         Date fecha = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); //formatear la fecha en una cadena
         jLabel14.setText(sdf.format(fecha)); //setear la representacion en cadena de la fecha
     }
+        
         boolean createPDF(){
             String concepto = "";
             String precio = "";
@@ -308,10 +331,9 @@ public class Cotizacion extends javax.swing.JPanel {
             OutputStream out = new FileOutputStream(new File("C:\\Users\\Avril\\Documents\\COTIZACIONES\\"+"COTIZACIÓN_"+folio+".pdf"));
             report.convert(context, options, out);
             System.out.println("Éxito");
-
-        
-        
         }
+        
+        
     public void consultarProducto2(Productos a) {
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         String nombre = a.getNombre();
@@ -1453,7 +1475,6 @@ public class Cotizacion extends javax.swing.JPanel {
 //           limpiar();
 
         } else {
-
             int option = JOptionPane.showConfirmDialog(null, "¿Desea exportar la cotización?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
             if (option == 0) {
                 try {
@@ -1519,9 +1540,10 @@ public class Cotizacion extends javax.swing.JPanel {
 
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         double descuento = Double.parseDouble(jTextField3.getText());
-        double tot = Double.parseDouble(jLabel9.getText());
-        double sub = tot - descuento;
-        jLabel10.setText(" " + sub);
+        double sub = Double.parseDouble(jLabel9.getText());
+        double iva = sub*.16;
+        double total = sub - descuento + iva;
+        jLabel10.setText(" " + total);
     }//GEN-LAST:event_jTextField3KeyReleased
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -1769,7 +1791,6 @@ public class Cotizacion extends javax.swing.JPanel {
         // TODO add your handling code here:
         try {
             removerProducto();
-             jLabel9.setText("");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un producto de la tabla");
         }
@@ -1796,7 +1817,8 @@ public class Cotizacion extends javax.swing.JPanel {
         jLabel12.setText(ventas.getDescuento() + "");
         jLabel36.setText(ventas.getSubtotal() + "");
         jLabel44.setText(ventas.getTotal() + "");
-        jTextArea1.setText(ventas.getServicios());
+        String palabra = ventas.getServicios().replace(" ", "\n");
+        jTextArea1.setText(palabra);
 
     }
 
@@ -1824,12 +1846,7 @@ public class Cotizacion extends javax.swing.JPanel {
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
-    public void removerProducto() {
-        DefaultTableModel tabla2 = (DefaultTableModel) jTable1.getModel();
-        int row = jTable1.getSelectedRow();
-        tabla2.removeRow(row);
 
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Buscar;

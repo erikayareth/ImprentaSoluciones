@@ -86,9 +86,6 @@ public class Corte1 extends javax.swing.JPanel {
         jPanel7.setBackground(fondo);
         cargarModeloEntrada();
         cargarModeloSalida();
-
-        
-
     }
     
      public void c (double valor){
