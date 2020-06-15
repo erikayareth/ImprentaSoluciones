@@ -324,8 +324,8 @@ public class XH extends javax.swing.JPanel {
 
     void crearcomun() {
         DefaultTableModel dtm = (DefaultTableModel) jTable6.getModel();
-        String id = " ";
-        String descripcion = "  ";
+        int id = 0;
+        String descripcion = "producto común";
         String tipoVenta = "  ";
         String nombre = jTextField9.getText();
         int cantidad = Integer.parseInt(jTextField10.getText());

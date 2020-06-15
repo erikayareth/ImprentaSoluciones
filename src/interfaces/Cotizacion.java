@@ -354,8 +354,8 @@ public class Cotizacion extends javax.swing.JPanel {
 
     void crearcomun() {
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-        String id = " ";
-        String descripcion = "  ";
+        double id = 0;
+        String descripcion = "producto comúnadmin    ";
         String tipoVenta = "  ";
         String nombre = jTextField12.getText();
         int cantidad = Integer.parseInt(jTextField13.getText());

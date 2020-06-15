@@ -51,8 +51,9 @@ public class Corte1 extends javax.swing.JPanel {
     usuarioDAO usuarioD = new usuarioDAO();
     EntradaSalidaDAO entrada = new EntradaSalidaDAO();
     VentasDAO ventasDAO = new VentasDAO();
-    DineroInicial1 di = new DineroInicial1();
+    DineroInicial di = new DineroInicial();
     Usuario usu = new Usuario();
+   
     Color color = new Color(196, 219, 242);
     TableRowSorter<TableModel> sorter2;
     TableRowSorter<TableModel> sorter3;
@@ -63,7 +64,7 @@ public class Corte1 extends javax.swing.JPanel {
     int cant;
     double tsalida;
     double tentrada;
-    double dd;
+    double dd = 0;
     double valor1 = 0;
     public Corte1() {
         initComponents();
@@ -86,12 +87,16 @@ public class Corte1 extends javax.swing.JPanel {
         jPanel7.setBackground(fondo);
         cargarModeloEntrada();
         cargarModeloSalida();
+        
+       
+
     }
-    
-     public void c (double valor){
+
+   public void c (double valor){
        this.valor1 = valor;
         jLabel24.setText(valor1+"");
    }
+
     public void fecha() {
         Date fecha = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); //formatear la fecha en una cadena
@@ -113,11 +118,21 @@ public class Corte1 extends javax.swing.JPanel {
         double total = tarjeta + efectivo;
         jLabel63.setText(total + "");
     }
+    public void calcularTInicial() {
+        double tcaja= Double.parseDouble(jLabel65.getText());
+        double dinicial = Double.parseDouble(jLabel24.getText());
+        double entradas = Double.parseDouble(jLabel4.getText());
+        double total = tcaja + dinicial;
+        double tt = total + entradas;
+        jLabel69.setText(tt + "");
+    }
 
     public void calcularTE() {
         double gastos = Double.parseDouble(jLabel6.getText());
         double subtotal = Double.parseDouble(jLabel63.getText());
+        double entradas = Double.parseDouble(jLabel4.getText());
         double total = subtotal - gastos;
+        double totalt = total + entradas;
         jLabel65.setText(total + "");
     }
 
@@ -160,7 +175,7 @@ public class Corte1 extends javax.swing.JPanel {
 
     }
 
-  
+   
 
     public void subtotal() {
         double morralla = Double.parseDouble(jLabel15.getText());
@@ -316,9 +331,11 @@ public class Corte1 extends javax.swing.JPanel {
         String total = jLabel65.getText();
         String diferencia = jLabel76.getText();
         String jefe = jTextField1.getText();
+        String fondo = jLabel24.getText();
+        String total2 = jLabel69.getText();
 
         try {
-            pdf(fecha, cajero, entradas, salidas, total, morralla, billetes, subtotal,credito,efectivo,subtt,diferencia,jefe);
+            pdf(fecha, cajero, entradas, salidas, total, morralla, billetes, subtotal,credito,efectivo,subtt,diferencia,jefe,fondo,total2);
             return true;
         } catch (IOException ex) {
 
@@ -332,7 +349,7 @@ public class Corte1 extends javax.swing.JPanel {
 
     }
 
-    public void pdf(String fecha, String cajero, String entradas, String gastos, String total, String morralla, String billetes, String subtotal, String credito, String efectivo, String subtt, String diferencia, String jefe) throws IOException, XDocReportException {
+    public void pdf(String fecha, String cajero, String entradas, String gastos, String total, String morralla, String billetes, String subtotal, String credito, String efectivo, String subtt, String diferencia, String jefe,String fondo,String total2) throws IOException, XDocReportException {
 
         System.out.println("H");
         InputStream S = Prueba2.class.getResourceAsStream("CORTEF.docx");
@@ -352,6 +369,8 @@ public class Corte1 extends javax.swing.JPanel {
         context.put("SUBTT", subtt);
         context.put("DIFERENCIA", diferencia);
         context.put("JEFE", jefe);
+        context.put("FONDO", fondo);
+        context.put("TOTAL2", total2);
 
         Options options = Options.getTo(ConverterTypeTo.PDF);
 
@@ -560,6 +579,22 @@ public class Corte1 extends javax.swing.JPanel {
         jPanel10 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel22 = new javax.swing.JPanel();
+        jLabel58 = new javax.swing.JLabel();
+        jLabel59 = new javax.swing.JLabel();
+        jLabel60 = new javax.swing.JLabel();
+        jLabel61 = new javax.swing.JLabel();
+        jLabel62 = new javax.swing.JLabel();
+        jLabel63 = new javax.swing.JLabel();
+        jLabel64 = new javax.swing.JLabel();
+        jLabel65 = new javax.swing.JLabel();
+        jLabel76 = new javax.swing.JLabel();
+        jLabel77 = new javax.swing.JLabel();
+        jLabel78 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel68 = new javax.swing.JLabel();
+        jLabel69 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -577,20 +612,6 @@ public class Corte1 extends javax.swing.JPanel {
         jLabel19 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel22 = new javax.swing.JPanel();
-        jLabel58 = new javax.swing.JLabel();
-        jLabel59 = new javax.swing.JLabel();
-        jLabel60 = new javax.swing.JLabel();
-        jLabel61 = new javax.swing.JLabel();
-        jLabel62 = new javax.swing.JLabel();
-        jLabel63 = new javax.swing.JLabel();
-        jLabel64 = new javax.swing.JLabel();
-        jLabel65 = new javax.swing.JLabel();
-        jLabel76 = new javax.swing.JLabel();
-        jLabel77 = new javax.swing.JLabel();
-        jLabel78 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jPanel12 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -1352,7 +1373,7 @@ public class Corte1 extends javax.swing.JPanel {
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1164, Short.MAX_VALUE)
+            .addGap(0, 1172, Short.MAX_VALUE)
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1360,6 +1381,39 @@ public class Corte1 extends javax.swing.JPanel {
         );
 
         jPanel10.add(jPanel9, java.awt.BorderLayout.PAGE_END);
+
+        jLabel58.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel58.setText("T.Efectivo:");
+
+        jLabel59.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel60.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel60.setText("T.Crédito:");
+
+        jLabel61.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel62.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel62.setText("T.Ventas:");
+
+        jLabel63.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel64.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel64.setText("Subtotal:");
+
+        jLabel65.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel76.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel77.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel77.setText("Diferencia:");
+
+        jLabel78.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel78.setText("Jefe de piso:");
+
+        jLabel68.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel68.setText("Total:");
+
+        jLabel69.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Fecha:");
@@ -1486,49 +1540,22 @@ public class Corte1 extends javax.swing.JPanel {
                     .addContainerGap(305, Short.MAX_VALUE)))
         );
 
-        jPanel11.add(jPanel3);
-
-        jLabel58.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel58.setText("T.Efectivo:");
-
-        jLabel59.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel60.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel60.setText("T.Crédito:");
-
-        jLabel61.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel62.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel62.setText("Subtotal:");
-
-        jLabel63.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel64.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel64.setText("Total:");
-
-        jLabel65.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel76.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel77.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel77.setText("Diferencia:");
-
-        jLabel78.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel78.setText("Jefe de piso:");
-
         javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
         jPanel22.setLayout(jPanel22Layout);
         jPanel22Layout.setHorizontalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel22Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel78)
                     .addComponent(jLabel58)
                     .addComponent(jLabel60)
                     .addComponent(jLabel62)
                     .addComponent(jLabel64)
-                    .addComponent(jLabel77))
+                    .addComponent(jLabel77)
+                    .addComponent(jLabel68))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel61, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1538,7 +1565,8 @@ public class Corte1 extends javax.swing.JPanel {
                         .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel65, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel63, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel76, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel76, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel69, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jTextField1))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
@@ -1556,6 +1584,8 @@ public class Corte1 extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel64)
                         .addGap(18, 18, 18)
+                        .addComponent(jLabel68)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel77))
                     .addGroup(jPanel22Layout.createSequentialGroup()
                         .addComponent(jLabel59, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1566,19 +1596,24 @@ public class Corte1 extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel65, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
+                        .addComponent(jLabel69, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel76, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel78, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextField1))
                 .addContainerGap(262, Short.MAX_VALUE))
+            .addGroup(jPanel22Layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 337, Short.MAX_VALUE)
+            .addGap(0, 687, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -1587,7 +1622,7 @@ public class Corte1 extends javax.swing.JPanel {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 492, Short.MAX_VALUE)
+            .addGap(0, 522, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -1612,7 +1647,7 @@ public class Corte1 extends javax.swing.JPanel {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 331, Short.MAX_VALUE)
+            .addGap(0, 361, Short.MAX_VALUE)
         );
 
         jPanel4.add(jPanel2, java.awt.BorderLayout.LINE_START);
@@ -1625,7 +1660,7 @@ public class Corte1 extends javax.swing.JPanel {
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 331, Short.MAX_VALUE)
+            .addGap(0, 361, Short.MAX_VALUE)
         );
 
         jPanel4.add(jPanel15, java.awt.BorderLayout.LINE_END);
@@ -1873,7 +1908,9 @@ public class Corte1 extends javax.swing.JPanel {
         calcularTT();
         calcularT();
         calcularTE();
+        calcularTInicial();
         diferencia();
+       
 
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -2204,6 +2241,8 @@ public class Corte1 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel63;
     private javax.swing.JLabel jLabel64;
     private javax.swing.JLabel jLabel65;
+    private javax.swing.JLabel jLabel68;
+    private javax.swing.JLabel jLabel69;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel76;
     private javax.swing.JLabel jLabel77;

@@ -8,7 +8,7 @@ select*from usuario where Usuario=usuariop and contrasena=contrasenap;
 end //
 delimiter ;
 insert into usuario (usuario, contrasena) values('admin','12345');
-insert into usuario (usuario, contrasena) values('empleado','43');
+insert into usuario (usuario, contrasena) values('mostrador','43');
 
 
 -- Insertar Venta
