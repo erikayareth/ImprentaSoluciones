@@ -26,7 +26,7 @@ public class CotizacionesDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call insertarcotizacion(?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insertarcotizacion(?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, v.getNombreCliente());
             st.setString(2, v.getTelefono());
             st.setDouble(3, v.getDescuento());
@@ -34,6 +34,7 @@ public class CotizacionesDAO {
             st.setDouble(5, v.getSubtotal());
             st.setString(6, v.getServicios());
             st.setString(7, v.getFolio());
+            st.setDouble(8, v.getIva());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -52,7 +53,7 @@ public class CotizacionesDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"ID","Folio", "Nombre del cliente", "Teléfono", "Descuento", "Subtotal", "Total","Fecha"};
+        String encabezados[] = {"ID","Folio", "Nombre del cliente", "Teléfono",  "Subtotal", "IVA","Descuento","Total","Fecha"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("CALL select_all_cotizacion()");
@@ -60,16 +61,17 @@ public class CotizacionesDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[8];
+                Object ob[] = new Object[9];
                 Cotizaciones pojo = inflaPOJO(rs);
                 ob[0] = rs.getInt("idCotizacion");
                 ob[1] = rs.getString("folio");
                 ob[2] = rs.getString("nombreCliente");
                 ob[3] = rs.getString("telefono");
-                ob[4] = rs.getDouble("descuento");
-                ob[6] = rs.getDouble("total");
-                ob[5] = rs.getDouble("subtotal");
-                ob[7] = rs.getTimestamp("fecha");
+                ob[6] = rs.getDouble("descuento");
+                ob[7] = rs.getDouble("total");
+                ob[4] = rs.getDouble("subtotal");
+                ob[8] = rs.getTimestamp("fecha");
+                ob[5] = rs.getDouble("iva");
 
                 dt.addRow(ob);
             }
@@ -116,6 +118,7 @@ public Cotizaciones seleccionar_coti(int i) {
             pojo.setSubtotal(rs.getDouble("subtotal"));
             pojo.setServicios(rs.getString("servicios"));
             pojo.setFolio(rs.getString("folio"));
+            pojo.setIva(rs.getDouble("iva"));
 
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo  cotizaciones .." + ex);

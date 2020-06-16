@@ -13,12 +13,29 @@ import com.mxrck.autocompleter.TextAutoCompleter;
 import dao.EntradaSalidaDAO;
 import dao.ProductosDAO;
 import dao.VentasDAO;
+import fr.opensagres.xdocreport.converter.ConverterTypeTo;
+import fr.opensagres.xdocreport.converter.Options;
+import fr.opensagres.xdocreport.core.XDocReportException;
+import fr.opensagres.xdocreport.document.IXDocReport;
+import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
+import fr.opensagres.xdocreport.template.IContext;
+import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import java.awt.Color;
 import java.awt.Font;
 import static java.awt.SystemColor.text;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -90,6 +107,8 @@ public class XH extends javax.swing.JPanel {
         cargarModeloSalida();
         configureTable();
         poputTable();
+        poputTable2();
+        fecha();
 
         jScrollPane6.getViewport().setBackground(Color.white);
         textAutoCompleter = new TextAutoCompleter(jTextField1, new AutoCompleterCallback() {
@@ -101,6 +120,7 @@ public class XH extends javax.swing.JPanel {
             }
         });
         pp.cargarModeloAutocompleter(textAutoCompleter);
+
     }
 
     void recargaCompleter() {
@@ -129,7 +149,34 @@ public class XH extends javax.swing.JPanel {
         jPopupMenu.add(menuItem1);
         jTable6.setComponentPopupMenu(jPopupMenu);
     }
-
+    void poputTable2() {
+        JPopupMenu jPopupMenu = new JPopupMenu();
+        JMenuItem menuItem3 = new JMenuItem("CANCELAR VENTA");
+        menuItem3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int fila = jTable5.getSelectedRow();
+                 int id = Integer.parseInt(jTable5.getValueAt(jTable5.getSelectedRow(), 0).toString());
+                if (fila >= 0) {
+                    modelo = (DefaultTableModel) jTable5.getModel();
+                    if (baja(id)) {
+                    cargarModeloVenata();
+                } else {
+                    JOptionPane.showMessageDialog(null, "error");
+                }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Selecciona un dato de la tabla");
+                }
+            }
+        });
+        jPopupMenu.add(menuItem3);
+        jTable5.setComponentPopupMenu(jPopupMenu);
+    }
+     public boolean baja(int id) {
+         VentasDAO vd = new VentasDAO();
+        boolean resultado = vd.eliminar(id);
+        return resultado;
+    }
     void configureTable() {
         jTable6.setDefaultRenderer(Object.class, new MyJTableCellRenderer());
         jTable6.setRowHeight(20);
@@ -198,7 +245,15 @@ public class XH extends javax.swing.JPanel {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
-        dialogo.setSize(440, 315);
+        dialogo.setSize(440, 355);
+        dialogo.setLocationRelativeTo(null);
+        dialogo.setResizable(false);
+    }
+     void cargarDialogo4(JDialog dialogo, String nombre) {
+        dialogo.setVisible(true);
+        dialogo.setTitle(nombre);
+        dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
+        dialogo.setSize(440, 300);
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
@@ -284,7 +339,7 @@ public class XH extends javax.swing.JPanel {
         for (int i = 0; i < jTable6.getRowCount(); i++) {
             cant = Integer.parseInt(jTable6.getValueAt(i, 5).toString());
             pre = Double.parseDouble(jTable6.getValueAt(i, 3).toString());
-            tpagar = tpagar + (cant * pre); 
+            tpagar = tpagar + (cant * pre);
         }
         jLabel24.setText("" + tpagar + "0");
     }
@@ -306,18 +361,20 @@ public class XH extends javax.swing.JPanel {
         double descuento = Double.parseDouble(jTextField3.getText());
         double subtotal = Double.parseDouble(jLabel24.getText());
         double cambio = Double.parseDouble(jLabel20.getText());
+        boolean estado = true;
+         int merma = (int) jSpinner1.getValue();
         String folio = jTextField2.getText();
         String cla = (String) jComboBox5.getSelectedItem();
         for (int i = 0; i < jTable6.getRowCount(); i++) {
             servicios += (String) jTable6.getValueAt(i, 1) + " ";
         }
         boolean tarjeta = false;
-        if(jRadioButton1.isSelected()){
-             tarjeta = true;
-        }else if(jRadioButton2.isSelected()){
-             tarjeta = false;
+        if (jRadioButton1.isSelected()) {
+            tarjeta = true;
+        } else if (jRadioButton2.isSelected()) {
+            tarjeta = false;
         }
-        Ventas ventas = new Ventas(importe, total, descuento, cambio, folio, subtotal, servicios, cla, tarjeta);
+        Ventas ventas = new Ventas(importe, total, descuento, cambio, folio, subtotal, servicios, cla, tarjeta,merma,estado);
         int id = vd.insertar(ventas);
         return id;
     }
@@ -417,43 +474,134 @@ public class XH extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Selecciona un elemento de la tabla");
         }
     }
-    
+    void fecha (){
+         Date fecha = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); //formatear la fecha en una cadena
+        jLabel49.setText(sdf.format(fecha)); //setear la representacion en cadena de la fecha
+    }
         boolean createPDF() {
-        try {
-            PDFTools pdfTools = new PDFTools();
-            String titleS = "SUBTOTAL:";
-            String titleF = "FOLIO:";
-            String titleD = "DESCUENTO:";
-            String titleT = "TOTAL:";
-            String titleImp = "IMPORTE:";
-            String titleCambio = "CAMBIO:";
-            String titleSS = "SERVICIOS:";
-            String sub = jLabel24.getText() + "";
-            String tot = jLabel26.getText() + "";
-            String folio = jTextField2.getText() + "";
-            String desc = jTextField3.getText() + "";
-            String importe = jTextField14.getText() + "";
-            String cambio = jLabel20.getText();
-           
-            pdfTools.openDocument("TICKETS", "ticket_"+folio+".pdf");
-            pdfTools.addParagraph("ticket_"+" "+folio, PDFTools.fTítle, Paragraph.ALIGN_CENTER);
-            pdfTools.addParagraph(titleF + " " + folio, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(titleImp + " " + importe, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(titleS + " " + sub, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(titleT + " " + tot, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(titleD + " " + desc, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
-            pdfTools.addParagraph(titleCambio + " " + cambio, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+        double sub2 = Double.parseDouble(jLabel24.getText());
+        String folio = jTextField2.getText();
+        String sub = jLabel24.getText();
+        String tot = jLabel26.getText();
+        String importe = jTextField14.getText();
+        String desc = jTextField3.getText();
+        String cambio = jLabel20.getText();
+        String tarjeta = "";
+        String iva = "";
+        if(jRadioButton3.isSelected()){
+        double s = sub2 * .16;
+        iva =""+ s;
+        }else if(jRadioButton4.isSelected()){
+            iva ="" +0;
+        }
+        boolean t = false;
+       if(jRadioButton1.isSelected()){
+           t = true;
+           tarjeta = "Tarjeta";
+       }else if(jRadioButton2.isSelected()){
+           t = false;
+           tarjeta = "Efectivo";
+       }
+       String nombre = "";
+       String cantidad = "";
+       String precio = "";
+       String descrip = "";
+       String tp = "";
+       String fecha = jLabel49.getText();
+       
+       String cla = (String) jComboBox5.getSelectedItem();
+       for (int i = 0; i < jTable6.getRowCount(); i++) {
+            nombre = nombre + "\n" + jTable6.getValueAt(i, 1).toString();
+            descrip = descrip + "\n" + jTable6.getValueAt(i, 2).toString();
+            precio = precio + "\n" + jTable6.getValueAt(i, 3).toString();
+            tp = tp + "\n" + jTable6.getValueAt(i, 4).toString();
+            cantidad = cantidad + "\n" + jTable6.getValueAt(i, 5).toString();
+        }
 
-            DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
-            pdfTools.addTable(model, PDFTools.fText);
-            pdfTools.closeDocument();
-            System.out.println("PDF creado con ´éxito");
+       
+        try {
+            pdf(fecha, folio, cla, tarjeta, sub, iva, desc, tot,importe,cambio,nombre,descrip,tp,precio,cantidad);
             return true;
-        } catch (Exception e) {
-            System.out.println("Error al crear el PDF: " + e);
+        } catch (IOException ex) {
+
+            Logger.getLogger(Cotizacion.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (XDocReportException ex) {
+
+            Logger.getLogger(Cotizacion.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+
     }
+
+    public void pdf(String fecha, String folio, String cla, String pago,  String subtotal, String iva, String descuento, String total, String importe, String cambio,String nombre,String descrip,String tp, String precio,String cant) throws IOException, XDocReportException {
+
+        System.out.println("H");
+        InputStream S = Prueba2.class.getResourceAsStream("TICKET.docx");
+        IXDocReport report = XDocReportRegistry.getRegistry().loadReport(S, TemplateEngineKind.Velocity);
+
+        IContext context = report.createContext();
+        context.put("FECHA", fecha);
+        context.put("FOLIO", folio);
+        context.put("CLA", cla);
+        context.put("PAGO", pago);
+        context.put("SUBTOTAL", subtotal);
+        context.put("IVA", iva);
+        context.put("DESCUENTO", descuento);
+        context.put("TOTAL", total);
+        context.put("IMPORTE", importe);
+        context.put("CAMBIO", cambio);
+        context.put("NOMBRE", nombre);
+        context.put("DESCRIP", descrip);
+        context.put("TP", tp);
+        context.put("PRECIO", precio);
+        context.put("CANT", cant);
+       
+
+        Options options = Options.getTo(ConverterTypeTo.PDF);
+
+        OutputStream out = new FileOutputStream(new File("C:\\Users\\Avril\\Documents\\TICKETS\\TICKET_" + folio + ".pdf"));
+        report.convert(context, options, out);
+        System.out.println("Éxito");
+
+    }
+//    boolean createPDF() {
+//        try {
+//            PDFTools pdfTools = new PDFTools();
+//            String titleS = "SUBTOTAL:";
+//            String titleF = "FOLIO:";
+//            String titleD = "DESCUENTO:";
+//            String titleT = "TOTAL:";
+//            String titleImp = "IMPORTE:";
+//            String titleCambio = "CAMBIO:";
+//            String titleSS = "SERVICIOS:";
+//            String sub = jLabel24.getText() + "";
+//            String tot = jLabel26.getText() + "";
+//            String folio = jTextField2.getText() + "";
+//            String desc = jTextField3.getText() + "";
+//            String importe = jTextField14.getText() + "";
+//            String cambio = jLabel20.getText();
+//
+//            pdfTools.openDocument("TICKETS", "ticket_" + folio + ".pdf");
+//            pdfTools.addParagraph("ticket_" + " " + folio, PDFTools.fTítle, Paragraph.ALIGN_CENTER);
+//            pdfTools.addParagraph(titleF + " " + folio, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+//            pdfTools.addParagraph(titleImp + " " + importe, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+//            pdfTools.addParagraph(titleS + " " + sub, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+//            pdfTools.addParagraph(titleT + " " + tot, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+//            pdfTools.addParagraph(titleD + " " + desc, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+//            pdfTools.addParagraph(titleCambio + " " + cambio, PDFTools.fTítle, Paragraph.ALIGN_LEFT);
+//
+//            DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
+//            pdfTools.addTable(model, PDFTools.fText);
+//            pdfTools.closeDocument();
+//            System.out.println("PDF creado con ´éxito");
+//            return true;
+//        } catch (Exception e) {
+//            System.out.println("Error al crear el PDF: " + e);
+//            return false;
+//        }
+//    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -518,6 +666,8 @@ public class XH extends javax.swing.JPanel {
         jLabel42 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
+        jLabel47 = new javax.swing.JLabel();
+        jSpinner1 = new javax.swing.JSpinner();
         EntradasPasadas = new javax.swing.JDialog();
         jPanel11 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
@@ -567,12 +717,20 @@ public class XH extends javax.swing.JPanel {
         jLabel39 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        Salida1 = new javax.swing.JDialog();
+        jPanel15 = new javax.swing.JPanel();
+        jLabel48 = new javax.swing.JLabel();
+        jLabel49 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
+        jLabel45 = new javax.swing.JLabel();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        jRadioButton4 = new javax.swing.JRadioButton();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jButton25 = new javax.swing.JButton();
@@ -1214,6 +1372,9 @@ public class XH extends javax.swing.JPanel {
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("NO");
 
+        jLabel47.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel47.setText("Merma:");
+
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
         jPanel16Layout.setHorizontalGroup(
@@ -1224,15 +1385,19 @@ public class XH extends javax.swing.JPanel {
                     .addComponent(jLabel19)
                     .addGroup(jPanel16Layout.createSequentialGroup()
                         .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel16Layout.createSequentialGroup()
+                                    .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel18)
+                                        .addComponent(jLabel41)
+                                        .addComponent(jLabel42))
+                                    .addGap(26, 26, 26))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
+                                    .addComponent(jLabel27)
+                                    .addGap(18, 18, 18)))
                             .addGroup(jPanel16Layout.createSequentialGroup()
-                                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel18)
-                                    .addComponent(jLabel41)
-                                    .addComponent(jLabel42))
-                                .addGap(26, 26, 26))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
-                                .addComponent(jLabel27)
-                                .addGap(18, 18, 18)))
+                                .addComponent(jLabel47)
+                                .addGap(43, 43, 43)))
                         .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel16Layout.createSequentialGroup()
                                 .addComponent(jRadioButton1)
@@ -1241,7 +1406,8 @@ public class XH extends javax.swing.JPanel {
                             .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField3)
                             .addComponent(jTextField14)
-                            .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jComboBox5, 0, 148, Short.MAX_VALUE)
+                            .addComponent(jSpinner1))))
                 .addContainerGap(114, Short.MAX_VALUE))
         );
         jPanel16Layout.setVerticalGroup(
@@ -1261,6 +1427,10 @@ public class XH extends javax.swing.JPanel {
                     .addGroup(jPanel16Layout.createSequentialGroup()
                         .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel47, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel42, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
@@ -1815,7 +1985,7 @@ public class XH extends javax.swing.JPanel {
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1839,6 +2009,50 @@ public class XH extends javax.swing.JPanel {
             .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        jPanel15.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel48.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel48.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel48.setForeground(new java.awt.Color(24, 192, 221));
+        jLabel48.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Esalida.png"))); // NOI18N
+
+        jLabel49.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addComponent(jLabel48))
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel49, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(83, Short.MAX_VALUE))
+        );
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel48)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel49, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(140, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout Salida1Layout = new javax.swing.GroupLayout(Salida1.getContentPane());
+        Salida1.getContentPane().setLayout(Salida1Layout);
+        Salida1Layout.setHorizontalGroup(
+            Salida1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        Salida1Layout.setVerticalGroup(
+            Salida1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -1858,18 +2072,53 @@ public class XH extends javax.swing.JPanel {
         jLabel2.setText("SUBTOTAL");
         jPanel3.add(jLabel2);
 
-        jLabel24.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        jLabel24.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel24.setToolTipText("");
         jLabel24.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel3.add(jLabel24);
+
+        jLabel45.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel45.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel45.setText("IVA");
+        jPanel3.add(jLabel45);
+
+        buttonGroup2.add(jRadioButton3);
+        jRadioButton3.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jRadioButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jRadioButton3.setText("SI");
+        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton3ActionPerformed(evt);
+            }
+        });
+        jRadioButton3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jRadioButton3KeyReleased(evt);
+            }
+        });
+        jPanel3.add(jRadioButton3);
+
+        buttonGroup2.add(jRadioButton4);
+        jRadioButton4.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jRadioButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jRadioButton4.setText("NO");
+        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton4ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jRadioButton4);
 
         jLabel25.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(255, 255, 255));
         jLabel25.setText("TOTAL:");
         jPanel3.add(jLabel25);
 
-        jLabel26.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        jLabel26.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel26.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel3.add(jLabel26);
 
@@ -2104,7 +2353,7 @@ public class XH extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        cargarDialogo2(ProductoComun, "Producto común");
+        cargarDialogo4(ProductoComun, "Producto común");
         ProductoComun.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -2115,7 +2364,7 @@ public class XH extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        cargarDialogo2(Entrada, "Entrada de dinero");
+        cargarDialogo4(Entrada, "Entrada de dinero");
         Entrada.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -2167,7 +2416,7 @@ public class XH extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton23ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        cargarDialogo2(Salida, "Salida de dinero");
+        cargarDialogo4(Salida, "Salida de dinero");
         Salida.setDefaultCloseOperation(0);
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -2236,7 +2485,7 @@ public class XH extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(this, "Error");
                 }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Debes seleccionar un producto"+e);
+                JOptionPane.showMessageDialog(this, "Debes seleccionar un producto" + e);
             }
         }
     }//GEN-LAST:event_jButton17ActionPerformed
@@ -2274,7 +2523,7 @@ public class XH extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "¡UY! Debes rellenar todos los campos");
         } else {
             int option = JOptionPane.showConfirmDialog(null, "¿Desea exportar la venta?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-            if (option == 0){
+            if (option == 0) {
                 try {
                     int id = crear();
                     if (id != 0) {
@@ -2396,25 +2645,49 @@ public class XH extends javax.swing.JPanel {
 
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         // TODO add your handling code here:
-        double monto = Double.parseDouble(jTextField14.getText()); // 200
-        double descuento = Double.parseDouble(jTextField3.getText()); // 100
-        double sub = Double.parseDouble(jLabel24.getText()); // 120
-        double iva = sub * .16;
-        double total = (sub - descuento) + iva; // 120 - 100 = 20
-        double cambio = monto - total; // 200 - 20 = 80
-        jLabel20.setText(" " + cambio);
-        jLabel26.setText(" " + total);
-    }//GEN-LAST:event_jTextField3KeyReleased
-
-    private void jTextField14KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyReleased
         double monto = Double.parseDouble(jTextField14.getText());
         double descuento = Double.parseDouble(jTextField3.getText());
         double sub = Double.parseDouble(jLabel24.getText());
-        double iva = sub * .16;
-        double total = (sub - descuento) + iva;
-        double cambio = monto - total;
-        jLabel20.setText("" + cambio);
-        jLabel26.setText("" + total);
+        if (jRadioButton3.isSelected()) {
+            double iva = sub * .16;
+            double total = (sub - descuento) + iva;
+            double cambio = monto - total;
+            BigDecimal formatNumber = new BigDecimal(cambio);
+            formatNumber = formatNumber.setScale(2, RoundingMode.DOWN);
+            jLabel20.setText("" + formatNumber);
+            jLabel26.setText("" + total);
+        } else if (jRadioButton4.isSelected()) {
+            double tot = sub - descuento;
+            double cambio2 = monto - tot;
+            BigDecimal formatNumber = new BigDecimal(cambio2);
+            formatNumber = formatNumber.setScale(2, RoundingMode.DOWN);
+            jLabel20.setText("" + formatNumber);
+            jLabel26.setText("" + tot);
+        }
+    }//GEN-LAST:event_jTextField3KeyReleased
+
+    private void jTextField14KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyReleased
+         double monto = Double.parseDouble(jTextField14.getText());
+        double descuento = Double.parseDouble(jTextField3.getText());
+        double sub = Double.parseDouble(jLabel24.getText());
+        if (jRadioButton3.isSelected()) {
+            double iva = sub * .16;
+            double total = (sub - descuento) + iva;
+            double cambio = monto - total;
+            BigDecimal formatNumber = new BigDecimal(cambio);
+            formatNumber = formatNumber.setScale(2, RoundingMode.DOWN);
+            jLabel20.setText("" + formatNumber);
+            jLabel26.setText("" + total);
+        } else if (jRadioButton4.isSelected()) {
+            double tot = sub - descuento;
+            double cambio2 = monto - tot;
+            BigDecimal formatNumber = new BigDecimal(cambio2);
+            formatNumber = formatNumber.setScale(2, RoundingMode.DOWN);
+            jLabel20.setText("" + formatNumber);
+            jLabel26.setText("" + tot);
+        }
+
+
     }//GEN-LAST:event_jTextField14KeyReleased
 
     private void jTextField14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField14ActionPerformed
@@ -2807,14 +3080,14 @@ public class XH extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_jButton6ActionPerformed
-    
+
     public void removerProducto() {
         DefaultTableModel tabla2 = (DefaultTableModel) jTable6.getModel();
         int row = jTable6.getSelectedRow();
         tabla2.removeRow(row);
         calcular();
     }
-    
+
     private void jButton27MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton27MouseEntered
         // TODO add your handling code here:
         jButton27.setBackground(x);
@@ -2838,6 +3111,39 @@ public class XH extends javax.swing.JPanel {
         // TODO add your handling code here:
         eliminar();
     }//GEN-LAST:event_jButton20ActionPerformed
+
+    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
+        // TODO add your handling code here:
+
+        double sub = Double.parseDouble(jLabel24.getText().toString());
+        if (jRadioButton3.isSelected()) {
+            double iva = sub * .16;
+            double total = sub + iva;
+            jLabel26.setText("" + total);
+        } else if (jRadioButton4.isSelected()) {
+            double tot = sub;
+            jLabel26.setText("" + tot);
+        }
+    }//GEN-LAST:event_jRadioButton3ActionPerformed
+
+    private void jRadioButton3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jRadioButton3KeyReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jRadioButton3KeyReleased
+
+    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+        // TODO add your handling code here:
+
+        double sub = Double.parseDouble(jLabel24.getText().toString());
+        if (jRadioButton3.isSelected()) {
+            double iva = sub * .16;
+            double total = sub + iva;
+            jLabel26.setText("" + total);
+        } else if (jRadioButton4.isSelected()) {
+            double tot = sub;
+            jLabel26.setText("" + tot);
+        }
+    }//GEN-LAST:event_jRadioButton4ActionPerformed
 
     public void vaciar() {
         jTextField5.setText("");
@@ -2900,16 +3206,16 @@ public class XH extends javax.swing.JPanel {
             } else {
                 precio = productos.getPrecio();
             }
-             Object object[] = {id, nombre, descripcion, precio, tipov, canti};
-             tabla2.addRow(object);
-             calcular();
+            Object object[] = {id, nombre, descripcion, precio, tipov, canti};
+            tabla2.addRow(object);
+            calcular();
             System.out.println("entro");
         } else {
             JOptionPane.showMessageDialog(null, "No hay existencias suficientes");
         }
-        
+
     }
-    
+
     public static boolean isNumeric(String cadena) {
         boolean resultado;
         try {
@@ -2928,9 +3234,11 @@ public class XH extends javax.swing.JPanel {
     private javax.swing.JDialog EntradasPasadas;
     private javax.swing.JDialog ProductoComun;
     private javax.swing.JDialog Salida;
+    private javax.swing.JDialog Salida1;
     private javax.swing.JDialog SalidasPasadas;
     private javax.swing.JDialog VerVentas;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -3004,7 +3312,11 @@ public class XH extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -3016,6 +3328,7 @@ public class XH extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
@@ -3029,12 +3342,15 @@ public class XH extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;

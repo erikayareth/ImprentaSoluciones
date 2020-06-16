@@ -8,6 +8,7 @@ package interfaces;
 import com.itextpdf.text.Paragraph;
 import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
+import static com.sun.org.apache.xalan.internal.xsltc.runtime.BasisLibrary.formatNumber;
 import dao.CotizacionesDAO;
 import dao.ProductosDAO;
 import dao.VentasDAO;
@@ -27,6 +28,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -99,14 +102,13 @@ public class Cotizacion extends javax.swing.JPanel {
         pp.cargarModeloAutocompleter(textAutoCompleter);
     }
 
-    
     public void removerProducto() {
         DefaultTableModel tabla2 = (DefaultTableModel) jTable1.getModel();
         int row = jTable1.getSelectedRow();
         tabla2.removeRow(row);
         calcular();
     }
-    
+
     void recargaCompleter() {
         //Quitar todos los elementos presentes en el completer
         textAutoCompleter.removeAllItems();
@@ -266,74 +268,71 @@ public class Cotizacion extends javax.swing.JPanel {
 //            return false;
 //        }
 //    }
-    
-        public void fecha() {
+    public void fecha() {
         Date fecha = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); //formatear la fecha en una cadena
         jLabel14.setText(sdf.format(fecha)); //setear la representacion en cadena de la fecha
     }
-        
-        boolean createPDF(){
-            String concepto = "";
-            String precio = "";
-            String cant = "";
-            String impor = "";
-            for (int i = 0; i < jTable1.getRowCount(); i++) {
-                concepto = concepto + "\n"+jTable1.getValueAt(i, 1).toString();
-                precio = precio + "\n$"+jTable1.getValueAt(i, 3).toString();
-                cant = cant + "\n$"+jTable1.getValueAt(i, 5).toString();
-                double c = Double.parseDouble(jTable1.getValueAt(i, 5).toString());
-                double p = Double.parseDouble(jTable1.getValueAt(i, 3).toString());
-                double im = c*p;
-                impor = "$"+im+"\n";
-                
-            }
-                String fecha = jLabel14.getText();
-                String subt = jLabel9.getText();
-                String total = jLabel10.getText();
-                String iva = jTextField3.getText();
-                
+
+    boolean createPDF() {
+        String concepto = "";
+        String precio = "";
+        String cant = "";
+        String impor = "";
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            concepto = concepto + "\n" + jTable1.getValueAt(i, 1).toString();
+            precio = precio + "\n$" + jTable1.getValueAt(i, 3).toString();
+            cant = cant + "\n$" + jTable1.getValueAt(i, 5).toString();
+            double c = Double.parseDouble(jTable1.getValueAt(i, 5).toString());
+            double p = Double.parseDouble(jTable1.getValueAt(i, 3).toString());
+            double im = c * p;
+            impor = "\n$" + im;
+
+        }
+        String fecha = jLabel14.getText();
+        String subt = jLabel9.getText();
+        String total = jLabel10.getText();
+        String iva = jLabel22.getText();
+
         try {
-            pdf(concepto, cant,precio, impor,subt,iva,total,fecha);
+            pdf(concepto, cant, precio, impor, subt, iva, total, fecha);
             return true;
         } catch (IOException ex) {
-            
+
             Logger.getLogger(Cotizacion.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         } catch (XDocReportException ex) {
-            
+
             Logger.getLogger(Cotizacion.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-            
-        }
-        
-        public void pdf (String concepto,String piezas, String precio,String importe , String sub,String iva,String total,String fecha) throws IOException, XDocReportException{
-            
-            System.out.println("H");
-            InputStream S = Prueba2.class.getResourceAsStream("FORMATO.docx");
-            IXDocReport report = XDocReportRegistry.getRegistry().loadReport
-        (S, TemplateEngineKind.Velocity);
-            
-            IContext context = report.createContext();
-            context.put("CONCEPTO", concepto);
-            context.put("PIEZAS", piezas);
-            context.put("PRECIO", precio);
-            context.put("IMPORTE", importe);
-            context.put("SUBTOTAL", sub);
-            context.put("IVA", iva);
-            context.put("TOTAL", total);
-            context.put("FECHA", fecha);
-            String folio = jTextField5.getText();
 
-            Options options = Options.getTo(ConverterTypeTo.PDF);
-            
-            OutputStream out = new FileOutputStream(new File("C:\\Users\\Avril\\Documents\\COTIZACIONES\\"+"COTIZACIÓN_"+folio+".pdf"));
-            report.convert(context, options, out);
-            System.out.println("Éxito");
-        }
-        
-        
+    }
+
+    public void pdf(String concepto, String piezas, String precio, String importe, String sub, String iva, String total, String fecha) throws IOException, XDocReportException {
+
+        System.out.println("H");
+        InputStream S = Prueba2.class.getResourceAsStream("FORMATO.docx");
+        IXDocReport report = XDocReportRegistry.getRegistry().loadReport(S, TemplateEngineKind.Velocity);
+
+        IContext context = report.createContext();
+        context.put("CONCEPTO", concepto);
+        context.put("PIEZAS", piezas);
+        context.put("PRECIO", precio);
+        context.put("IMPORTE", importe);
+        context.put("SUBTOTAL", sub);
+        context.put("IVA", iva);
+        context.put("TOTAL", total);
+        context.put("FECHA", fecha);
+        String folio = jTextField5.getText();
+
+        Options options = Options.getTo(ConverterTypeTo.PDF);
+
+        OutputStream out = new FileOutputStream(new File("C:\\Users\\Avril\\Documents\\COTIZACIONES\\" + "COTIZACIÓN_" + folio + ".pdf"));
+        report.convert(context, options, out);
+        System.out.println("Éxito");
+    }
+
     public void consultarProducto2(Productos a) {
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         String nombre = a.getNombre();
@@ -387,12 +386,13 @@ public class Cotizacion extends javax.swing.JPanel {
         double subtotal = Double.parseDouble(jLabel9.getText());
         String telefono = jFormattedTextField1.getText();
         String folio = jTextField5.getText();
+        double iva = Double.parseDouble(jLabel22.getText());
 //      double folio = 
         String servicios = "";
         for (int i = 0; i < jTable1.getRowCount(); i++) {
             servicios += (String) jTable1.getValueAt(i, 1) + " ";
         }
-        Cotizaciones c = new Cotizaciones(nombre, telefono, descuento, total, subtotal, servicios, folio);
+        Cotizaciones c = new Cotizaciones(nombre, telefono, descuento, total, subtotal, servicios, folio,iva);
         int id = cd.insertar(c);
         return id;
     }
@@ -404,13 +404,15 @@ public class Cotizacion extends javax.swing.JPanel {
     }
 
     public void limpiar() {
-        jLabel10.setText("-----");
+        jLabel10.setText("------");
         jLabel9.setText("------");
+        jLabel22.setText("------");
         jTextField4.setText("");
         jTextField1.setText("");
         jFormattedTextField1.setText("");
         jTextField3.setText("0");
         jTextField5.setText("");
+
         try {
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
             int filas = jTable1.getRowCount();
@@ -515,6 +517,7 @@ public class Cotizacion extends javax.swing.JPanel {
         jLabel33 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -545,6 +548,10 @@ public class Cotizacion extends javax.swing.JPanel {
         jPanel12 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jLabel22 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -843,17 +850,17 @@ public class Cotizacion extends javax.swing.JPanel {
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre cliente", "Teléfono", "Descuento", "Total", "SUBTOTAL"
+                "ID", "Folio", "Nombre cliente", "Teléfono", "Subtotal", "IVA", "Descuento", "Total", "Fecha"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true, false
+                false, true, false, false, true, true, true, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1376,7 +1383,7 @@ public class Cotizacion extends javax.swing.JPanel {
         jPanel12.setLayout(new javax.swing.BoxLayout(jPanel12, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel2.setText("SUBTOTAL:");
+        jLabel2.setText("SUBTOTAL:  ");
         jPanel12.add(jLabel2);
 
         jLabel9.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
@@ -1395,8 +1402,53 @@ public class Cotizacion extends javax.swing.JPanel {
         });
         jPanel12.add(jLabel9);
 
+        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel15.setText("  IVA:  ");
+        jPanel12.add(jLabel15);
+
+        buttonGroup2.add(jRadioButton1);
+        jRadioButton1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jRadioButton1.setText("SI  ");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
+        jRadioButton1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jRadioButton1KeyReleased(evt);
+            }
+        });
+        jPanel12.add(jRadioButton1);
+
+        buttonGroup2.add(jRadioButton2);
+        jRadioButton2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jRadioButton2.setText(" NO   ");
+        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton2ActionPerformed(evt);
+            }
+        });
+        jPanel12.add(jRadioButton2);
+
+        jLabel22.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
+        jLabel22.setText("--------");
+        jLabel22.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLabel22.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jLabel22KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jLabel22KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jLabel22KeyTyped(evt);
+            }
+        });
+        jPanel12.add(jLabel22);
+
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setText("DESCUENTO:");
+        jLabel3.setText("  DESCUENTO:  ");
         jPanel12.add(jLabel3);
 
         jTextField3.setToolTipText("Coloca un descuento");
@@ -1416,7 +1468,7 @@ public class Cotizacion extends javax.swing.JPanel {
         jPanel12.add(jTextField3);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel8.setText("TOTAL:");
+        jLabel8.setText("  TOTAL:  ");
         jPanel12.add(jLabel8);
 
         jLabel10.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
@@ -1541,9 +1593,19 @@ public class Cotizacion extends javax.swing.JPanel {
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         double descuento = Double.parseDouble(jTextField3.getText());
         double sub = Double.parseDouble(jLabel9.getText());
-        double iva = sub*.16;
-        double total = sub - descuento + iva;
-        jLabel10.setText(" " + total);
+        if (jRadioButton1.isSelected()) {
+            double iva = sub * .16;
+            
+            double total = (sub - descuento) + iva;
+            BigDecimal formatNumber3 = new BigDecimal(total);
+            formatNumber3 = formatNumber3.setScale(2, RoundingMode.DOWN);
+            jLabel10.setText(formatNumber3+"");
+        } else if (jRadioButton2.isSelected()) {
+            double total = sub - descuento;
+            BigDecimal formatNumber4 = new BigDecimal(total);
+            formatNumber4 = formatNumber4.setScale(2, RoundingMode.DOWN);
+            jLabel10.setText(formatNumber4+"");
+        }
     }//GEN-LAST:event_jTextField3KeyReleased
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -1847,11 +1909,78 @@ public class Cotizacion extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
 
+    private void jLabel22KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel22KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel22KeyPressed
+
+    private void jLabel22KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel22KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel22KeyReleased
+
+    private void jLabel22KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel22KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel22KeyTyped
+
+    private void jRadioButton1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jRadioButton1KeyReleased
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_jRadioButton1KeyReleased
+
+    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+        // TODO add your handling code here:
+        double sub = Double.parseDouble(jLabel9.getText());
+        if (jRadioButton1.isSelected()) {
+            double iva = sub * .16;
+            BigDecimal formatNumber = new BigDecimal(iva);
+            formatNumber = formatNumber.setScale(2, RoundingMode.DOWN);
+            jLabel22.setText(formatNumber+"");
+            double tot = sub + iva;
+             BigDecimal formatNumber2 = new BigDecimal(tot);
+            formatNumber2 = formatNumber2.setScale(2, RoundingMode.DOWN);
+            jLabel10.setText(formatNumber2+"");
+        } else if (jRadioButton2.isSelected()) {
+            double ivaa = 0;
+             BigDecimal formatNumber3 = new BigDecimal(ivaa);
+            formatNumber3 = formatNumber3.setScale(2, RoundingMode.DOWN);
+            jLabel22.setText(formatNumber3+"");
+            double total = sub;
+             BigDecimal formatNumber4 = new BigDecimal(total);
+            formatNumber4 = formatNumber4.setScale(2, RoundingMode.DOWN);
+            jLabel10.setText(formatNumber4+"");
+        }
+    }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+         double sub = Double.parseDouble(jLabel9.getText());
+        if (jRadioButton1.isSelected()) {
+            double iva = sub * .16;
+            BigDecimal formatNumber = new BigDecimal(iva);
+            formatNumber = formatNumber.setScale(2, RoundingMode.DOWN);
+            jLabel22.setText(formatNumber+"");
+            double tot = sub + iva;
+             BigDecimal formatNumber2 = new BigDecimal(tot);
+            formatNumber2 = formatNumber2.setScale(2, RoundingMode.DOWN);
+            jLabel10.setText(formatNumber2+"");
+        } else if (jRadioButton2.isSelected()) {
+            double ivaa = 0;
+             BigDecimal formatNumber3 = new BigDecimal(ivaa);
+            formatNumber3 = formatNumber3.setScale(2, RoundingMode.DOWN);
+            jLabel22.setText(formatNumber3+"");
+            double total = sub;
+             BigDecimal formatNumber4 = new BigDecimal(total);
+            formatNumber4 = formatNumber4.setScale(2, RoundingMode.DOWN);
+            jLabel10.setText(formatNumber4+"");
+        }
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Buscar;
     private javax.swing.JDialog ProductoComun;
     private javax.swing.JDialog VerCotizaciones;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JDialog fech;
     private javax.swing.JButton jButton1;
@@ -1877,6 +2006,7 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -1884,6 +2014,7 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
@@ -1918,6 +2049,8 @@ public class Cotizacion extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

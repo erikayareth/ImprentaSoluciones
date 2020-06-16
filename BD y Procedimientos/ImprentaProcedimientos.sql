@@ -12,8 +12,8 @@ insert into usuario (usuario, contrasena) values('mostrador','43');
 
 
 -- Insertar Venta
-create procedure insertarVenta(in importep double, in totalp double,in descuentop double, in cambiop double, in foliop varchar(255), in subtotalp double, in serviciosp TEXT,IN CLAp enum('C','L','A'),in tarjetap boolean)
-insert into Venta(importe,total,descuento,cambio,folio,subtotal,servicios,CLA,tarjeta) values(importep,totalp,descuentop,cambiop,foliop,subtotalp,serviciosp,CLAp,tarjetap);
+create procedure insertarVenta(in importep double, in totalp double,in descuentop double, in cambiop double, in foliop varchar(255), in subtotalp double, in serviciosp TEXT,IN CLAp enum('C','L','A'),in tarjetap boolean,in mermap int, in estadop boolean)
+insert into Venta(importe,total,descuento,cambio,folio,subtotal,servicios,CLA,tarjeta,merma,estado) values(importep,totalp,descuentop,cambiop,foliop,subtotalp,serviciosp,CLAp,tarjetap,mermap,estadop);
 call insertarVenta(5000,200,100,20,"LC20093",10,"Producto",'C',true);
 
 -- insertar producto
@@ -208,7 +208,7 @@ delimiter ;
 delimiter //
 create procedure cargar_ventas()
 begin
-SELECT * FROM venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY and tarjeta like 1;
+SELECT * FROM venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY and tarjeta like 1 and estado like 1;
 end //
 delimiter ;
 
@@ -216,9 +216,10 @@ delimiter ;
 delimiter //
 create procedure cargar_ventasS()
 begin
-SELECT * FROM venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY and tarjeta like 0;
+SELECT * FROM venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY and tarjeta like 0 and estado like 1;
 end //
 delimiter ;
+
 
 -- Cargar Entradas del dia  
 delimiter //
@@ -243,6 +244,21 @@ begin
 SELECT * from Cotizacion where idCotizacion = id;
 end //
 delimiter ;
-
+-- cancelar venta
+DELIMITER // 
+ CREATE PROCEDURE bajaVenta(in id int)
+ BEGIN 
+ UPDATE venta set estado= false where idVenta=id;
+ END // 
+ DELIMITER ;
+ 
+ -- cargar ventas bien 
+DELIMITER //
+CREATE PROCEDURE select_all_ventas2()
+BEGIN 
+Select * from venta where estado like 1 ;
+END//
+DELIMITER ;
+Select * from venta where estado like 0 ;
 select sum(total) from venta WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY;
 select sum(cantidad) from EntradaSalida WHERE fecha BETWEEN CURDATE() and CURDATE() + INTERVAL 1 DAY and entrada = true;

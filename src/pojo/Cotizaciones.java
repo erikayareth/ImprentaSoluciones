@@ -18,11 +18,12 @@ public class Cotizaciones {
   private double subtotal;
   private String servicios;
   private String folio;
+  private double iva;
 
     public Cotizaciones() {
     }
 
-    public Cotizaciones(int idCotizacion, String nombreCliente, String telefono, double descuento, double total, double subtotal, String servicios, String folio) {
+    public Cotizaciones(int idCotizacion, String nombreCliente, String telefono, double descuento, double total, double subtotal, String servicios, String folio, double iva) {
         this.idCotizacion = idCotizacion;
         this.nombreCliente = nombreCliente;
         this.telefono = telefono;
@@ -31,9 +32,12 @@ public class Cotizaciones {
         this.subtotal = subtotal;
         this.servicios = servicios;
         this.folio = folio;
+        this.iva = iva;
     }
 
-    public Cotizaciones(String nombreCliente, String telefono, double descuento, double total, double subtotal, String servicios, String folio) {
+  
+
+    public Cotizaciones(String nombreCliente, String telefono, double descuento, double total, double subtotal, String servicios, String folio,double iva) {
         this.nombreCliente = nombreCliente;
         this.telefono = telefono;
         this.descuento = descuento;
@@ -41,6 +45,7 @@ public class Cotizaciones {
         this.subtotal = subtotal;
         this.servicios = servicios;
         this.folio = folio;
+        this.iva = iva;
     }
 
     
@@ -107,6 +112,14 @@ public class Cotizaciones {
 
     public void setFolio(String folio) {
         this.folio = folio;
+    }
+
+    public double getIva() {
+        return iva;
+    }
+
+    public void setIva(double iva) {
+        this.iva = iva;
     }
   
     

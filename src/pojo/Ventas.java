@@ -24,11 +24,13 @@ public class Ventas {
     private String servicios;
     private String CLA;
     private boolean tarjeta;
+    private int merma;
+    private boolean estado;
     
     public Ventas() {
     }
 
-    public Ventas(int idVenta, double importe, double total, double descuento, double cambio, Timestamp fecha, String folio, double subtotal, String servicios, String CLA, boolean tarjeta) {
+    public Ventas(int idVenta, double importe, double total, double descuento, double cambio, Timestamp fecha, String folio, double subtotal, String servicios, String CLA, boolean tarjeta, int merma, boolean estado) {
         this.idVenta = idVenta;
         this.importe = importe;
         this.total = total;
@@ -40,9 +42,15 @@ public class Ventas {
         this.servicios = servicios;
         this.CLA = CLA;
         this.tarjeta = tarjeta;
+        this.merma = merma;
+        this.estado = estado;
     }
 
-    public Ventas(double importe, double total, double descuento, double cambio, String folio, double subtotal, String servicios, String cla, boolean tarjeta) {
+    
+
+   
+
+    public Ventas(double importe, double total, double descuento, double cambio, String folio, double subtotal, String servicios, String cla, boolean tarjeta,int  merma,boolean estado) {
         this.importe = importe;
         this.total = total;
         this.descuento = descuento;
@@ -52,6 +60,8 @@ public class Ventas {
         this.servicios = servicios;
         this.CLA = cla;
         this.tarjeta = tarjeta;
+        this.merma = merma;
+        this.estado = estado;
     }
 
    
@@ -144,6 +154,22 @@ public class Ventas {
 
     public void setTarjeta(boolean tarjeta) {
         this.tarjeta = tarjeta;
+    }
+
+    public int getMerma() {
+        return merma;
+    }
+
+    public void setMerma(int merma) {
+        this.merma = merma;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
     }
     
     
