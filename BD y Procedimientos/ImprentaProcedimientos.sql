@@ -28,8 +28,8 @@ insert into Proveedor(nombre,telefono,estado) values(nombrep,telefonop,estadop);
 CALL insertarProveedor('Yareth', '1234567898', true);
 
 -- insertar Cotizacion
-create procedure insertarCotizacion(in nombreClientep varchar(255), in telefonop varchar(10),in descuentop double, in totalp double , in subtotalp double, in serviciosp TEXT,in foliop varchar(255))
-insert into Cotizacion(nombreCliente,telefono,descuento,total,subtotal,servicios,folio) values(nombreClientep,telefonop,descuentop,totalp, subtotalp, serviciosp,foliop);
+create procedure insertarCotizacion(in nombreClientep varchar(255), in telefonop varchar(10),in descuentop double, in totalp double , in subtotalp double, in serviciosp TEXT,in foliop varchar(255),in ivap double)
+insert into Cotizacion(nombreCliente,telefono,descuento,total,subtotal,servicios,folio,iva) values(nombreClientep,telefonop,descuentop,totalp, subtotalp, serviciosp,foliop,ivap);
 call insertarCotizacion("Avril","2292530407",100,2000,200,"Hola","SKA");
 
 -- Insertar Entradas y salidas
