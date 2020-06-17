@@ -26,11 +26,12 @@ public class Ventas {
     private boolean tarjeta;
     private int merma;
     private boolean estado;
+    private int cantidad;
     
     public Ventas() {
     }
 
-    public Ventas(int idVenta, double importe, double total, double descuento, double cambio, Timestamp fecha, String folio, double subtotal, String servicios, String CLA, boolean tarjeta, int merma, boolean estado) {
+    public Ventas(int idVenta, double importe, double total, double descuento, double cambio, Timestamp fecha, String folio, double subtotal, String servicios, String CLA, boolean tarjeta, int merma, boolean estado, int cantidad) {
         this.idVenta = idVenta;
         this.importe = importe;
         this.total = total;
@@ -44,13 +45,13 @@ public class Ventas {
         this.tarjeta = tarjeta;
         this.merma = merma;
         this.estado = estado;
+        this.cantidad = cantidad;
     }
 
     
 
-   
 
-    public Ventas(double importe, double total, double descuento, double cambio, String folio, double subtotal, String servicios, String cla, boolean tarjeta,int  merma,boolean estado) {
+    public Ventas(double importe, double total, double descuento, double cambio, String folio, double subtotal, String servicios, String cla, boolean tarjeta,int  merma,boolean estado,int cantidad) {
         this.importe = importe;
         this.total = total;
         this.descuento = descuento;
@@ -62,6 +63,7 @@ public class Ventas {
         this.tarjeta = tarjeta;
         this.merma = merma;
         this.estado = estado;
+        this.cantidad = cantidad;
     }
 
    
@@ -171,6 +173,16 @@ public class Ventas {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+   
     
     
     

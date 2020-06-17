@@ -149,6 +149,7 @@ public class XH extends javax.swing.JPanel {
         jPopupMenu.add(menuItem1);
         jTable6.setComponentPopupMenu(jPopupMenu);
     }
+
     void poputTable2() {
         JPopupMenu jPopupMenu = new JPopupMenu();
         JMenuItem menuItem3 = new JMenuItem("CANCELAR VENTA");
@@ -156,14 +157,15 @@ public class XH extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int fila = jTable5.getSelectedRow();
-                 int id = Integer.parseInt(jTable5.getValueAt(jTable5.getSelectedRow(), 0).toString());
+                int id = Integer.parseInt(jTable5.getValueAt(jTable5.getSelectedRow(), 0).toString());
                 if (fila >= 0) {
                     modelo = (DefaultTableModel) jTable5.getModel();
                     if (baja(id)) {
-                    cargarModeloVenata();
-                } else {
-                    JOptionPane.showMessageDialog(null, "error");
-                }
+                        cargarModeloVenata();
+                        act(id);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "error");
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "Selecciona un dato de la tabla");
                 }
@@ -172,11 +174,13 @@ public class XH extends javax.swing.JPanel {
         jPopupMenu.add(menuItem3);
         jTable5.setComponentPopupMenu(jPopupMenu);
     }
-     public boolean baja(int id) {
-         VentasDAO vd = new VentasDAO();
+
+    public boolean baja(int id) {
+        VentasDAO vd = new VentasDAO();
         boolean resultado = vd.eliminar(id);
         return resultado;
     }
+
     void configureTable() {
         jTable6.setDefaultRenderer(Object.class, new MyJTableCellRenderer());
         jTable6.setRowHeight(20);
@@ -228,6 +232,7 @@ public class XH extends javax.swing.JPanel {
         jLabel37.setText(ventas.getCambio() + "");
         jLabel44.setText(ventas.getSubtotal() + "");
         String palabra = ventas.getServicios().replace(" ", "\n");
+
         jTextArea1.setText(palabra);
         jLabel40.setText(ventas.getFolio());
     }
@@ -249,7 +254,8 @@ public class XH extends javax.swing.JPanel {
         dialogo.setLocationRelativeTo(null);
         dialogo.setResizable(false);
     }
-     void cargarDialogo4(JDialog dialogo, String nombre) {
+
+    void cargarDialogo4(JDialog dialogo, String nombre) {
         dialogo.setVisible(true);
         dialogo.setTitle(nombre);
         dialogo.setIconImage(new ImageIcon(this.getClass().getResource("/img/logovintage.png")).getImage());
@@ -334,6 +340,25 @@ public class XH extends javax.swing.JPanel {
         }
     }
 
+   
+
+    void act(int id) {
+        
+        VentasDAO ventasDAO = new VentasDAO();
+       
+        Ventas ventas = ventasDAO.seleccionar_venta(id);
+        int s = (int) ventas.getCantidad();
+        Productos productos = new Productos();
+        productos = pp.seleccionar_producto(id);
+        int stock = productos.getStock();
+        if (!pp.modificar_stock(id, stock + s)) {
+            JOptionPane.showMessageDialog(this, "Error al actualizar Stock");
+        } else {
+            System.out.println("Éxitoo ");
+        }
+         
+    }
+
     void calcular() {
         tpagar = 0;
         for (int i = 0; i < jTable6.getRowCount(); i++) {
@@ -356,17 +381,22 @@ public class XH extends javax.swing.JPanel {
     int crear() throws SQLException {
         VentasDAO vd = new VentasDAO();
         String servicios = "";
+        int cantidad = 0;
         double total = Double.parseDouble(jLabel26.getText());
         double importe = Double.parseDouble(jTextField14.getText());
         double descuento = Double.parseDouble(jTextField3.getText());
         double subtotal = Double.parseDouble(jLabel24.getText());
         double cambio = Double.parseDouble(jLabel20.getText());
         boolean estado = true;
-         int merma = (int) jSpinner1.getValue();
+        int merma = (int) jSpinner1.getValue();
         String folio = jTextField2.getText();
         String cla = (String) jComboBox5.getSelectedItem();
         for (int i = 0; i < jTable6.getRowCount(); i++) {
             servicios += (String) jTable6.getValueAt(i, 1) + " ";
+        }
+        for (int i = 0; i < jTable6.getRowCount(); i++) {
+            int c = Integer.parseInt(jTable6.getValueAt(i, 5).toString());
+            
         }
         boolean tarjeta = false;
         if (jRadioButton1.isSelected()) {
@@ -374,7 +404,7 @@ public class XH extends javax.swing.JPanel {
         } else if (jRadioButton2.isSelected()) {
             tarjeta = false;
         }
-        Ventas ventas = new Ventas(importe, total, descuento, cambio, folio, subtotal, servicios, cla, tarjeta,merma,estado);
+        Ventas ventas = new Ventas(importe, total, descuento, cambio, folio, subtotal, servicios, cla, tarjeta, merma, estado, cantidad);
         int id = vd.insertar(ventas);
         return id;
     }
@@ -474,12 +504,14 @@ public class XH extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Selecciona un elemento de la tabla");
         }
     }
-    void fecha (){
-         Date fecha = new Date();
+
+    void fecha() {
+        Date fecha = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); //formatear la fecha en una cadena
         jLabel49.setText(sdf.format(fecha)); //setear la representacion en cadena de la fecha
     }
-        boolean createPDF() {
+
+    boolean createPDF() {
         double sub2 = Double.parseDouble(jLabel24.getText());
         String folio = jTextField2.getText();
         String sub = jLabel24.getText();
@@ -489,29 +521,29 @@ public class XH extends javax.swing.JPanel {
         String cambio = jLabel20.getText();
         String tarjeta = "";
         String iva = "";
-        if(jRadioButton3.isSelected()){
-        double s = sub2 * .16;
-        iva =""+ s;
-        }else if(jRadioButton4.isSelected()){
-            iva ="" +0;
+        if (jRadioButton3.isSelected()) {
+            double s = sub2 * .16;
+            iva = "" + s;
+        } else if (jRadioButton4.isSelected()) {
+            iva = "" + 0;
         }
         boolean t = false;
-       if(jRadioButton1.isSelected()){
-           t = true;
-           tarjeta = "Tarjeta";
-       }else if(jRadioButton2.isSelected()){
-           t = false;
-           tarjeta = "Efectivo";
-       }
-       String nombre = "";
-       String cantidad = "";
-       String precio = "";
-       String descrip = "";
-       String tp = "";
-       String fecha = jLabel49.getText();
-       
-       String cla = (String) jComboBox5.getSelectedItem();
-       for (int i = 0; i < jTable6.getRowCount(); i++) {
+        if (jRadioButton1.isSelected()) {
+            t = true;
+            tarjeta = "Tarjeta";
+        } else if (jRadioButton2.isSelected()) {
+            t = false;
+            tarjeta = "Efectivo";
+        }
+        String nombre = "";
+        String cantidad = "";
+        String precio = "";
+        String descrip = "";
+        String tp = "";
+        String fecha = jLabel49.getText();
+
+        String cla = (String) jComboBox5.getSelectedItem();
+        for (int i = 0; i < jTable6.getRowCount(); i++) {
             nombre = nombre + "\n" + jTable6.getValueAt(i, 1).toString();
             descrip = descrip + "\n" + jTable6.getValueAt(i, 2).toString();
             precio = precio + "\n" + jTable6.getValueAt(i, 3).toString();
@@ -519,9 +551,8 @@ public class XH extends javax.swing.JPanel {
             cantidad = cantidad + "\n" + jTable6.getValueAt(i, 5).toString();
         }
 
-       
         try {
-            pdf(fecha, folio, cla, tarjeta, sub, iva, desc, tot,importe,cambio,nombre,descrip,tp,precio,cantidad);
+            pdf(fecha, folio, cla, tarjeta, sub, iva, desc, tot, importe, cambio, nombre, descrip, tp, precio, cantidad);
             return true;
         } catch (IOException ex) {
 
@@ -535,7 +566,7 @@ public class XH extends javax.swing.JPanel {
 
     }
 
-    public void pdf(String fecha, String folio, String cla, String pago,  String subtotal, String iva, String descuento, String total, String importe, String cambio,String nombre,String descrip,String tp, String precio,String cant) throws IOException, XDocReportException {
+    public void pdf(String fecha, String folio, String cla, String pago, String subtotal, String iva, String descuento, String total, String importe, String cambio, String nombre, String descrip, String tp, String precio, String cant) throws IOException, XDocReportException {
 
         System.out.println("H");
         InputStream S = Prueba2.class.getResourceAsStream("TICKET.docx");
@@ -557,7 +588,6 @@ public class XH extends javax.swing.JPanel {
         context.put("TP", tp);
         context.put("PRECIO", precio);
         context.put("CANT", cant);
-       
 
         Options options = Options.getTo(ConverterTypeTo.PDF);
 
@@ -2667,7 +2697,7 @@ public class XH extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField3KeyReleased
 
     private void jTextField14KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyReleased
-         double monto = Double.parseDouble(jTextField14.getText());
+        double monto = Double.parseDouble(jTextField14.getText());
         double descuento = Double.parseDouble(jTextField3.getText());
         double sub = Double.parseDouble(jLabel24.getText());
         if (jRadioButton3.isSelected()) {

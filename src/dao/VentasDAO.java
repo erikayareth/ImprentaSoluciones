@@ -27,7 +27,7 @@ public class VentasDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call insertarventa(?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insertarventa(?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setDouble(1, v.getImporte());
             st.setDouble(2, v.getTotal());
             st.setDouble(3, v.getDescuento());
@@ -39,6 +39,7 @@ public class VentasDAO {
             st.setBoolean(9, v.isTarjeta());
             st.setInt(10, v.getMerma());
             st.setBoolean(11, v.isEstado());
+            st.setInt(12, v.getCantidad());
            
             
             id = st.executeUpdate();
@@ -224,6 +225,7 @@ public class VentasDAO {
             pojo.setTarjeta(rs.getBoolean("tarjeta"));
             pojo.setMerma(rs.getInt("merma"));
             pojo.setEstado(rs.getBoolean("estado"));
+            pojo.setCantidad(rs.getInt("cantidad"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo Ventas .." + ex);
         }
